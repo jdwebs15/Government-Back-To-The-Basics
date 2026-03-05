@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gov Basics 4 — Reconstruction, Suffrage & Structural Amendments (CS9–11)</title>
+
+<link rel="stylesheet" href="../styles.css">
+
+<style>
+  .wrapGame{width:min(980px,92vw);margin:30px auto;padding:0 0 30px;}
+  .panel{
+    background:linear-gradient(180deg, rgba(17,26,47,.95), rgba(15,23,48,.92));
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:var(--radius);
+    box-shadow:0 14px 40px rgba(0,0,0,.35);
+    padding:18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .panel::before{
+    content:"";
+    position:absolute; inset:-2px;
+    background: radial-gradient(520px 220px at 18% 0%, rgba(122,162,255,.18), transparent 60%);
+    pointer-events:none;
+  }
+  .panel > *{position:relative;}
+
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12px;padding:6px 10px;border-radius:999px;
+    background:var(--chip);border:1px solid var(--chipLine);color:var(--text);
+  }
+  .chip-accent{background: rgba(122,162,255,.16);border-color: rgba(122,162,255,.35);}
+
+  h1{margin:0 0 8px;font-size:24px;line-height:1.15}
+  h2{margin:0 0 10px;font-size:18px;line-height:1.25}
+  p{margin:8px 0;color:var(--muted);line-height:1.35}
+  label{display:block;margin-top:10px;color:var(--muted);font-size:13px}
+
+  .input{
+    width:min(420px,100%);
+    background: rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    color: var(--text);
+    border-radius: 12px;
+    padding:10px 12px;
+    outline:none;
+    margin-top:8px;
+  }
+
+  .choice{
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    padding:12px 12px;
+    margin:10px 0;
+    cursor:pointer;
+    transition: filter .12s ease, transform .06s ease, border-color .12s ease;
+    background: rgba(255,255,255,.02);
+  }
+  .choice:hover{border-color:var(--accent);filter:brightness(1.06)}
+  .choice:active{transform: translateY(1px)}
+  .choice.correct{border-color: rgba(43,213,118,.55); background: rgba(43,213,118,.10)}
+  .choice.wrong{border-color: rgba(255,92,122,.55); background: rgba(255,92,122,.08)}
+
+  .msg{
+    margin-top:12px;padding:10px 12px;border-radius:12px;
+    display:none;font-size:13px;line-height:1.3;
+  }
+  .msg.good{background:rgba(43,213,118,.12);border:1px solid rgba(43,213,118,.25);display:block}
+  .msg.bad{background:rgba(255,92,122,.10);border:1px solid rgba(255,92,122,.25);display:block}
+
+  .hud{
+    margin-top:14px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+  }
+  @media(max-width:720px){ .hud{grid-template-columns:1fr;} }
+  .hudItem{
+    border:1px dashed rgba(255,255,255,.14);
+    border-radius:14px;
+    padding:10px 12px;
+    color:var(--muted);
+    background: rgba(255,255,255,.02);
+  }
+  .hudItem b{color:var(--text);font-family:var(--mono);font-size:12px}
+
+  .ticket{
+    margin-top:14px;
+    background: rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    padding:12px;
+    font-family: var(--mono);
+    color: var(--text);
+    font-size: 12px;
+    line-height:1.5;
+    white-space: pre-wrap;
+  }
+
+  .btnRow{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
+  .liveGreen{
+    font-size:12px;
+    padding:5px 10px;
+    border-radius:999px;
+    background: rgba(43,213,118,.12);
+    border:1px solid rgba(43,213,118,.35);
+    color: var(--good);
+    font-weight:800;
+  }
+</style>
+</head>
+
+<body>
+  <div class="wrapGame">
+
+    <!-- START PANEL -->
+    <section class="panel" id="startPanel">
+      <div class="row" style="justify-content:space-between;">
+        <div>
+          <div class="meta">
+            <span class="chip chip-accent">CS9–11</span>
+            <span class="chip">Back-to-Basics</span>
+            <span class="chip">100% required</span>
+          </div>
+          <h1>Gov Basics 4 — Reconstruction, Suffrage & Structural Amendments</h1>
+          <p>
+            Reconstruction Amendments + voting rights expansions + key structural amendments to the presidency/elections.
+            Auto-submit on click. Correct = auto-advance. Wrong = hint. Ticket only at <b>100% accuracy</b>.
+          </p>
+        </div>
+        <span class="liveGreen" style="align-self:flex-start;">LIVE</span>
+      </div>
+
+      <label for="studentName">Enter your name to begin:</label>
+      <input id="studentName" class="input" placeholder="Student name" autocomplete="off" />
+
+      <div class="btnRow">
+        <button class="btn" id="startBtn" type="button">Start Game</button>
+      </div>
+      <p class="muted" style="margin-top:10px;font-size:12px;">
+        Tip: If your Chromebook sleeps, refresh may restart the game. That’s okay — mastery requires 100%.
+      </p>
+    </section>
+
+    <!-- GAME PANEL -->
+    <section class="panel" id="gamePanel" style="display:none;">
+      <div class="meta">
+        <span class="chip chip-accent" id="qCountChip">Q 1 / 36</span>
+        <span class="chip">Reconstruction + Voting Rights + Structure</span>
+        <span class="chip" id="accChip">Accuracy: 100%</span>
+      </div>
+
+      <h2 id="questionText"></h2>
+      <div id="choices"></div>
+
+      <div id="msg" class="msg"></div>
+
+      <div class="hud">
+        <div class="hudItem">Name: <b id="hudName"></b></div>
+        <div class="hudItem">Start: <b id="hudStart"></b></div>
+        <div class="hudItem">Running: <b id="hudRun">0:00</b></div>
+        <div class="hudItem">Attempts: <b id="hudAttempts">0</b> • Correct: <b id="hudCorrect">0</b></div>
+      </div>
+
+      <div class="btnRow">
+        <button class="btn btn-small" id="restartBtn" type="button">Restart</button>
+      </div>
+    </section>
+
+    <!-- TICKET PANEL -->
+    <section class="panel" id="ticketPanel" style="display:none;">
+      <div class="meta">
+        <span class="chip chip-accent">Completion Ticket</span>
+        <span class="chip">100% accuracy</span>
+      </div>
+      <h2>Submit this ticket</h2>
+      <div id="ticket" class="ticket"></div>
+      <div class="btnRow">
+        <button class="btn btn-small" id="playAgainBtn" type="button">Play again</button>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+  function shuffle(arr){
+    for(let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+  function fmtClock(totalSec){
+    const m = Math.floor(totalSec/60);
+    const s = totalSec % 60;
+    return m + ":" + (s<10 ? "0" : "") + s;
+  }
+
+  // CS9–11 BANK (36)
+  // correct stored as TEXT
+  const BANK = [
+    // Reconstruction Amendments
+    { q:"The 13th Amendment", a:"Abolished slavery", d:["Granted women the right to vote","Created the income tax","Set presidential term limits"], hint:"It ended slavery." },
+    { q:"The 14th Amendment", a:"Defined citizenship and required due process and equal protection", d:["Abolished slavery","Banned poll taxes","Lowered the voting age to 18"], hint:"Citizenship + due process + equal protection." },
+    { q:"The 15th Amendment", a:"Prohibited denying the right to vote based on race", d:["Guaranteed a speedy trial","Banned alcohol","Created direct election of senators"], hint:"Voting rights regardless of race." },
+    { q:"Equal protection means the government must", a:"Apply the law equally to all people", d:["Give Congress more power","Allow states to ignore federal law","Eliminate juries"], hint:"Equal treatment under the law." },
+    { q:"Due process means the government must", a:"Follow fair procedures before taking life, liberty, or property", d:["Always win court cases","Ban political parties","Require unanimous votes"], hint:"Fair procedures." },
+
+    // Voting rights expansions
+    { q:"The 19th Amendment", a:"Granted women the right to vote", d:["Abolished slavery","Banned poll taxes","Lowered the voting age"], hint:"Women’s suffrage amendment." },
+    { q:"The 24th Amendment", a:"Prohibited poll taxes in federal elections", d:["Banned literacy tests","Created term limits","Required the Electoral College"], hint:"No poll tax (federal elections)." },
+    { q:"The 26th Amendment", a:"Lowered the voting age to 18", d:["Granted women the right to vote","Banned alcohol","Ended slavery"], hint:"18-year-old vote." },
+
+    // Structural / election system amendments
+    { q:"The 12th Amendment changed elections by requiring", a:"Separate Electoral College votes for president and vice president", d:["Direct election of presidents","A national primary system","Term limits for Congress"], hint:"Separate votes for President/VP." },
+    { q:"The 22nd Amendment", a:"Limited the president to two terms", d:["Created the Vice Presidency","Lowered the voting age","Ended the Electoral College"], hint:"Two-term limit." },
+    { q:"The 23rd Amendment", a:"Gave Washington, D.C. electoral votes for president", d:["Allowed 18-year-olds to vote","Banned poll taxes","Created income tax"], hint:"DC gets electoral votes." },
+    { q:"The 25th Amendment clarified", a:"Presidential succession and disability procedures", d:["How to impeach judges","How to ratify amendments","How to create a national bank"], hint:"Succession/disability." },
+    { q:"The 17th Amendment established", a:"Direct election of U.S. senators", d:["Direct election of presidents","Women’s suffrage","Term limits for senators"], hint:"Voters elect senators." },
+
+    // Electoral College basics (rote)
+    { q:"The Electoral College is", a:"The system used to elect the president and vice president", d:["A court system","A political party committee","A federal agency"], hint:"It elects the president/VP." },
+    { q:"In the Electoral College system, states are assigned electors based mainly on", a:"Representation in Congress", d:["State land area","State age","Court decisions"], hint:"Senators + Representatives." },
+
+    // Linking amendments to problems
+    { q:"The 24th Amendment was intended to reduce", a:"Economic barriers to voting", d:["Executive power","Freedom of speech","Federalism"], hint:"Poll taxes kept poor citizens from voting." },
+    { q:"The 26th Amendment was passed largely in response to", a:"Young people being drafted but unable to vote", d:["The Great Depression","The Civil War","The New Deal"], hint:"Old enough to fight, old enough to vote." },
+
+    // More Reconstruction logic
+    { q:"The Reconstruction Amendments were designed mainly to", a:"Extend protections and rights to formerly enslaved people", d:["Increase monarchy power","Eliminate elections","End the Bill of Rights"], hint:"Post-Civil War protections." },
+    { q:"Which amendment is most directly connected to incorporating rights against states?", a:"14th Amendment", d:["13th Amendment","15th Amendment","22nd Amendment"], hint:"Due process applied to states." },
+
+    // “Which amendment does what” drills
+    { q:"Which amendment deals with citizenship?", a:"14th Amendment", d:["13th Amendment","19th Amendment","22nd Amendment"], hint:"Citizenship is in the 14th." },
+    { q:"Which amendment ended slavery?", a:"13th Amendment", d:["14th Amendment","15th Amendment","26th Amendment"], hint:"13th = slavery abolished." },
+    { q:"Which amendment protects voting rights from racial discrimination?", a:"15th Amendment", d:["19th Amendment","24th Amendment","22nd Amendment"], hint:"Race-based voting denial banned." },
+    { q:"Which amendment gave women the vote?", a:"19th Amendment", d:["15th Amendment","26th Amendment","23rd Amendment"], hint:"Women’s suffrage." },
+    { q:"Which amendment bans poll taxes (federal elections)?", a:"24th Amendment", d:["19th Amendment","26th Amendment","12th Amendment"], hint:"No poll tax." },
+    { q:"Which amendment gives DC electoral votes?", a:"23rd Amendment", d:["24th Amendment","22nd Amendment","17th Amendment"], hint:"DC participation." },
+    { q:"Which amendment sets two presidential terms?", a:"22nd Amendment", d:["23rd Amendment","25th Amendment","12th Amendment"], hint:"Two-term limit." },
+    { q:"Which amendment clarified presidential succession and disability?", a:"25th Amendment", d:["22nd Amendment","23rd Amendment","19th Amendment"], hint:"Succession/disability." },
+    { q:"Which amendment fixed the President/VP Electoral College voting issue?", a:"12th Amendment", d:["22nd Amendment","25th Amendment","17th Amendment"], hint:"Separate votes for President/VP." },
+
+    // Key terms (rote)
+    { q:"A poll tax is", a:"A fee required to vote", d:["A literacy test","A jury requirement","A citizenship oath"], hint:"Paying money to vote." },
+    { q:"Suffrage means", a:"The right to vote", d:["The right to a lawyer","The right to bear arms","The right to petition"], hint:"Voting right." },
+    { q:"Presidential succession refers to", a:"Who becomes president if the president cannot serve", d:["How laws are passed","How judges are selected","How states ratify amendments"], hint:"Order of replacement." },
+
+    // Scenario-style but still rote
+    { q:"If a person is denied equal treatment because of race, which amendment is most relevant?", a:"14th Amendment", d:["22nd Amendment","12th Amendment","23rd Amendment"], hint:"Equal protection clause." },
+    { q:"If a state tries to charge a fee to vote in a federal election, which amendment applies?", a:"24th Amendment", d:["19th Amendment","26th Amendment","22nd Amendment"], hint:"Poll taxes banned (federal)." },
+    { q:"If a president is temporarily unable to serve, which amendment provides a process?", a:"25th Amendment", d:["22nd Amendment","23rd Amendment","12th Amendment"], hint:"Disability procedures." },
+
+    // Extra reps for mastery
+    { q:"The 15th Amendment focuses on", a:"Voting rights", d:["Slavery","Citizenship","Term limits"], hint:"Race-based voting denial banned." },
+    { q:"The 13th Amendment focuses on", a:"Ending slavery", d:["Voting rights","Due process","DC electors"], hint:"Abolition." },
+    { q:"The 14th Amendment focuses on", a:"Citizenship and protections under the law", d:["Two-term limit","Direct election of senators","Lowering voting age"], hint:"Citizenship + protections." },
+    { q:"The 22nd Amendment limits", a:"Presidential terms", d:["Senate elections","Voting age","Poll taxes"], hint:"Two terms max." },
+    { q:"The 23rd Amendment affects", a:"Presidential elections", d:["Supreme Court cases","Jury trials","Congressional committees"], hint:"DC gets electors." },
+    { q:"The 17th Amendment made senators chosen by", a:"Voters (direct election)", d:["State legislatures","The president","The Supreme Court"], hint:"Direct election." },
+    { q:"The 26th Amendment expanded voting rights to", a:"18-year-olds", d:["Women","Formerly enslaved people","District of Columbia residents"], hint:"18+ vote." }
+  ];
+
+  let deck = [];
+  let idx = 0;
+  let attempts = 0;
+  let correct = 0;
+  let startTime = null;
+  let timerId = null;
+  let locked = false;
+
+  const startPanel = document.getElementById("startPanel");
+  const gamePanel = document.getElementById("gamePanel");
+  const ticketPanel = document.getElementById("ticketPanel");
+
+  const studentNameEl = document.getElementById("studentName");
+  const startBtn = document.getElementById("startBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const playAgainBtn = document.getElementById("playAgainBtn");
+
+  const qCountChip = document.getElementById("qCountChip");
+  const accChip = document.getElementById("accChip");
+  const questionText = document.getElementById("questionText");
+  const choicesEl = document.getElementById("choices");
+  const msgEl = document.getElementById("msg");
+
+  const hudName = document.getElementById("hudName");
+  const hudStart = document.getElementById("hudStart");
+  const hudRun = document.getElementById("hudRun");
+  const hudAttempts = document.getElementById("hudAttempts");
+  const hudCorrect = document.getElementById("hudCorrect");
+
+  function computeAccuracy(){
+    if(attempts === 0) return 100;
+    return Math.round((correct / attempts) * 100);
+  }
+  function updateHUD(){
+    qCountChip.textContent = `Q ${idx+1} / ${deck.length}`;
+    accChip.textContent = `Accuracy: ${computeAccuracy()}%`;
+    hudAttempts.textContent = String(attempts);
+    hudCorrect.textContent = String(correct);
+  }
+  function tick(){
+    const now = new Date();
+    const diffSec = Math.max(0, Math.floor((now - startTime) / 1000));
+    hudRun.textContent = fmtClock(diffSec);
+  }
+
+  function startGame(){
+    const name = studentNameEl.value.trim();
+    if(!name){
+      alert("Enter your name to begin.");
+      studentNameEl.focus();
+      return;
+    }
+
+    deck = BANK.map(x => ({...x}));
+    shuffle(deck);
+
+    idx = 0; attempts = 0; correct = 0; locked = false;
+
+    startTime = new Date();
+    hudName.textContent = name;
+    hudStart.textContent = startTime.toLocaleString();
+
+    startPanel.style.display = "none";
+    ticketPanel.style.display = "none";
+    gamePanel.style.display = "block";
+
+    if(timerId) clearInterval(timerId);
+    timerId = setInterval(tick, 1000);
+    tick();
+
+    showQuestion();
+  }
+
+  function showQuestion(){
+    msgEl.className = "msg";
+    msgEl.style.display = "none";
+    choicesEl.innerHTML = "";
+
+    const item = deck[idx];
+    questionText.textContent = item.q;
+
+    const options = [item.a, ...item.d];
+    shuffle(options);
+
+    options.forEach(opt => {
+      const div = document.createElement("div");
+      div.className = "choice";
+      div.textContent = opt;
+      div.addEventListener("click", () => pick(div, opt));
+      choicesEl.appendChild(div);
+    });
+
+    updateHUD();
+  }
+
+  function pick(choiceDiv, chosenText){
+    if(locked) return;
+    locked = true;
+
+    attempts++;
+    const item = deck[idx];
+
+    [...choicesEl.querySelectorAll(".choice")].forEach(c => c.classList.remove("correct","wrong"));
+
+    if(chosenText === item.a){
+      correct++;
+      choiceDiv.classList.add("correct");
+      msgEl.className = "msg good";
+      msgEl.textContent = "Correct!";
+      msgEl.style.display = "block";
+      updateHUD();
+
+      setTimeout(() => {
+        idx++;
+        locked = false;
+        if(idx >= deck.length) finishGame();
+        else showQuestion();
+      }, 450);
+
+    }else{
+      choiceDiv.classList.add("wrong");
+      msgEl.className = "msg bad";
+      msgEl.textContent = "Hint: " + item.hint;
+      msgEl.style.display = "block";
+      updateHUD();
+      locked = false;
+    }
+  }
+
+  function finishGame(){
+    clearInterval(timerId);
+    const endTime = new Date();
+    const run = hudRun.textContent;
+    const acc = computeAccuracy();
+
+    if(acc !== 100){
+      alert("Mastery requires 100% accuracy. Restart and try again.");
+      restart();
+      return;
+    }
+
+    gamePanel.style.display = "none";
+    ticketPanel.style.display = "block";
+
+    const name = studentNameEl.value.trim();
+    const ticketText =
+`Name: ${name}
+Game: Gov Basics 4 — Reconstruction, Suffrage & Structural Amendments (CS9–11)
+Passed: YES
+Accuracy: ${acc}%
+Start: ${startTime.toLocaleString()}
+End: ${endTime.toLocaleString()}
+Running Time: ${run}
+Total Questions: ${deck.length}
+Attempts: ${attempts}
+Correct: ${correct}`;
+
+    document.getElementById("ticket").textContent = ticketText;
+  }
+
+  function restart(){ location.reload(); }
+
+  startBtn.addEventListener("click", startGame);
+  restartBtn.addEventListener("click", restart);
+  playAgainBtn.addEventListener("click", restart);
+  studentNameEl.addEventListener("keydown", (e)=>{ if(e.key === "Enter") startGame(); });
+</script>
+</body>
+</html>
