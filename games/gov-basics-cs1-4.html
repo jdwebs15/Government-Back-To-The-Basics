@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gov Basics 1 — Civic Foundations (CS1–4)</title>
+
+<link rel="stylesheet" href="../styles.css">
+
+<style>
+  .wrapGame{width:min(980px,92vw);margin:30px auto;padding:0 0 30px;}
+  .panel{
+    background:linear-gradient(180deg, rgba(17,26,47,.95), rgba(15,23,48,.92));
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:var(--radius);
+    box-shadow:0 14px 40px rgba(0,0,0,.35);
+    padding:18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .panel::before{
+    content:"";
+    position:absolute; inset:-2px;
+    background: radial-gradient(520px 220px at 18% 0%, rgba(122,162,255,.18), transparent 60%);
+    pointer-events:none;
+  }
+  .panel > *{position:relative;}
+
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12px;padding:6px 10px;border-radius:999px;
+    background:var(--chip);border:1px solid var(--chipLine);color:var(--text);
+  }
+  .chip-accent{background: rgba(122,162,255,.16);border-color: rgba(122,162,255,.35);}
+
+  h1{margin:0 0 8px;font-size:24px;line-height:1.15}
+  h2{margin:0 0 10px;font-size:18px;line-height:1.25}
+  p{margin:8px 0;color:var(--muted);line-height:1.35}
+  label{display:block;margin-top:10px;color:var(--muted);font-size:13px}
+
+  .input{
+    width:min(420px,100%);
+    background: rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    color: var(--text);
+    border-radius: 12px;
+    padding:10px 12px;
+    outline:none;
+    margin-top:8px;
+  }
+
+  .choice{
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    padding:12px 12px;
+    margin:10px 0;
+    cursor:pointer;
+    transition: filter .12s ease, transform .06s ease, border-color .12s ease;
+    background: rgba(255,255,255,.02);
+  }
+  .choice:hover{border-color:var(--accent);filter:brightness(1.06)}
+  .choice:active{transform: translateY(1px)}
+  .choice.correct{border-color: rgba(43,213,118,.55); background: rgba(43,213,118,.10)}
+  .choice.wrong{border-color: rgba(255,92,122,.55); background: rgba(255,92,122,.08)}
+
+  .msg{
+    margin-top:12px;padding:10px 12px;border-radius:12px;
+    display:none;font-size:13px;line-height:1.3;
+  }
+  .msg.good{background:rgba(43,213,118,.12);border:1px solid rgba(43,213,118,.25);display:block}
+  .msg.bad{background:rgba(255,92,122,.10);border:1px solid rgba(255,92,122,.25);display:block}
+
+  .hud{
+    margin-top:14px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+  }
+  @media(max-width:720px){ .hud{grid-template-columns:1fr;} }
+  .hudItem{
+    border:1px dashed rgba(255,255,255,.14);
+    border-radius:14px;
+    padding:10px 12px;
+    color:var(--muted);
+    background: rgba(255,255,255,.02);
+  }
+  .hudItem b{color:var(--text);font-family:var(--mono);font-size:12px}
+
+  .ticket{
+    margin-top:14px;
+    background: rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    padding:12px;
+    font-family: var(--mono);
+    color: var(--text);
+    font-size: 12px;
+    line-height:1.5;
+    white-space: pre-wrap;
+  }
+
+  .btnRow{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
+</style>
+</head>
+
+<body>
+  <div class="wrapGame">
+
+    <!-- START PANEL -->
+    <section class="panel" id="startPanel">
+      <div class="row" style="justify-content:space-between;">
+        <div>
+          <div class="meta">
+            <span class="chip chip-accent">CS1–4</span>
+            <span class="chip">Back-to-Basics</span>
+            <span class="chip">100% required</span>
+          </div>
+          <h1>Gov Basics 1 — Civic Foundations</h1>
+          <p>
+            Auto-submit on click. Correct = auto-advance. Wrong = hint.
+            Ticket appears only at <b>100% accuracy</b>.
+          </p>
+        </div>
+        <span class="live" style="align-self:flex-start;">LIVE</span>
+      </div>
+
+      <label for="studentName">Enter your name to begin:</label>
+      <input id="studentName" class="input" placeholder="Student name" autocomplete="off" />
+
+      <div class="btnRow">
+        <button class="btn" id="startBtn" type="button">Start Game</button>
+      </div>
+      <p class="muted" style="margin-top:10px;font-size:12px;">
+        Tip: If your Chromebook sleeps, refresh may restart the game. That’s okay — mastery requires 100%.
+      </p>
+    </section>
+
+    <!-- GAME PANEL -->
+    <section class="panel" id="gamePanel" style="display:none;">
+      <div class="meta">
+        <span class="chip chip-accent" id="qCountChip">Q 1 / 32</span>
+        <span class="chip" id="csChip">Civic Foundations</span>
+        <span class="chip" id="accChip">Accuracy: 100%</span>
+      </div>
+
+      <h2 id="questionText"></h2>
+      <div id="choices"></div>
+
+      <div id="msg" class="msg"></div>
+
+      <div class="hud">
+        <div class="hudItem">Name: <b id="hudName"></b></div>
+        <div class="hudItem">Start: <b id="hudStart"></b></div>
+        <div class="hudItem">Running: <b id="hudRun">0:00</b></div>
+        <div class="hudItem">Attempts: <b id="hudAttempts">0</b> • Correct: <b id="hudCorrect">0</b></div>
+      </div>
+
+      <div class="btnRow">
+        <button class="btn btn-small" id="restartBtn" type="button">Restart</button>
+      </div>
+    </section>
+
+    <!-- TICKET PANEL -->
+    <section class="panel" id="ticketPanel" style="display:none;">
+      <div class="meta">
+        <span class="chip chip-accent">Completion Ticket</span>
+        <span class="chip">100% accuracy</span>
+      </div>
+      <h2>Submit this ticket</h2>
+      <div id="ticket" class="ticket"></div>
+      <div class="btnRow">
+        <button class="btn btn-small" id="playAgainBtn" type="button">Play again</button>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+  // -----------------------------
+  // Utilities
+  // -----------------------------
+  function shuffle(arr){
+    for(let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+  function fmtClock(totalSec){
+    const m = Math.floor(totalSec/60);
+    const s = totalSec % 60;
+    return m + ":" + (s<10 ? "0" : "") + s;
+  }
+
+  // -----------------------------
+  // Question bank (CS1–CS4) — 32 items
+  // Store correct as TEXT (so we can shuffle choices safely).
+  // -----------------------------
+  const BANK = [
+    // CS1 Civic Engagement / Processes
+    { q:"The process in which citizens identify issues, research them, and propose solutions is called", a:"Civic engagement", d:["Judicial review","Federalism","Bureaucracy"], hint:"Citizen involvement to solve public problems." },
+    { q:"Political processes primarily involve", a:"Acquiring governmental power and influencing decision-making", d:["Enforcing laws","Interpreting the Constitution","Collecting taxes"], hint:"Think elections, campaigning, power, influence." },
+    { q:"Public policy processes are related to", a:"Government actions and procedures to carry out its functions", d:["How parties pick candidates","How courts select juries","How citizens vote directly on laws"], hint:"How government ‘does the work’ of governing." },
+    { q:"As part of civic engagement, students should examine possible consequences by", a:"Weighing costs and benefits of approaches", d:["Avoiding debate","Ignoring opposing views","Voting without research"], hint:"Compare tradeoffs of solutions." },
+    { q:"Creating an action plan to address a problem is most directly part of", a:"Civic engagement", d:["Judicial review","Separation of powers","Monetary policy"], hint:"Plan + propose solutions = engagement." },
+
+    // CS2 Parties / Interest Groups / Media
+    { q:"Political parties are organizations whose members", a:"Hold similar views on public issues", d:["Enforce court rulings","Write the Constitution","Run the Supreme Court"], hint:"Shared positions on public issues." },
+    { q:"Political parties seek to determine public policy mainly by", a:"Winning elections and having members hold office", d:["Writing court opinions","Appointing governors","Running news stations"], hint:"Win elections → control policy." },
+    { q:"Interest groups primarily seek to influence", a:"The making and execution of public policy", d:["Jury selection","Military strategy","Census counting"], hint:"Influence policy (not necessarily win elections)." },
+    { q:"A major difference between political parties and interest groups is that parties", a:"Try to win elections", d:["Cannot use media","Only work at local level","Enforce laws"], hint:"Parties run candidates." },
+    { q:"The media is best defined as", a:"Means of mass communication with different audiences", d:["A branch of government","A political party","A court system"], hint:"Communication to large audiences." },
+    { q:"Political parties and interest groups use media to", a:"Influence political and public-policy processes", d:["Declare laws unconstitutional","Collect taxes","Impeach officials"], hint:"Media shapes opinions and attention." },
+    { q:"An example of an interest group method to influence policy is", a:"Lobbying lawmakers", d:["Issuing executive orders","Holding court trials","Writing constitutional amendments"], hint:"Direct contact with lawmakers." },
+
+    // CS3 Credible sources / bias
+    { q:"Determining which sources are relevant to a civic issue is part of", a:"Researching a civic issue", d:["Judicial review","Electoral voting","Executive enforcement"], hint:"Selecting sources is a research step." },
+    { q:"A factor in judging credibility is", a:"The qualifications or reputation of the writer/organization", d:["Number of emojis used","How entertaining it is","Whether it matches my opinion"], hint:"Who made it and why they’re qualified." },
+    { q:"Another key credibility factor is", a:"Use of supporting evidence and logical conclusions", d:["Use of sarcasm","Use of celebrity endorsements","Use of anonymous claims"], hint:"Evidence + reasoning." },
+    { q:"Checking internal consistency and agreement with other credible sources helps evaluate", a:"Credibility", d:["Popularity","Entertainment value","Voting eligibility"], hint:"Cross-checking reliability." },
+    { q:"Identifying a source’s perspective or position helps reveal", a:"Bias or unstated assumptions", d:["Tax rates","Court jurisdiction","Executive privilege"], hint:"Perspective can shape interpretation." },
+    { q:"Considering the circumstances in which a source was generated helps determine", a:"Credibility", d:["Whether it is funny","Whether it is short","Whether it is digital"], hint:"Context of creation matters." },
+    { q:"If a source makes claims with no evidence, that most strongly weakens its", a:"Credibility", d:["Grammar","Font choice","Length"], hint:"Claims must be supported." },
+
+    // CS4 Persuasion / compromise / consensus / negotiation
+    { q:"Persuasion in democratic decision-making is best described as", a:"Convincing others through argument and evidence", d:["Forcing agreement","Avoiding discussion","Ending debate permanently"], hint:"Reasoned influence." },
+    { q:"Compromise occurs when", a:"Both sides give up something to reach agreement", d:["One side wins completely","No one changes positions","Courts decide everything"], hint:"Give-and-take." },
+    { q:"Consensus building refers to", a:"Reaching general agreement among a group", d:["Ignoring minority opinions","Removing elections","Stopping discussion"], hint:"Broad agreement, not necessarily unanimous." },
+    { q:"Negotiation is best described as", a:"Discussing differences to reach an agreement", d:["Declaring a winner","Refusing to listen","Eliminating debate"], hint:"Work toward a deal." },
+    { q:"These democratic skills matter because they help", a:"Settle differences and achieve agreement in governing", d:["Eliminate political conflict forever","Replace elections","Remove citizen participation"], hint:"They make governing workable." },
+
+    // More mastery reps (still CS1–4 language)
+    { q:"A student comparing solutions and predicting outcomes is practicing", a:"Analyzing consequences of proposed solutions", d:["Judicial review","Federalism","Term limits"], hint:"Consequences + tradeoffs." },
+    { q:"A political party is most likely to", a:"Recruit candidates for office", d:["Write Supreme Court decisions","Conduct criminal trials","Run state agencies"], hint:"Parties run candidates." },
+    { q:"An interest group is most likely to", a:"Advocate for a specific policy position", d:["Choose electors for the Electoral College","Declare war","Interpret laws"], hint:"Focused policy goals." },
+    { q:"A credible source is more likely to", a:"Provide evidence that can be verified", d:["Rely on rumors","Use only opinion statements","Hide authorship"], hint:"Verifiable support." },
+    { q:"If two independent credible sources agree, that tends to", a:"Increase confidence in the information", d:["Prove it is biased","Make it irrelevant","Eliminate the need for evidence"], hint:"Corroboration boosts trust." },
+    { q:"In a debate, persuasion is strengthened most by", a:"Using facts and reasoning", d:["Using insults","Avoiding counterarguments","Changing topics"], hint:"Evidence-based argument." },
+    { q:"Compromise is often necessary because", a:"People have differing views and priorities", d:["Elections are illegal","Courts require it","Media bans debate"], hint:"Different views → need middle ground." },
+    { q:"Consensus building is especially useful when", a:"A group must work interdependently to make decisions", d:["One person decides everything","No one is affected by the decision","There is no disagreement"], hint:"Group decision-making needs buy-in." }
+  ];
+
+  // -----------------------------
+  // Game state
+  // -----------------------------
+  let deck = [];
+  let i = 0;
+  let attempts = 0;
+  let correct = 0;
+  let startTime = null;
+  let timerId = null;
+  let locked = false;
+
+  const startPanel = document.getElementById("startPanel");
+  const gamePanel = document.getElementById("gamePanel");
+  const ticketPanel = document.getElementById("ticketPanel");
+
+  const studentNameEl = document.getElementById("studentName");
+  const startBtn = document.getElementById("startBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const playAgainBtn = document.getElementById("playAgainBtn");
+
+  const qCountChip = document.getElementById("qCountChip");
+  const accChip = document.getElementById("accChip");
+  const questionText = document.getElementById("questionText");
+  const choicesEl = document.getElementById("choices");
+  const msgEl = document.getElementById("msg");
+
+  const hudName = document.getElementById("hudName");
+  const hudStart = document.getElementById("hudStart");
+  const hudRun = document.getElementById("hudRun");
+  const hudAttempts = document.getElementById("hudAttempts");
+  const hudCorrect = document.getElementById("hudCorrect");
+
+  function computeAccuracy(){
+    if(attempts === 0) return 100;
+    return Math.round((correct / attempts) * 100);
+  }
+
+  function updateHUD(){
+    qCountChip.textContent = `Q ${i+1} / ${deck.length}`;
+    accChip.textContent = `Accuracy: ${computeAccuracy()}%`;
+    hudAttempts.textContent = String(attempts);
+    hudCorrect.textContent = String(correct);
+  }
+
+  function tick(){
+    const now = new Date();
+    const diffSec = Math.max(0, Math.floor((now - startTime) / 1000));
+    hudRun.textContent = fmtClock(diffSec);
+  }
+
+  function startGame(){
+    const name = studentNameEl.value.trim();
+    if(!name){
+      alert("Enter your name to begin.");
+      studentNameEl.focus();
+      return;
+    }
+
+    // Build deck
+    deck = BANK.map(x => ({...x}));
+
+    // Optional: shuffle question order (comment out if you want fixed order)
+    shuffle(deck);
+
+    i = 0;
+    attempts = 0;
+    correct = 0;
+    locked = false;
+
+    startTime = new Date();
+    hudName.textContent = name;
+    hudStart.textContent = startTime.toLocaleString();
+
+    startPanel.style.display = "none";
+    ticketPanel.style.display = "none";
+    gamePanel.style.display = "block";
+
+    if(timerId) clearInterval(timerId);
+    timerId = setInterval(tick, 1000);
+    tick();
+
+    showQuestion();
+  }
+
+  function showQuestion(){
+    msgEl.className = "msg";
+    msgEl.style.display = "none";
+    choicesEl.innerHTML = "";
+
+    const item = deck[i];
+    questionText.textContent = item.q;
+
+    // Build and shuffle options safely
+    const options = [item.a, ...item.d];
+    shuffle(options);
+
+    options.forEach(opt => {
+      const div = document.createElement("div");
+      div.className = "choice";
+      div.textContent = opt;
+      div.addEventListener("click", () => pick(div, opt));
+      choicesEl.appendChild(div);
+    });
+
+    updateHUD();
+  }
+
+  function pick(choiceDiv, chosenText){
+    if(locked) return;
+    locked = true;
+
+    attempts++;
+
+    const item = deck[i];
+    const acc = computeAccuracy(); // before we update correct
+
+    // Clear old selection styles
+    [...choicesEl.querySelectorAll(".choice")].forEach(c => c.classList.remove("correct","wrong"));
+
+    if(chosenText === item.a){
+      correct++;
+      choiceDiv.classList.add("correct");
+      msgEl.className = "msg good";
+      msgEl.textContent = "Correct!";
+      msgEl.style.display = "block";
+      updateHUD();
+
+      setTimeout(() => {
+        i++;
+        locked = false;
+
+        if(i >= deck.length){
+          finishGame();
+        }else{
+          showQuestion();
+        }
+      }, 450);
+
+    }else{
+      choiceDiv.classList.add("wrong");
+      msgEl.className = "msg bad";
+      msgEl.textContent = "Hint: " + item.hint;
+      msgEl.style.display = "block";
+      updateHUD();
+      locked = false;
+    }
+  }
+
+  function finishGame(){
+    clearInterval(timerId);
+    const endTime = new Date();
+    const run = hudRun.textContent;
+    const acc = computeAccuracy();
+
+    // Ticket only at 100%
+    if(acc !== 100){
+      alert("Mastery requires 100% accuracy. Restart and try again.");
+      restart();
+      return;
+    }
+
+    gamePanel.style.display = "none";
+    ticketPanel.style.display = "block";
+
+    const name = studentNameEl.value.trim();
+    const ticketText =
+`Name: ${name}
+Game: Gov Basics 1 — Civic Foundations (CS1–4)
+Passed: YES
+Accuracy: ${acc}%
+Start: ${startTime.toLocaleString()}
+End: ${endTime.toLocaleString()}
+Running Time: ${run}
+Total Questions: ${deck.length}
+Attempts: ${attempts}
+Correct: ${correct}`;
+
+    document.getElementById("ticket").textContent = ticketText;
+  }
+
+  function restart(){
+    // safest “reset” for Chromebooks + lunch breaks
+    location.reload();
+  }
+
+  // Wire buttons
+  startBtn.addEventListener("click", startGame);
+  restartBtn.addEventListener("click", restart);
+  playAgainBtn.addEventListener("click", restart);
+
+  // Enter key starts
+  studentNameEl.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter") startGame();
+  });
+</script>
+</body>
+</html>
