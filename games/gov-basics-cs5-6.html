@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gov Basics 2 — Constitutional Foundations (CS5–6)</title>
+
+<link rel="stylesheet" href="../styles.css">
+
+<style>
+  .wrapGame{width:min(980px,92vw);margin:30px auto;padding:0 0 30px;}
+  .panel{
+    background:linear-gradient(180deg, rgba(17,26,47,.95), rgba(15,23,48,.92));
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:var(--radius);
+    box-shadow:0 14px 40px rgba(0,0,0,.35);
+    padding:18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .panel::before{
+    content:"";
+    position:absolute; inset:-2px;
+    background: radial-gradient(520px 220px at 18% 0%, rgba(122,162,255,.18), transparent 60%);
+    pointer-events:none;
+  }
+  .panel > *{position:relative;}
+
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12px;padding:6px 10px;border-radius:999px;
+    background:var(--chip);border:1px solid var(--chipLine);color:var(--text);
+  }
+  .chip-accent{background: rgba(122,162,255,.16);border-color: rgba(122,162,255,.35);}
+
+  h1{margin:0 0 8px;font-size:24px;line-height:1.15}
+  h2{margin:0 0 10px;font-size:18px;line-height:1.25}
+  p{margin:8px 0;color:var(--muted);line-height:1.35}
+  label{display:block;margin-top:10px;color:var(--muted);font-size:13px}
+
+  .input{
+    width:min(420px,100%);
+    background: rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    color: var(--text);
+    border-radius: 12px;
+    padding:10px 12px;
+    outline:none;
+    margin-top:8px;
+  }
+
+  .choice{
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    padding:12px 12px;
+    margin:10px 0;
+    cursor:pointer;
+    transition: filter .12s ease, transform .06s ease, border-color .12s ease;
+    background: rgba(255,255,255,.02);
+  }
+  .choice:hover{border-color:var(--accent);filter:brightness(1.06)}
+  .choice:active{transform: translateY(1px)}
+  .choice.correct{border-color: rgba(43,213,118,.55); background: rgba(43,213,118,.10)}
+  .choice.wrong{border-color: rgba(255,92,122,.55); background: rgba(255,92,122,.08)}
+
+  .msg{
+    margin-top:12px;padding:10px 12px;border-radius:12px;
+    display:none;font-size:13px;line-height:1.3;
+  }
+  .msg.good{background:rgba(43,213,118,.12);border:1px solid rgba(43,213,118,.25);display:block}
+  .msg.bad{background:rgba(255,92,122,.10);border:1px solid rgba(255,92,122,.25);display:block}
+
+  .hud{
+    margin-top:14px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+  }
+  @media(max-width:720px){ .hud{grid-template-columns:1fr;} }
+  .hudItem{
+    border:1px dashed rgba(255,255,255,.14);
+    border-radius:14px;
+    padding:10px 12px;
+    color:var(--muted);
+    background: rgba(255,255,255,.02);
+  }
+  .hudItem b{color:var(--text);font-family:var(--mono);font-size:12px}
+
+  .ticket{
+    margin-top:14px;
+    background: rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    padding:12px;
+    font-family: var(--mono);
+    color: var(--text);
+    font-size: 12px;
+    line-height:1.5;
+    white-space: pre-wrap;
+  }
+
+  .btnRow{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
+
+  .liveGreen{
+    font-size:12px;
+    padding:5px 10px;
+    border-radius:999px;
+    background: rgba(43,213,118,.12);
+    border:1px solid rgba(43,213,118,.35);
+    color: var(--good);
+    font-weight:800;
+  }
+</style>
+</head>
+
+<body>
+  <div class="wrapGame">
+
+    <!-- START PANEL -->
+    <section class="panel" id="startPanel">
+      <div class="row" style="justify-content:space-between;">
+        <div>
+          <div class="meta">
+            <span class="chip chip-accent">CS5–6</span>
+            <span class="chip">Back-to-Basics</span>
+            <span class="chip">100% required</span>
+          </div>
+          <h1>Gov Basics 2 — Constitutional Foundations</h1>
+          <p>
+            Five basic principles + Federalists vs Anti-Federalists.
+            Auto-submit on click. Correct = auto-advance. Wrong = hint.
+            Ticket appears only at <b>100% accuracy</b>.
+          </p>
+        </div>
+        <span class="liveGreen" style="align-self:flex-start;">LIVE</span>
+      </div>
+
+      <label for="studentName">Enter your name to begin:</label>
+      <input id="studentName" class="input" placeholder="Student name" autocomplete="off" />
+
+      <div class="btnRow">
+        <button class="btn" id="startBtn" type="button">Start Game</button>
+      </div>
+      <p class="muted" style="margin-top:10px;font-size:12px;">
+        Tip: If your Chromebook sleeps, refresh may restart the game. That’s okay — mastery requires 100%.
+      </p>
+    </section>
+
+    <!-- GAME PANEL -->
+    <section class="panel" id="gamePanel" style="display:none;">
+      <div class="meta">
+        <span class="chip chip-accent" id="qCountChip">Q 1 / 32</span>
+        <span class="chip">Constitutional Foundations</span>
+        <span class="chip" id="accChip">Accuracy: 100%</span>
+      </div>
+
+      <h2 id="questionText"></h2>
+      <div id="choices"></div>
+
+      <div id="msg" class="msg"></div>
+
+      <div class="hud">
+        <div class="hudItem">Name: <b id="hudName"></b></div>
+        <div class="hudItem">Start: <b id="hudStart"></b></div>
+        <div class="hudItem">Running: <b id="hudRun">0:00</b></div>
+        <div class="hudItem">Attempts: <b id="hudAttempts">0</b> • Correct: <b id="hudCorrect">0</b></div>
+      </div>
+
+      <div class="btnRow">
+        <button class="btn btn-small" id="restartBtn" type="button">Restart</button>
+      </div>
+    </section>
+
+    <!-- TICKET PANEL -->
+    <section class="panel" id="ticketPanel" style="display:none;">
+      <div class="meta">
+        <span class="chip chip-accent">Completion Ticket</span>
+        <span class="chip">100% accuracy</span>
+      </div>
+      <h2>Submit this ticket</h2>
+      <div id="ticket" class="ticket"></div>
+      <div class="btnRow">
+        <button class="btn btn-small" id="playAgainBtn" type="button">Play again</button>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+  // -----------------------------
+  // Utilities
+  // -----------------------------
+  function shuffle(arr){
+    for(let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+  function fmtClock(totalSec){
+    const m = Math.floor(totalSec/60);
+    const s = totalSec % 60;
+    return m + ":" + (s<10 ? "0" : "") + s;
+  }
+
+  // -----------------------------
+  // Question bank (CS5–CS6) — 34 items
+  // Correct stored as TEXT to allow safe shuffling.
+  // -----------------------------
+  const BANK = [
+    // Five Basic Principles
+    { q:"Popular sovereignty means", a:"Government authority comes from the people", d:["The president has unlimited power","States are superior to the national government","Judges make all laws"], hint:"Think: consent of the governed." },
+    { q:"Limited government means", a:"Government power is restricted by law", d:["Government can do anything it wants","Only the president is limited","Citizens have no rights"], hint:"Power is limited by the Constitution and rule of law." },
+    { q:"Federalism is", a:"A system that divides power between national and state governments", d:["One central government controls everything","States control foreign policy","Courts control taxation"], hint:"Shared power between levels." },
+    { q:"Separation of powers means", a:"Power is divided among legislative, executive, and judicial branches", d:["States have no power","The president writes laws","Courts enforce laws"], hint:"Three branches—different jobs." },
+    { q:"Checks and balances means", a:"Each branch can limit the power of the other branches", d:["Congress controls elections","States can veto federal laws","Courts write legislation"], hint:"Branches “check” one another." },
+    { q:"Which principle is MOST directly connected to regular elections?", a:"Popular sovereignty", d:["Judicial review","Reserved powers","Federal supremacy"], hint:"People choose leaders." },
+    { q:"Which principle is MOST directly connected to the Constitution being the supreme law?", a:"Limited government", d:["Majority rule","Political socialization","Nullification"], hint:"Government must follow the Constitution." },
+    { q:"Which principle best explains state and national shared authority?", a:"Federalism", d:["Due process","Judicial activism","Bicameralism"], hint:"Shared power across levels." },
+    { q:"Which principle best explains why Congress makes laws but the president enforces them?", a:"Separation of powers", d:["Popular sovereignty","Reserved powers","Judicial precedent"], hint:"Different branch roles." },
+    { q:"A presidential veto is an example of", a:"Checks and balances", d:["Federalism","Limited government","Popular sovereignty"], hint:"One branch checking another." },
+
+    // Federalists vs Anti-Federalists
+    { q:"Federalists supported ratification because they wanted", a:"A stronger national government", d:["A weaker national government","No written constitution","State governments to control foreign policy"], hint:"They feared weakness under the Articles." },
+    { q:"Anti-Federalists opposed ratification mainly because they feared", a:"A strong national government would threaten liberties", d:["States were too powerful","The president was too weak","Congress would have no power"], hint:"They worried about tyranny." },
+    { q:"A major Anti-Federalist demand was", a:"A Bill of Rights", d:["A stronger executive","A national bank","Removing elections"], hint:"Written protections for individuals." },
+    { q:"The Federalist Papers were written primarily to", a:"Persuade states to ratify the Constitution", d:["Replace the Constitution","Oppose a Bill of Rights","End state governments"], hint:"Arguments supporting ratification." },
+    { q:"“Brutus” is associated most with", a:"Anti-Federalist writings criticizing the Constitution", d:["Federalist defenses of judicial review","The Articles of Confederation","The Supremacy Clause"], hint:"Anti-Federalist pseudonym." },
+    { q:"Federalists argued separation of powers would", a:"Prevent tyranny by dividing authority", d:["Eliminate conflict among branches","Make Congress supreme","Give states total control"], hint:"Divide power to prevent abuses." },
+    { q:"Anti-Federalists criticized the Necessary and Proper Clause because it might", a:"Expand national power too far", d:["Limit Congress too much","End federalism","Eliminate courts"], hint:"Elastic clause concerns." },
+    { q:"Federalists believed a large republic could", a:"Reduce the power of factions by spreading them out", d:["Guarantee unanimous agreement","Eliminate political parties","Make states irrelevant"], hint:"Madison’s faction argument." },
+    { q:"Anti-Federalists warned a large republic could", a:"Make representation too distant from the people", d:["Eliminate local government","Prevent taxation entirely","End elections"], hint:"Too big = less responsive." },
+
+    // Key constitutional clauses tied to the debate
+    { q:"The Supremacy Clause establishes that", a:"Federal law is the supreme law of the land", d:["State law always overrides federal law","The president is above the law","Courts cannot review federal laws"], hint:"Federal law outranks state law when valid." },
+    { q:"The “elastic clause” is another name for", a:"The Necessary and Proper Clause", d:["The Commerce Clause","The Due Process Clause","The Establishment Clause"], hint:"Gives Congress flexibility to carry out powers." },
+    { q:"Which clause was most often cited as enabling broad implied powers?", a:"Necessary and Proper Clause", d:["Full Faith and Credit Clause","Ex Post Facto Clause","Double Jeopardy Clause"], hint:"Implied powers." },
+    { q:"Federalists defended implied powers because they believed the national government needed", a:"Flexibility to meet future needs", d:["No limits at all","To eliminate state governments","To avoid elections"], hint:"A government that can function long-term." },
+    { q:"Anti-Federalists worried the Supremacy Clause could", a:"Allow the national government to overpower states", d:["Prevent federal laws from being enforced","Eliminate Congress","Stop elections"], hint:"Federal > state." },
+
+    // Taxation, army, and executive fears
+    { q:"Anti-Federalists commonly feared a standing army because it could", a:"Be used to enforce tyranny", d:["Make states stronger","End federal taxes","Prevent foreign invasion"], hint:"Army as tool of oppression." },
+    { q:"Federalists argued national taxation power was necessary to", a:"Fund national responsibilities like defense and debt", d:["End state taxes forever","Stop Congress from acting","Make courts supreme"], hint:"National government needs revenue." },
+    { q:"Anti-Federalists feared federal taxing power could", a:"Burden citizens and weaken states", d:["Eliminate all taxes","Prevent representation","Make elections illegal"], hint:"Central taxation = too powerful." },
+    { q:"Federalists argued the separation of powers and elections would", a:"Limit abuses by any one branch", d:["Make the president a king","Guarantee no conflict","Remove citizen influence"], hint:"Structural protections." },
+
+    // Bill of Rights / ratification compromise
+    { q:"The main purpose of a Bill of Rights is to", a:"Protect individual liberties from government abuse", d:["Increase executive power","Give Congress unlimited authority","Eliminate state courts"], hint:"Written protections." },
+    { q:"The Constitution was ratified largely after a promise to", a:"Add a Bill of Rights", d:["Eliminate the presidency","End federal courts","Remove elections"], hint:"Ratification compromise." },
+    { q:"Which statement best reflects Federalist reasoning about the Bill of Rights (at the time)?", a:"It might be unnecessary because powers were already limited", d:["It was required by the Articles of Confederation","It would replace the Constitution","It would eliminate federal courts"], hint:"Federalists argued limited powers already protected rights." },
+
+    // Factions / Madison (Federalist 10)
+    { q:"Madison defined a faction as", a:"A group united by interests adverse to others or the common good", d:["A branch of government","A court decision","A tax policy"], hint:"A group driven by shared interest that can harm others." },
+    { q:"Madison argued the best way to handle factions was to", a:"Control their effects through a large republic", d:["Eliminate liberty","Ban political debate","End elections"], hint:"Large republic dilutes faction power." },
+    { q:"A large republic helps limit factions because it", a:"Makes it harder for one faction to dominate", d:["Guarantees one party rule","Removes representation","Eliminates compromise"], hint:"More interests = harder to control." },
+
+    // Rote constitutional foundations reps
+    { q:"Which principle MOST directly limits government officials from acting outside the law?", a:"Limited government", d:["Popular sovereignty","Federalism","Majority rule"], hint:"Government must follow the Constitution and laws." },
+    { q:"Which principle explains why states still run elections and police powers?", a:"Federalism", d:["Separation of powers","Judicial review","Due process"], hint:"Shared power between levels." },
+    { q:"If Congress passes a law and the president vetoes it, that illustrates", a:"Checks and balances", d:["Federalism","Popular sovereignty","Judicial precedent"], hint:"Branches checking each other." },
+    { q:"Which side wanted the Constitution ratified without major changes?", a:"Federalists", d:["Anti-Federalists","Loyalists","Progressives"], hint:"Pro-ratification." },
+    { q:"Which side believed the new Constitution lacked sufficient protections for individuals?", a:"Anti-Federalists", d:["Federalists","Whigs","Populists"], hint:"They demanded a Bill of Rights." }
+  ];
+
+  // -----------------------------
+  // Game state
+  // -----------------------------
+  let deck = [];
+  let i = 0;
+  let attempts = 0;
+  let correct = 0;
+  let startTime = null;
+  let timerId = null;
+  let locked = false;
+
+  const startPanel = document.getElementById("startPanel");
+  const gamePanel = document.getElementById("gamePanel");
+  const ticketPanel = document.getElementById("ticketPanel");
+
+  const studentNameEl = document.getElementById("studentName");
+  const startBtn = document.getElementById("startBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const playAgainBtn = document.getElementById("playAgainBtn");
+
+  const qCountChip = document.getElementById("qCountChip");
+  const accChip = document.getElementById("accChip");
+  const questionText = document.getElementById("questionText");
+  const choicesEl = document.getElementById("choices");
+  const msgEl = document.getElementById("msg");
+
+  const hudName = document.getElementById("hudName");
+  const hudStart = document.getElementById("hudStart");
+  const hudRun = document.getElementById("hudRun");
+  const hudAttempts = document.getElementById("hudAttempts");
+  const hudCorrect = document.getElementById("hudCorrect");
+
+  function computeAccuracy(){
+    if(attempts === 0) return 100;
+    return Math.round((correct / attempts) * 100);
+  }
+
+  function updateHUD(){
+    qCountChip.textContent = `Q ${i+1} / ${deck.length}`;
+    accChip.textContent = `Accuracy: ${computeAccuracy()}%`;
+    hudAttempts.textContent = String(attempts);
+    hudCorrect.textContent = String(correct);
+  }
+
+  function tick(){
+    const now = new Date();
+    const diffSec = Math.max(0, Math.floor((now - startTime) / 1000));
+    hudRun.textContent = fmtClock(diffSec);
+  }
+
+  function startGame(){
+    const name = studentNameEl.value.trim();
+    if(!name){
+      alert("Enter your name to begin.");
+      studentNameEl.focus();
+      return;
+    }
+
+    deck = BANK.map(x => ({...x}));
+    shuffle(deck); // shuffle question order
+
+    i = 0;
+    attempts = 0;
+    correct = 0;
+    locked = false;
+
+    startTime = new Date();
+    hudName.textContent = name;
+    hudStart.textContent = startTime.toLocaleString();
+
+    startPanel.style.display = "none";
+    ticketPanel.style.display = "none";
+    gamePanel.style.display = "block";
+
+    if(timerId) clearInterval(timerId);
+    timerId = setInterval(tick, 1000);
+    tick();
+
+    showQuestion();
+  }
+
+  function showQuestion(){
+    msgEl.className = "msg";
+    msgEl.style.display = "none";
+    choicesEl.innerHTML = "";
+
+    const item = deck[i];
+    questionText.textContent = item.q;
+
+    const options = [item.a, ...item.d];
+    shuffle(options); // shuffle answer order
+
+    options.forEach(opt => {
+      const div = document.createElement("div");
+      div.className = "choice";
+      div.textContent = opt;
+      div.addEventListener("click", () => pick(div, opt));
+      choicesEl.appendChild(div);
+    });
+
+    updateHUD();
+  }
+
+  function pick(choiceDiv, chosenText){
+    if(locked) return;
+    locked = true;
+
+    attempts++;
+
+    const item = deck[i];
+
+    [...choicesEl.querySelectorAll(".choice")].forEach(c => c.classList.remove("correct","wrong"));
+
+    if(chosenText === item.a){
+      correct++;
+      choiceDiv.classList.add("correct");
+      msgEl.className = "msg good";
+      msgEl.textContent = "Correct!";
+      msgEl.style.display = "block";
+      updateHUD();
+
+      setTimeout(() => {
+        i++;
+        locked = false;
+
+        if(i >= deck.length){
+          finishGame();
+        }else{
+          showQuestion();
+        }
+      }, 450);
+
+    }else{
+      choiceDiv.classList.add("wrong");
+      msgEl.className = "msg bad";
+      msgEl.textContent = "Hint: " + item.hint;
+      msgEl.style.display = "block";
+      updateHUD();
+      locked = false;
+    }
+  }
+
+  function finishGame(){
+    clearInterval(timerId);
+    const endTime = new Date();
+    const run = hudRun.textContent;
+    const acc = computeAccuracy();
+
+    if(acc !== 100){
+      alert("Mastery requires 100% accuracy. Restart and try again.");
+      restart();
+      return;
+    }
+
+    gamePanel.style.display = "none";
+    ticketPanel.style.display = "block";
+
+    const name = studentNameEl.value.trim();
+    const ticketText =
+`Name: ${name}
+Game: Gov Basics 2 — Constitutional Foundations (CS5–6)
+Passed: YES
+Accuracy: ${acc}%
+Start: ${startTime.toLocaleString()}
+End: ${endTime.toLocaleString()}
+Running Time: ${run}
+Total Questions: ${deck.length}
+Attempts: ${attempts}
+Correct: ${correct}`;
+
+    document.getElementById("ticket").textContent = ticketText;
+  }
+
+  function restart(){
+    location.reload();
+  }
+
+  startBtn.addEventListener("click", startGame);
+  restartBtn.addEventListener("click", restart);
+  playAgainBtn.addEventListener("click", restart);
+
+  studentNameEl.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter") startGame();
+  });
+</script>
+</body>
+</html>
