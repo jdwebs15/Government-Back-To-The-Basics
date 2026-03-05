@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gov Basics 5 — Branch Powers & Checks (CS12–13)</title>
+
+<link rel="stylesheet" href="../styles.css">
+
+<style>
+  .wrapGame{width:min(980px,92vw);margin:30px auto;padding:0 0 30px;}
+  .panel{
+    background:linear-gradient(180deg, rgba(17,26,47,.95), rgba(15,23,48,.92));
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:var(--radius);
+    box-shadow:0 14px 40px rgba(0,0,0,.35);
+    padding:18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .panel::before{
+    content:"";
+    position:absolute; inset:-2px;
+    background: radial-gradient(520px 220px at 18% 0%, rgba(122,162,255,.18), transparent 60%);
+    pointer-events:none;
+  }
+  .panel > *{position:relative;}
+
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12px;padding:6px 10px;border-radius:999px;
+    background:var(--chip);border:1px solid var(--chipLine);color:var(--text);
+  }
+  .chip-accent{background: rgba(122,162,255,.16);border-color: rgba(122,162,255,.35);}
+
+  h1{margin:0 0 8px;font-size:24px;line-height:1.15}
+  h2{margin:0 0 10px;font-size:18px;line-height:1.25}
+  p{margin:8px 0;color:var(--muted);line-height:1.35}
+  label{display:block;margin-top:10px;color:var(--muted);font-size:13px}
+
+  .input{
+    width:min(420px,100%);
+    background: rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    color: var(--text);
+    border-radius: 12px;
+    padding:10px 12px;
+    outline:none;
+    margin-top:8px;
+  }
+
+  .choice{
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    padding:12px 12px;
+    margin:10px 0;
+    cursor:pointer;
+    transition: filter .12s ease, transform .06s ease, border-color .12s ease;
+    background: rgba(255,255,255,.02);
+  }
+  .choice:hover{border-color:var(--accent);filter:brightness(1.06)}
+  .choice:active{transform: translateY(1px)}
+  .choice.correct{border-color: rgba(43,213,118,.55); background: rgba(43,213,118,.10)}
+  .choice.wrong{border-color: rgba(255,92,122,.55); background: rgba(255,92,122,.08)}
+
+  .msg{
+    margin-top:12px;padding:10px 12px;border-radius:12px;
+    display:none;font-size:13px;line-height:1.3;
+  }
+  .msg.good{background:rgba(43,213,118,.12);border:1px solid rgba(43,213,118,.25);display:block}
+  .msg.bad{background:rgba(255,92,122,.10);border:1px solid rgba(255,92,122,.25);display:block}
+
+  .hud{
+    margin-top:14px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+  }
+  @media(max-width:720px){ .hud{grid-template-columns:1fr;} }
+  .hudItem{
+    border:1px dashed rgba(255,255,255,.14);
+    border-radius:14px;
+    padding:10px 12px;
+    color:var(--muted);
+    background: rgba(255,255,255,.02);
+  }
+  .hudItem b{color:var(--text);font-family:var(--mono);font-size:12px}
+
+  .ticket{
+    margin-top:14px;
+    background: rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    padding:12px;
+    font-family: var(--mono);
+    color: var(--text);
+    font-size: 12px;
+    line-height:1.5;
+    white-space: pre-wrap;
+  }
+
+  .btnRow{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
+  .liveGreen{
+    font-size:12px;
+    padding:5px 10px;
+    border-radius:999px;
+    background: rgba(43,213,118,.12);
+    border:1px solid rgba(43,213,118,.35);
+    color: var(--good);
+    font-weight:800;
+  }
+</style>
+</head>
+
+<body>
+  <div class="wrapGame">
+
+    <!-- START PANEL -->
+    <section class="panel" id="startPanel">
+      <div class="row" style="justify-content:space-between;">
+        <div>
+          <div class="meta">
+            <span class="chip chip-accent">CS12–13</span>
+            <span class="chip">Back-to-Basics</span>
+            <span class="chip">100% required</span>
+          </div>
+          <h1>Gov Basics 5 — Branch Powers & Checks</h1>
+          <p>
+            Legislative, Executive, Judicial powers + checks and balances.
+            Auto-submit on click. Correct = auto-advance. Wrong = hint. Ticket only at <b>100% accuracy</b>.
+          </p>
+        </div>
+        <span class="liveGreen" style="align-self:flex-start;">LIVE</span>
+      </div>
+
+      <label for="studentName">Enter your name to begin:</label>
+      <input id="studentName" class="input" placeholder="Student name" autocomplete="off" />
+
+      <div class="btnRow">
+        <button class="btn" id="startBtn" type="button">Start Game</button>
+      </div>
+      <p class="muted" style="margin-top:10px;font-size:12px;">
+        Tip: If your Chromebook sleeps, refresh may restart the game. That’s okay — mastery requires 100%.
+      </p>
+    </section>
+
+    <!-- GAME PANEL -->
+    <section class="panel" id="gamePanel" style="display:none;">
+      <div class="meta">
+        <span class="chip chip-accent" id="qCountChip">Q 1 / 38</span>
+        <span class="chip">Branches + Checks</span>
+        <span class="chip" id="accChip">Accuracy: 100%</span>
+      </div>
+
+      <h2 id="questionText"></h2>
+      <div id="choices"></div>
+
+      <div id="msg" class="msg"></div>
+
+      <div class="hud">
+        <div class="hudItem">Name: <b id="hudName"></b></div>
+        <div class="hudItem">Start: <b id="hudStart"></b></div>
+        <div class="hudItem">Running: <b id="hudRun">0:00</b></div>
+        <div class="hudItem">Attempts: <b id="hudAttempts">0</b> • Correct: <b id="hudCorrect">0</b></div>
+      </div>
+
+      <div class="btnRow">
+        <button class="btn btn-small" id="restartBtn" type="button">Restart</button>
+      </div>
+    </section>
+
+    <!-- TICKET PANEL -->
+    <section class="panel" id="ticketPanel" style="display:none;">
+      <div class="meta">
+        <span class="chip chip-accent">Completion Ticket</span>
+        <span class="chip">100% accuracy</span>
+      </div>
+      <h2>Submit this ticket</h2>
+      <div id="ticket" class="ticket"></div>
+      <div class="btnRow">
+        <button class="btn btn-small" id="playAgainBtn" type="button">Play again</button>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+  function shuffle(arr){
+    for(let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+  function fmtClock(totalSec){
+    const m = Math.floor(totalSec/60);
+    const s = totalSec % 60;
+    return m + ":" + (s<10 ? "0" : "") + s;
+  }
+
+  // CS12–13 BANK (38) — rote branch powers + checks
+  // correct stored as TEXT
+  const BANK = [
+    // Legislative (Congress)
+    { q:"The primary job of the legislative branch is to", a:"Make laws", d:["Interpret laws","Enforce laws","Command the military"], hint:"Congress writes/passes laws." },
+    { q:"Congress is made up of", a:"The House of Representatives and the Senate", d:["The president and vice president","State legislatures only","The Supreme Court and federal courts"], hint:"Bicameral legislature." },
+    { q:"The House of Representatives is based on", a:"Population", d:["Equal representation for every state","Judicial precedent","Executive orders"], hint:"More people = more reps." },
+    { q:"The Senate gives each state", a:"Two senators", d:["Senators based on population","One senator total","Ten senators"], hint:"Equal state representation." },
+    { q:"The power to declare war belongs to", a:"Congress", d:["The president alone","The Supreme Court","State governors"], hint:"Article I power." },
+    { q:"The power to coin money belongs to", a:"Congress", d:["The president","The Supreme Court","State courts"], hint:"Legislative enumerated power." },
+    { q:"The power to approve treaties belongs to", a:"The Senate", d:["The House only","The Supreme Court","State legislatures"], hint:"Senate advice/consent." },
+    { q:"The power to confirm presidential appointments belongs to", a:"The Senate", d:["The House only","The Supreme Court","The vice president"], hint:"Advice/consent." },
+    { q:"The power of impeachment is best described as", a:"Bringing charges against an official", d:["Convicting an official","Vetoing a bill","Declaring a law unconstitutional"], hint:"House impeaches; Senate tries." },
+    { q:"The House of Representatives has the power to", a:"Impeach federal officials", d:["Ratify treaties","Declare laws unconstitutional","Appoint justices"], hint:"House brings charges." },
+    { q:"The Senate’s role in impeachment is to", a:"Hold the trial and vote to convict or remove", d:["Write the articles of impeachment","Veto bills","Review constitutionality"], hint:"Senate tries the case." },
+
+    // Executive (President)
+    { q:"The primary job of the executive branch is to", a:"Enforce laws", d:["Make laws","Interpret laws","Write the Constitution"], hint:"Exec carries out laws." },
+    { q:"The president’s power to reject a bill is called", a:"Veto", d:["Judicial review","Cloture","Ratification"], hint:"President can reject legislation." },
+    { q:"The president is the commander in chief of the", a:"Armed forces", d:["Supreme Court","House of Representatives","State legislatures"], hint:"Military commander." },
+    { q:"An executive order is", a:"A directive from the president that manages operations of the federal government", d:["A law passed by Congress","A Supreme Court opinion","A treaty with another country"], hint:"Presidential directive (not a law from Congress)." },
+    { q:"The president makes treaties, but they must be approved by", a:"The Senate", d:["The House only","The Supreme Court","State courts"], hint:"Advice/consent." },
+    { q:"The president appoints federal judges, but they must be confirmed by", a:"The Senate", d:["The House","The Supreme Court","The Cabinet only"], hint:"Senate confirms." },
+
+    // Judicial (Courts)
+    { q:"The primary job of the judicial branch is to", a:"Interpret laws and the Constitution", d:["Enforce laws","Write laws","Collect taxes"], hint:"Courts interpret." },
+    { q:"The highest court in the United States is the", a:"Supreme Court", d:["Court of Appeals","District Court","State Supreme Court"], hint:"Top federal court." },
+    { q:"Judicial review means the courts can", a:"Declare laws unconstitutional", d:["Write laws","Command armies","Collect taxes"], hint:"Strike laws that violate Constitution." },
+
+    // Checks and balances examples
+    { q:"A presidential veto is a check by the", a:"Executive branch on the legislative branch", d:["Legislative branch on the executive","Judicial branch on the executive","State governments on Congress"], hint:"President checks Congress." },
+    { q:"Congress can override a veto with", a:"A two-thirds vote in both houses", d:["A simple majority vote","A Supreme Court order","A state referendum"], hint:"Supermajority override." },
+    { q:"The Senate’s confirmation power is a check by the", a:"Legislative branch on the executive branch", d:["Executive on judicial","Judicial on legislative","States on federal"], hint:"Advice/consent checks president." },
+    { q:"Declaring a law unconstitutional is a check by the", a:"Judicial branch on the legislative branch", d:["Executive on legislative","Legislative on judicial","States on courts"], hint:"Courts check laws." },
+    { q:"Impeachment is a check by the", a:"Legislative branch on the executive or judicial branch", d:["Executive on legislative","Judicial on executive","States on Congress"], hint:"Congress can remove officials." },
+    { q:"The president appointing judges is a check by the", a:"Executive branch on the judicial branch", d:["Judicial on executive","Legislative on judicial","States on judiciary"], hint:"Appointments influence courts." },
+
+    // Key roles in lawmaking (rote)
+    { q:"A bill becomes a law after it is passed by Congress and", a:"Signed by the president (or Congress overrides a veto)", d:["Approved by the Supreme Court first","Approved by state governors","Passed by the Electoral College"], hint:"Signature or override." },
+    { q:"If the president vetoes a bill, Congress can still make it law by", a:"Overriding the veto", d:["Asking the Supreme Court","Having states ratify it","Holding a new election"], hint:"2/3 in both houses." },
+
+    // Court system basics
+    { q:"Federal district courts are generally", a:"Trial courts", d:["The final court of appeal","Where treaties are ratified","Where bills are written"], hint:"District courts = trials." },
+    { q:"Courts of appeals primarily", a:"Review decisions from lower courts", d:["Write laws","Run elections","Command the military"], hint:"Appellate review." },
+
+    // More checks and balances drills
+    { q:"The Supreme Court justices are nominated by the", a:"President", d:["Speaker of the House","State governors","Senate Majority Leader"], hint:"Executive nominates." },
+    { q:"Supreme Court justices are confirmed by the", a:"Senate", d:["House","President","State courts"], hint:"Senate confirms." },
+    { q:"The power to approve the federal budget is held by", a:"Congress", d:["The Supreme Court","The president alone","State legislatures"], hint:"Congress controls spending." },
+    { q:"The power to enforce court decisions belongs mainly to the", a:"Executive branch", d:["Legislative branch","Judicial branch","Media"], hint:"Courts rely on executive enforcement." },
+
+    // Scenario checks (still rote)
+    { q:"If Congress investigates an executive agency through hearings, that is", a:"Legislative oversight (a check on the executive)", d:["Judicial review","An executive order","Ratification"], hint:"Oversight hearings." },
+    { q:"If the Supreme Court rules an executive order unconstitutional, that is", a:"Judicial check on the executive", d:["Executive check on Congress","Legislative check on states","State nullification"], hint:"Courts can strike executive action." },
+    { q:"If the Senate refuses to confirm a nominee, that is", a:"Legislative check on executive appointments", d:["Executive check on courts","Judicial check on Congress","State check on federal law"], hint:"Advice/consent." },
+
+    // More branch ID drills
+    { q:"Which branch is most directly responsible for enforcing federal laws?", a:"Executive", d:["Legislative","Judicial","State"], hint:"Exec carries out laws." },
+    { q:"Which branch is most directly responsible for interpreting the Constitution?", a:"Judicial", d:["Executive","Legislative","Media"], hint:"Courts interpret." },
+    { q:"Which branch is most directly responsible for writing federal laws?", a:"Legislative", d:["Judicial","Executive","Bureaucracy"], hint:"Congress writes bills." },
+
+    // Extra checks reps
+    { q:"Treaty approval is a check by the", a:"Senate on the president", d:["House on Senate","Supreme Court on Congress","President on courts"], hint:"2/3 Senate approval." },
+    { q:"Veto override is a check by the", a:"Congress on the president", d:["President on courts","Courts on Congress","States on Congress"], hint:"Congress can override." },
+    { q:"Judicial review is a check mainly used by the", a:"Courts", d:["President","Congress","State governors"], hint:"Court power." },
+    { q:"Impeachment and removal can apply to", a:"Federal officials (executive or judicial)", d:["Only private citizens","Only state governors","Only voters"], hint:"Applies to federal officers." }
+  ];
+
+  let deck = [];
+  let idx = 0;
+  let attempts = 0;
+  let correct = 0;
+  let startTime = null;
+  let timerId = null;
+  let locked = false;
+
+  const startPanel = document.getElementById("startPanel");
+  const gamePanel = document.getElementById("gamePanel");
+  const ticketPanel = document.getElementById("ticketPanel");
+
+  const studentNameEl = document.getElementById("studentName");
+  const startBtn = document.getElementById("startBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const playAgainBtn = document.getElementById("playAgainBtn");
+
+  const qCountChip = document.getElementById("qCountChip");
+  const accChip = document.getElementById("accChip");
+  const questionText = document.getElementById("questionText");
+  const choicesEl = document.getElementById("choices");
+  const msgEl = document.getElementById("msg");
+
+  const hudName = document.getElementById("hudName");
+  const hudStart = document.getElementById("hudStart");
+  const hudRun = document.getElementById("hudRun");
+  const hudAttempts = document.getElementById("hudAttempts");
+  const hudCorrect = document.getElementById("hudCorrect");
+
+  function computeAccuracy(){
+    if(attempts === 0) return 100;
+    return Math.round((correct / attempts) * 100);
+  }
+  function updateHUD(){
+    qCountChip.textContent = `Q ${idx+1} / ${deck.length}`;
+    accChip.textContent = `Accuracy: ${computeAccuracy()}%`;
+    hudAttempts.textContent = String(attempts);
+    hudCorrect.textContent = String(correct);
+  }
+  function tick(){
+    const now = new Date();
+    const diffSec = Math.max(0, Math.floor((now - startTime) / 1000));
+    hudRun.textContent = fmtClock(diffSec);
+  }
+
+  function startGame(){
+    const name = studentNameEl.value.trim();
+    if(!name){
+      alert("Enter your name to begin.");
+      studentNameEl.focus();
+      return;
+    }
+
+    deck = BANK.map(x => ({...x}));
+    shuffle(deck);
+
+    idx = 0; attempts = 0; correct = 0; locked = false;
+
+    startTime = new Date();
+    hudName.textContent = name;
+    hudStart.textContent = startTime.toLocaleString();
+
+    startPanel.style.display = "none";
+    ticketPanel.style.display = "none";
+    gamePanel.style.display = "block";
+
+    if(timerId) clearInterval(timerId);
+    timerId = setInterval(tick, 1000);
+    tick();
+
+    showQuestion();
+  }
+
+  function showQuestion(){
+    msgEl.className = "msg";
+    msgEl.style.display = "none";
+    choicesEl.innerHTML = "";
+
+    const item = deck[idx];
+    questionText.textContent = item.q;
+
+    const options = [item.a, ...item.d];
+    shuffle(options);
+
+    options.forEach(opt => {
+      const div = document.createElement("div");
+      div.className = "choice";
+      div.textContent = opt;
+      div.addEventListener("click", () => pick(div, opt));
+      choicesEl.appendChild(div);
+    });
+
+    updateHUD();
+  }
+
+  function pick(choiceDiv, chosenText){
+    if(locked) return;
+    locked = true;
+
+    attempts++;
+    const item = deck[idx];
+
+    [...choicesEl.querySelectorAll(".choice")].forEach(c => c.classList.remove("correct","wrong"));
+
+    if(chosenText === item.a){
+      correct++;
+      choiceDiv.classList.add("correct");
+      msgEl.className = "msg good";
+      msgEl.textContent = "Correct!";
+      msgEl.style.display = "block";
+      updateHUD();
+
+      setTimeout(() => {
+        idx++;
+        locked = false;
+        if(idx >= deck.length) finishGame();
+        else showQuestion();
+      }, 450);
+
+    }else{
+      choiceDiv.classList.add("wrong");
+      msgEl.className = "msg bad";
+      msgEl.textContent = "Hint: " + item.hint;
+      msgEl.style.display = "block";
+      updateHUD();
+      locked = false;
+    }
+  }
+
+  function finishGame(){
+    clearInterval(timerId);
+    const endTime = new Date();
+    const run = hudRun.textContent;
+    const acc = computeAccuracy();
+
+    if(acc !== 100){
+      alert("Mastery requires 100% accuracy. Restart and try again.");
+      restart();
+      return;
+    }
+
+    gamePanel.style.display = "none";
+    ticketPanel.style.display = "block";
+
+    const name = studentNameEl.value.trim();
+    const ticketText =
+`Name: ${name}
+Game: Gov Basics 5 — Branch Powers & Checks (CS12–13)
+Passed: YES
+Accuracy: ${acc}%
+Start: ${startTime.toLocaleString()}
+End: ${endTime.toLocaleString()}
+Running Time: ${run}
+Total Questions: ${deck.length}
+Attempts: ${attempts}
+Correct: ${correct}`;
+
+    document.getElementById("ticket").textContent = ticketText;
+  }
+
+  function restart(){ location.reload(); }
+
+  startBtn.addEventListener("click", startGame);
+  restartBtn.addEventListener("click", restart);
+  playAgainBtn.addEventListener("click", restart);
+  studentNameEl.addEventListener("keydown", (e)=>{ if(e.key === "Enter") startGame(); });
+</script>
+</body>
+</html>
