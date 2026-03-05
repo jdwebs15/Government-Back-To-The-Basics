@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Back to the Basics — American Government Hub</title>
+  <meta name="description" content="Back to the Basics: rote memorization mastery games aligned to Ohio Government Content Statements." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="top">
+    <div class="wrap">
+      <div class="hero">
+        <div class="hero-left">
+          <div class="brand-row">
+            <span class="brand-chip">LEGEND MASTERY SERIES</span>
+            <span class="brand-dot"></span>
+            <span class="brand-sub">Back to the Basics</span>
+          </div>
+
+          <h1 class="title">American Government — Back to the Basics Hub</h1>
+
+          <p class="subtitle">
+            Ohio Content Statements (CS1–21). Mastery = complete all questions at
+            <b>100% accuracy</b>. Each game requires name entry + start/end timestamps + running time + submit ticket.
+          </p>
+
+          <div class="pill-row">
+            <span class="pill">Name required</span>
+            <span class="pill">Start/End timestamps</span>
+            <span class="pill">Running timer</span>
+            <span class="pill">100% to submit</span>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="mini-panel">
+            <div class="mini-title">Teacher Tools</div>
+            <div class="mini-body">
+              <div class="kv">
+                <div class="k">Build status</div>
+                <div class="v"><span class="status good">Ready</span></div>
+              </div>
+              <div class="kv">
+                <div class="k">Games folder</div>
+                <div class="v"><code>/games</code></div>
+              </div>
+              <div class="kv">
+                <div class="k">Theme</div>
+                <div class="v">Legend Dark</div>
+              </div>
+
+              <button class="btn" id="copyHubLinkBtn" type="button">Copy hub link</button>
+              <div class="hint" id="copyMsg" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2 class="section-title">Games</h2>
+        <div class="section-actions">
+          <input id="search" class="search" type="search" placeholder="Search games…" autocomplete="off" />
+          <select id="filter" class="select">
+            <option value="all">All</option>
+            <option value="built">Built (link exists)</option>
+            <option value="stub">Not built yet</option>
+          </select>
+        </div>
+      </div>
+
+      <main id="grid" class="grid" aria-live="polite"></main>
+
+      <footer class="footer">
+        <div class="footer-left">
+          <span class="muted">Legend Mastery Series • Government Back-to-Basics •</span>
+          <span class="muted" id="year"></span>
+        </div>
+        <div class="footer-right">
+          <span class="muted">Tip: keep games in <code>/games</code> and link with <code>games/filename.html</code></span>
+        </div>
+      </footer>
+    </div>
+  </header>
+
+  <script>
+    // ✅ Build the hub first. We'll swap "built:false" to true as each game file is created.
+    const GAMES = [
+      {
+        title: "Gov Basics 1 — Civic Foundations (Back to Basics)",
+        file: "gov-basics-cs1-4.html",
+        cs: "CS1–4",
+        desc: "Civic engagement, political parties/interest groups/media, source credibility, persuasion/compromise/consensus/negotiation.",
+        tags: ["Rote mastery", "Foundations", "Fast cycle"],
+        built: false
+      },
+      {
+        title: "Gov Basics 2 — Constitutional Foundations (Back to Basics)",
+        file: "gov-basics-cs5-6.html",
+        cs: "CS5–6",
+        desc: "Five basic principles + Federalists vs Anti-Federalists (Necessary & Proper, Supremacy, Bill of Rights framing).",
+        tags: ["Constitution", "Federalists", "Principles"],
+        built: false
+      },
+      {
+        title: "Gov Basics 3 — Constitutional Change & Bill of Rights (Back to Basics)",
+        file: "gov-basics-cs7-8.html",
+        cs: "CS7–8",
+        desc: "Amendments, Supreme Court decisions, legislation, informal practices + applying Bill of Rights protections.",
+        tags: ["Bill of Rights", "Change over time", "Apply"],
+        built: false
+      },
+      {
+        title: "Gov Basics 4 — Reconstruction, Suffrage & Structural Amendments (Back to Basics)",
+        file: "gov-basics-cs9-11.html",
+        cs: "CS9–11",
+        desc: "Reconstruction Amendments + expanding suffrage + Electoral College/presidency changes (12th, 22nd, 23rd, 25th).",
+        tags: ["Amendments", "Voting", "Structure"],
+        built: false
+      },
+      {
+        title: "Gov Basics 5 — Branch Powers & Public Policy (Back to Basics)",
+        file: "gov-basics-cs12-13.html",
+        cs: "CS12–13",
+        desc: "Branch powers/responsibilities + checks & balances interactions on current issues.",
+        tags: ["Branches", "Checks & balances", "Policy"],
+        built: false
+      },
+      {
+        title: "Gov Basics 6 — Rights, Responsibilities & Civil Rights Struggles (Back to Basics)",
+        file: "gov-basics-cs14-15.html",
+        cs: "CS14–15",
+        desc: "Rights/responsibilities, incorporation, majority rule vs minority rights, actions by branches extending civil rights.",
+        tags: ["Rights", "Incorporation", "Civil rights"],
+        built: false
+      },
+      {
+        title: "Gov Basics 7 — Ohio Government (Back to Basics)",
+        file: "gov-basics-cs16-17.html",
+        cs: "CS16–17",
+        desc: "Ohio vs U.S. Constitution + citizen responsibilities at state/local levels (initiative/referendum, elected judges, etc.).",
+        tags: ["Ohio", "State/local", "Civic roles"],
+        built: false
+      },
+      {
+        title: "Gov Basics 8 — Public Policy Issues & Inputs (Back to Basics)",
+        file: "gov-basics-cs18-19.html",
+        cs: "CS18–19",
+        desc: "Policy entities across branches/levels + methods individuals/organizations use to influence policy (lobby, testimony, briefs).",
+        tags: ["Public policy", "Inputs", "Levels/branches"],
+        built: false
+      },
+      {
+        title: "Gov Basics 9 — Government & the Economy (Back to Basics)",
+        file: "gov-basics-cs20-21.html",
+        cs: "CS20–21",
+        desc: "Fiscal policy + regulatory costs/benefits + Federal Reserve monetary tools (reserve requirements, bonds, interest rates).",
+        tags: ["Fiscal", "Monetary", "Fed"],
+        built: false
+      }
+    ];
+
+    const grid = document.getElementById("grid");
+    const search = document.getElementById("search");
+    const filter = document.getElementById("filter");
+    const year = document.getElementById("year");
+    year.textContent = new Date().getFullYear();
+
+    function pill(text, cls="chip"){ return `<span class="${cls}">${text}</span>`; }
+
+    function card(game){
+      const href = `games/${game.file}`;
+      const live = `<span class="live">LIVE</span>`;
+      const state = game.built ? `<span class="status good">Built</span>` : `<span class="status warn">Not built</span>`;
+      const tags = game.tags.map(t => pill(t)).join("");
+
+      return `
+        <article class="card" data-built="${game.built ? "1":"0"}" data-title="${(game.title + " " + game.cs + " " + game.desc + " " + game.tags.join(" ")).toLowerCase()}">
+          <div class="card-top">
+            <div class="card-title">${game.title}</div>
+            <div class="card-right">${live}</div>
+          </div>
+
+          <div class="card-meta">
+            ${pill(game.cs, "chip chip-accent")}
+            ${pill("Back-to-Basics", "chip")}
+            ${state}
+          </div>
+
+          <p class="card-desc">${game.desc}</p>
+
+          <div class="card-tags">${tags}</div>
+
+          <div class="card-actions">
+            <a class="btn btn-ghost" href="${href}" ${game.built ? "" : "aria-disabled='true' tabindex='-1'"}>${game.built ? "Open game" : "Coming soon"}</a>
+            <button class="btn btn-small" type="button" data-copy="${href}">Copy link</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function render(){
+      const q = (search.value || "").trim().toLowerCase();
+      const f = filter.value;
+
+      const items = GAMES.filter(g => {
+        const hay = (g.title + " " + g.cs + " " + g.desc + " " + g.tags.join(" ")).toLowerCase();
+        if (q && !hay.includes(q)) return false;
+        if (f === "built" && !g.built) return false;
+        if (f === "stub" && g.built) return false;
+        return true;
+      });
+
+      grid.innerHTML = items.map(card).join("");
+
+      // Wire copy buttons
+      grid.querySelectorAll("button[data-copy]").forEach(btn=>{
+        btn.addEventListener("click", async () => {
+          const path = btn.getAttribute("data-copy");
+          const full = new URL(path, window.location.href).href;
+          try{
+            await navigator.clipboard.writeText(full);
+            btn.textContent = "Copied!";
+            setTimeout(()=>btn.textContent="Copy link", 900);
+          }catch(e){
+            alert(full);
+          }
+        });
+      });
+
+      // Disable "coming soon" links visually (still shows the card)
+      grid.querySelectorAll("a[aria-disabled='true']").forEach(a=>{
+        a.addEventListener("click", (e)=>e.preventDefault());
+      });
+    }
+
+    search.addEventListener("input", render);
+    filter.addEventListener("change", render);
+    render();
+
+    // Copy hub link
+    const copyBtn = document.getElementById("copyHubLinkBtn");
+    const copyMsg = document.getElementById("copyMsg");
+    copyBtn.addEventListener("click", async ()=>{
+      try{
+        await navigator.clipboard.writeText(window.location.href);
+        copyMsg.textContent = "Hub link copied.";
+        setTimeout(()=>copyMsg.textContent="", 1200);
+      }catch(e){
+        copyMsg.textContent = "Copy failed — link shown in address bar.";
+        setTimeout(()=>copyMsg.textContent="", 1500);
+      }
+    });
+  </script>
+</body>
+</html>
