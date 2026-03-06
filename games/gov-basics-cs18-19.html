@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gov Basics 8 — Public Policy Issues & Inputs (CS18–19)</title>
+
+<link rel="stylesheet" href="../styles.css">
+
+<style>
+  .wrapGame{width:min(980px,92vw);margin:30px auto;padding:0 0 30px;}
+  .panel{
+    background:linear-gradient(180deg, rgba(17,26,47,.95), rgba(15,23,48,.92));
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:var(--radius);
+    box-shadow:0 14px 40px rgba(0,0,0,.35);
+    padding:18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .panel::before{
+    content:"";
+    position:absolute; inset:-2px;
+    background: radial-gradient(520px 220px at 18% 0%, rgba(122,162,255,.18), transparent 60%);
+    pointer-events:none;
+  }
+  .panel > *{position:relative;}
+
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12px;padding:6px 10px;border-radius:999px;
+    background:var(--chip);border:1px solid var(--chipLine);color:var(--text);
+  }
+  .chip-accent{background: rgba(122,162,255,.16);border-color: rgba(122,162,255,.35);}
+
+  h1{margin:0 0 8px;font-size:24px;line-height:1.15}
+  h2{margin:0 0 10px;font-size:18px;line-height:1.25}
+  p{margin:8px 0;color:var(--muted);line-height:1.35}
+  label{display:block;margin-top:10px;color:var(--muted);font-size:13px}
+
+  .input{
+    width:min(420px,100%);
+    background: rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    color: var(--text);
+    border-radius: 12px;
+    padding:10px 12px;
+    outline:none;
+    margin-top:8px;
+  }
+
+  .choice{
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    padding:12px 12px;
+    margin:10px 0;
+    cursor:pointer;
+    transition: filter .12s ease, transform .06s ease, border-color .12s ease;
+    background: rgba(255,255,255,.02);
+  }
+  .choice:hover{border-color:var(--accent);filter:brightness(1.06)}
+  .choice:active{transform: translateY(1px)}
+  .choice.correct{border-color: rgba(43,213,118,.55); background: rgba(43,213,118,.10)}
+  .choice.wrong{border-color: rgba(255,92,122,.55); background: rgba(255,92,122,.08)}
+
+  .msg{
+    margin-top:12px;padding:10px 12px;border-radius:12px;
+    display:none;font-size:13px;line-height:1.3;
+  }
+  .msg.good{background:rgba(43,213,118,.12);border:1px solid rgba(43,213,118,.25);display:block}
+  .msg.bad{background:rgba(255,92,122,.10);border:1px solid rgba(255,92,122,.25);display:block}
+
+  .hud{
+    margin-top:14px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+  }
+  @media(max-width:720px){ .hud{grid-template-columns:1fr;} }
+  .hudItem{
+    border:1px dashed rgba(255,255,255,.14);
+    border-radius:14px;
+    padding:10px 12px;
+    color:var(--muted);
+    background: rgba(255,255,255,.02);
+  }
+  .hudItem b{color:var(--text);font-family:var(--mono);font-size:12px}
+
+  .ticket{
+    margin-top:14px;
+    background: rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    padding:12px;
+    font-family: var(--mono);
+    color: var(--text);
+    font-size: 12px;
+    line-height:1.5;
+    white-space: pre-wrap;
+  }
+
+  .btnRow{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
+  .liveGreen{
+    font-size:12px;
+    padding:5px 10px;
+    border-radius:999px;
+    background: rgba(43,213,118,.12);
+    border:1px solid rgba(43,213,118,.35);
+    color: var(--good);
+    font-weight:800;
+  }
+</style>
+</head>
+
+<body>
+  <div class="wrapGame">
+
+    <section class="panel" id="startPanel">
+      <div class="row" style="justify-content:space-between;">
+        <div>
+          <div class="meta">
+            <span class="chip chip-accent">CS18–19</span>
+            <span class="chip">Back-to-Basics</span>
+            <span class="chip">100% required</span>
+          </div>
+          <h1>Gov Basics 8 — Public Policy Issues & Inputs</h1>
+          <p>
+            Public policy issues across federal, state, and local government + how individuals and organizations influence policy.
+            Auto-submit on click. Correct = auto-advance. Wrong = hint. Ticket only at <b>100% accuracy</b>.
+          </p>
+        </div>
+        <span class="liveGreen" style="align-self:flex-start;">LIVE</span>
+      </div>
+
+      <label for="studentName">Enter your name to begin:</label>
+      <input id="studentName" class="input" placeholder="Student name" autocomplete="off" />
+
+      <div class="btnRow">
+        <button class="btn" id="startBtn" type="button">Start Game</button>
+      </div>
+      <p class="muted" style="margin-top:10px;font-size:12px;">
+        Tip: If your Chromebook sleeps, refresh may restart the game. That’s okay — mastery requires 100%.
+      </p>
+    </section>
+
+    <section class="panel" id="gamePanel" style="display:none;">
+      <div class="meta">
+        <span class="chip chip-accent" id="qCountChip">Q 1 / 38</span>
+        <span class="chip">Public Policy + Civic Input</span>
+        <span class="chip" id="accChip">Accuracy: 100%</span>
+      </div>
+
+      <h2 id="questionText"></h2>
+      <div id="choices"></div>
+
+      <div id="msg" class="msg"></div>
+
+      <div class="hud">
+        <div class="hudItem">Name: <b id="hudName"></b></div>
+        <div class="hudItem">Start: <b id="hudStart"></b></div>
+        <div class="hudItem">Running: <b id="hudRun">0:00</b></div>
+        <div class="hudItem">Attempts: <b id="hudAttempts">0</b> • Correct: <b id="hudCorrect">0</b></div>
+      </div>
+
+      <div class="btnRow">
+        <button class="btn btn-small" id="restartBtn" type="button">Restart</button>
+      </div>
+    </section>
+
+    <section class="panel" id="ticketPanel" style="display:none;">
+      <div class="meta">
+        <span class="chip chip-accent">Completion Ticket</span>
+        <span class="chip">100% accuracy</span>
+      </div>
+      <h2>Submit this ticket</h2>
+      <div id="ticket" class="ticket"></div>
+      <div class="btnRow">
+        <button class="btn btn-small" id="playAgainBtn" type="button">Play again</button>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+  function shuffle(arr){
+    for(let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+  function fmtClock(totalSec){
+    const m = Math.floor(totalSec/60);
+    const s = totalSec % 60;
+    return m + ":" + (s<10 ? "0" : "") + s;
+  }
+
+  const BANK = [
+    { q:"Public policy issues are best described as", a:"Matters of discussion and debate related to the functions of government", d:["Only court cases","Private family decisions","Political campaign slogans"], hint:"Think government problems and decisions." },
+    { q:"A public policy issue usually involves", a:"A problem government is trying to address", d:["Only private business choices","Only personal hobbies","Only social media trends"], hint:"Government responding to a public problem." },
+    { q:"Public policy can involve", a:"Domestic and foreign affairs", d:["Only foreign wars","Only local school rules","Only Supreme Court cases"], hint:"Both at home and abroad." },
+    { q:"A policy issue may involve collaboration or conflict among", a:"Different branches and levels of government", d:["Only private citizens","Only judges","Only media companies"], hint:"Federal, state, local and branch interaction." },
+
+    { q:"The Department of State is part of the", a:"Federal executive branch", d:["Federal legislative branch","State judicial branch","Local legislative branch"], hint:"It advises the president on foreign policy." },
+    { q:"The Department of State mainly deals with", a:"Foreign policy", d:["Writing Supreme Court opinions","Running local elections","Approving state budgets"], hint:"Diplomacy and international relations." },
+    { q:"The Congressional Budget Office is part of the", a:"Federal legislative branch", d:["Federal executive branch","State executive branch","Local judicial branch"], hint:"Congressional support agency." },
+    { q:"The Congressional Budget Office mainly provides", a:"Analyses of economic and budgetary data", d:["Supreme Court rulings","Executive orders","Military commands"], hint:"Budget/economic analysis." },
+    { q:"The Ohio Legislative Service Commission helps", a:"Draft legislation", d:["Command the National Guard","Hear criminal appeals","Run foreign embassies"], hint:"Legislative drafting support." },
+    { q:"The Ohio Courts of Common Pleas are part of the", a:"State judicial branch", d:["Federal executive branch","State legislative branch","Local media"], hint:"They are state courts." },
+    { q:"County commissions are examples of", a:"Local legislative/executive government involvement in policy", d:["Federal judicial review","National treaty making","Supreme Court precedent"], hint:"Local government policy role." },
+
+    { q:"A county commission granting tax abatements is an example of", a:"Local government addressing public policy", d:["Federal foreign policy","Judicial impeachment","Constitutional ratification"], hint:"Local tax decision." },
+    { q:"A public policy issue can become complex because it may involve", a:"Multiple levels and branches of government", d:["Only one branch","Only one voter","Only one court case"], hint:"Policy often overlaps." },
+
+    { q:"Individuals can influence public policy by", a:"Lobbying lawmakers", d:["Declaring laws unconstitutional","Ratifying amendments","Issuing executive orders"], hint:"Direct contact with legislators." },
+    { q:"Individuals and organizations can influence policy by", a:"Providing testimony before legislative committees", d:["Appointing judges","Overriding vetoes","Writing Supreme Court opinions"], hint:"Speaking to lawmakers formally." },
+    { q:"A brief submitted in a court case is used to", a:"Present arguments during judicial proceedings", d:["Collect taxes","Ratify treaties","Write executive orders"], hint:"Legal argument document." },
+    { q:"An organization trying to shape a rule by meeting with executive officials is", a:"Providing input on rules and regulations", d:["Judicial review","Impeachment","Ratification"], hint:"Executive agencies can hear input." },
+
+    { q:"Campaigning for candidates who support your views is a way to", a:"Influence public policy through elections", d:["Serve on the Supreme Court","Declare war","Override a veto"], hint:"Electing supportive candidates." },
+    { q:"Writing letters to officials is an example of", a:"Citizen input into public policy", d:["Judicial review","Legislative supremacy","Federalism"], hint:"Direct communication with officials." },
+    { q:"Holding a public demonstration is a form of", a:"Political participation to influence policy", d:["Ratifying an amendment","Commanding troops","Approving appointments"], hint:"Public protest/input." },
+    { q:"Offering comments during a public meeting is an example of", a:"Providing input to government decision-making", d:["Judicial sentencing","Treaty ratification","Impeachment"], hint:"Citizen voice in meetings." },
+    { q:"Proposing a law to a legislator is a way to", a:"Help shape public policy", d:["Appoint a judge","Issue a pardon","Interpret the Constitution"], hint:"Law ideas go through legislators." },
+
+    { q:"To influence a court case, the most appropriate tool would be", a:"A legal brief", d:["A veto","A tax abatement","An electoral vote"], hint:"Court input uses briefs/arguments." },
+    { q:"To influence a legislature directly, the most appropriate action would be", a:"Lobbying members of the legislature", d:["Issuing executive orders","Filing criminal charges","Commanding the military"], hint:"Legislators are lobbied." },
+    { q:"To influence an agency rule, the most appropriate target would be", a:"Executive branch officials", d:["The Electoral College","The jury system","Foreign embassies"], hint:"Rules/regulations often come from agencies." },
+
+    { q:"Knowing the proper level and branch of government matters because", a:"Different officials handle different stages of policy-making", d:["All government offices do the same job","Only federal officials matter","Courts write all policies"], hint:"Match your input to the right decision-maker." },
+    { q:"A citizen wanting to affect local zoning most likely should contact", a:"Local government officials", d:["The U.S. Supreme Court","The Department of State","The Electoral College"], hint:"Local issue = local government." },
+    { q:"A citizen wanting to affect foreign policy most likely should focus on", a:"Federal officials", d:["Only county commissions","Only state judges","Only school boards"], hint:"Foreign policy is national." },
+
+    { q:"Public policy issues are often debated because they involve", a:"Different views about solutions and consequences", d:["Only one correct answer","No government interest","No public effect"], hint:"People disagree on how to solve problems." },
+    { q:"One reason groups hold demonstrations is to", a:"Pressure officials and shape public opinion", d:["Ratify treaties","Write court opinions","Confirm judges"], hint:"Public pressure." },
+    { q:"One reason groups campaign for candidates is to", a:"Elect leaders who support their policy goals", d:["Remove judges automatically","Eliminate public debate","Write constitutional amendments"], hint:"Policy through elections." },
+
+    { q:"A domestic public policy issue would most likely involve", a:"Problems inside the United States", d:["Only foreign ambassadors","Only wars overseas","Only trade with Europe"], hint:"Domestic = internal/home." },
+    { q:"An international public policy issue would most likely involve", a:"Foreign affairs", d:["County tax abatements","Township zoning only","School dress codes only"], hint:"International = foreign." },
+
+    { q:"When state and federal governments disagree over a policy approach, that shows", a:"Conflict among levels of government", d:["Judicial supremacy only","Only private disagreement","No public policy issue"], hint:"Levels = federal/state/local." },
+    { q:"When a local government works with a state agency on a problem, that shows", a:"Collaboration among levels of government", d:["Judicial review","Nullification","Impeachment"], hint:"Working together across levels." },
+
+    { q:"A public hearing where citizens speak on an issue is an example of", a:"Input into public policy", d:["Treaty ratification","Jury deliberation","Presidential succession"], hint:"Citizens speaking to officials." },
+    { q:"An interest group most directly affects policy by", a:"Trying to influence decision-makers", d:["Running the courts","Commanding the military","Collecting taxes"], hint:"Influence, not direct governing." },
+
+    { q:"A policy issue tied to sentencing guidelines would most directly involve", a:"The judicial branch", d:["Only the media","Only political parties","Only private corporations"], hint:"Courts apply sentencing." },
+    { q:"A policy issue tied to writing a budget analysis would most directly involve", a:"The legislative branch", d:["The judicial branch","The military chain of command","The Electoral College"], hint:"Budget analysis helps lawmakers." },
+    { q:"A policy issue tied to embassies abroad would most directly involve", a:"The executive branch", d:["The state judicial branch","County commissions","Local school boards"], hint:"Foreign policy/diplomacy." },
+
+    { q:"The most basic goal of citizen input in public policy is to", a:"Influence government decisions", d:["Eliminate all disagreement","Replace elections","End federalism"], hint:"Input is about influence." },
+    { q:"The best summary of CS18–19 is that public policy", a:"Is addressed by many government entities and shaped by citizen/organizational input", d:["Is decided only by presidents","Belongs only to local governments","Cannot be influenced by citizens"], hint:"Multiple levels + public input." }
+  ];
+
+  let deck = [];
+  let idx = 0;
+  let attempts = 0;
+  let correct = 0;
+  let startTime = null;
+  let timerId = null;
+  let locked = false;
+
+  const startPanel = document.getElementById("startPanel");
+  const gamePanel = document.getElementById("gamePanel");
+  const ticketPanel = document.getElementById("ticketPanel");
+
+  const studentNameEl = document.getElementById("studentName");
+  const startBtn = document.getElementById("startBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const playAgainBtn = document.getElementById("playAgainBtn");
+
+  const qCountChip = document.getElementById("qCountChip");
+  const accChip = document.getElementById("accChip");
+  const questionText = document.getElementById("questionText");
+  const choicesEl = document.getElementById("choices");
+  const msgEl = document.getElementById("msg");
+
+  const hudName = document.getElementById("hudName");
+  const hudStart = document.getElementById("hudStart");
+  const hudRun = document.getElementById("hudRun");
+  const hudAttempts = document.getElementById("hudAttempts");
+  const hudCorrect = document.getElementById("hudCorrect");
+
+  function computeAccuracy(){
+    if(attempts === 0) return 100;
+    return Math.round((correct / attempts) * 100);
+  }
+  function updateHUD(){
+    qCountChip.textContent = `Q ${idx+1} / ${deck.length}`;
+    accChip.textContent = `Accuracy: ${computeAccuracy()}%`;
+    hudAttempts.textContent = String(attempts);
+    hudCorrect.textContent = String(correct);
+  }
+  function tick(){
+    const now = new Date();
+    const diffSec = Math.max(0, Math.floor((now - startTime) / 1000));
+    hudRun.textContent = fmtClock(diffSec);
+  }
+
+  function startGame(){
+    const name = studentNameEl.value.trim();
+    if(!name){
+      alert("Enter your name to begin.");
+      studentNameEl.focus();
+      return;
+    }
+
+    deck = BANK.map(x => ({...x}));
+    shuffle(deck);
+
+    idx = 0;
+    attempts = 0;
+    correct = 0;
+    locked = false;
+
+    startTime = new Date();
+    hudName.textContent = name;
+    hudStart.textContent = startTime.toLocaleString();
+
+    startPanel.style.display = "none";
+    ticketPanel.style.display = "none";
+    gamePanel.style.display = "block";
+
+    if(timerId) clearInterval(timerId);
+    timerId = setInterval(tick, 1000);
+    tick();
+
+    showQuestion();
+  }
+
+  function showQuestion(){
+    msgEl.className = "msg";
+    msgEl.style.display = "none";
+    choicesEl.innerHTML = "";
+
+    const item = deck[idx];
+    questionText.textContent = item.q;
+
+    const options = [item.a, ...item.d];
+    shuffle(options);
+
+    options.forEach(opt => {
+      const div = document.createElement("div");
+      div.className = "choice";
+      div.textContent = opt;
+      div.addEventListener("click", () => pick(div, opt));
+      choicesEl.appendChild(div);
+    });
+
+    updateHUD();
+  }
+
+  function pick(choiceDiv, chosenText){
+    if(locked) return;
+    locked = true;
+
+    attempts++;
+    const item = deck[idx];
+
+    [...choicesEl.querySelectorAll(".choice")].forEach(c => c.classList.remove("correct","wrong"));
+
+    if(chosenText === item.a){
+      correct++;
+      choiceDiv.classList.add("correct");
+      msgEl.className = "msg good";
+      msgEl.textContent = "Correct!";
+      msgEl.style.display = "block";
+      updateHUD();
+
+      setTimeout(() => {
+        idx++;
+        locked = false;
+        if(idx >= deck.length) finishGame();
+        else showQuestion();
+      }, 450);
+
+    }else{
+      choiceDiv.classList.add("wrong");
+      msgEl.className = "msg bad";
+      msgEl.textContent = "Hint: " + item.hint;
+      msgEl.style.display = "block";
+      updateHUD();
+      locked = false;
+    }
+  }
+
+  function finishGame(){
+    clearInterval(timerId);
+    const endTime = new Date();
+    const run = hudRun.textContent;
+    const acc = computeAccuracy();
+
+    if(acc !== 100){
+      alert("Mastery requires 100% accuracy. Restart and try again.");
+      restart();
+      return;
+    }
+
+    gamePanel.style.display = "none";
+    ticketPanel.style.display = "block";
+
+    const name = studentNameEl.value.trim();
+    const ticketText =
+`Name: ${name}
+Game: Gov Basics 8 — Public Policy Issues & Inputs (CS18–19)
+Passed: YES
+Accuracy: ${acc}%
+Start: ${startTime.toLocaleString()}
+End: ${endTime.toLocaleString()}
+Running Time: ${run}
+Total Questions: ${deck.length}
+Attempts: ${attempts}
+Correct: ${correct}`;
+
+    document.getElementById("ticket").textContent = ticketText;
+  }
+
+  function restart(){ location.reload(); }
+
+  startBtn.addEventListener("click", startGame);
+  restartBtn.addEventListener("click", restart);
+  playAgainBtn.addEventListener("click", restart);
+  studentNameEl.addEventListener("keydown", (e)=>{ if(e.key === "Enter") startGame(); });
+</script>
+</body>
+</html>
