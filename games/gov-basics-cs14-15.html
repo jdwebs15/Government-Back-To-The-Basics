@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gov Basics 6 — Rights, Responsibilities & Civil Rights (CS14–15)</title>
+
+<link rel="stylesheet" href="../styles.css">
+
+<style>
+  .wrapGame{width:min(980px,92vw);margin:30px auto;padding:0 0 30px;}
+  .panel{
+    background:linear-gradient(180deg, rgba(17,26,47,.95), rgba(15,23,48,.92));
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:var(--radius);
+    box-shadow:0 14px 40px rgba(0,0,0,.35);
+    padding:18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .panel::before{
+    content:"";
+    position:absolute; inset:-2px;
+    background: radial-gradient(520px 220px at 18% 0%, rgba(122,162,255,.18), transparent 60%);
+    pointer-events:none;
+  }
+  .panel > *{position:relative;}
+
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+  .chip{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12px;padding:6px 10px;border-radius:999px;
+    background:var(--chip);border:1px solid var(--chipLine);color:var(--text);
+  }
+  .chip-accent{background: rgba(122,162,255,.16);border-color: rgba(122,162,255,.35);}
+
+  h1{margin:0 0 8px;font-size:24px;line-height:1.15}
+  h2{margin:0 0 10px;font-size:18px;line-height:1.25}
+  p{margin:8px 0;color:var(--muted);line-height:1.35}
+  label{display:block;margin-top:10px;color:var(--muted);font-size:13px}
+
+  .input{
+    width:min(420px,100%);
+    background: rgba(255,255,255,.03);
+    border:1px solid var(--line);
+    color: var(--text);
+    border-radius: 12px;
+    padding:10px 12px;
+    outline:none;
+    margin-top:8px;
+  }
+
+  .choice{
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    padding:12px 12px;
+    margin:10px 0;
+    cursor:pointer;
+    transition: filter .12s ease, transform .06s ease, border-color .12s ease;
+    background: rgba(255,255,255,.02);
+  }
+  .choice:hover{border-color:var(--accent);filter:brightness(1.06)}
+  .choice:active{transform: translateY(1px)}
+  .choice.correct{border-color: rgba(43,213,118,.55); background: rgba(43,213,118,.10)}
+  .choice.wrong{border-color: rgba(255,92,122,.55); background: rgba(255,92,122,.08)}
+
+  .msg{
+    margin-top:12px;padding:10px 12px;border-radius:12px;
+    display:none;font-size:13px;line-height:1.3;
+  }
+  .msg.good{background:rgba(43,213,118,.12);border:1px solid rgba(43,213,118,.25);display:block}
+  .msg.bad{background:rgba(255,92,122,.10);border:1px solid rgba(255,92,122,.25);display:block}
+
+  .hud{
+    margin-top:14px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+  }
+  @media(max-width:720px){ .hud{grid-template-columns:1fr;} }
+  .hudItem{
+    border:1px dashed rgba(255,255,255,.14);
+    border-radius:14px;
+    padding:10px 12px;
+    color:var(--muted);
+    background: rgba(255,255,255,.02);
+  }
+  .hudItem b{color:var(--text);font-family:var(--mono);font-size:12px}
+
+  .ticket{
+    margin-top:14px;
+    background: rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    padding:12px;
+    font-family: var(--mono);
+    color: var(--text);
+    font-size: 12px;
+    line-height:1.5;
+    white-space: pre-wrap;
+  }
+
+  .btnRow{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
+  .liveGreen{
+    font-size:12px;
+    padding:5px 10px;
+    border-radius:999px;
+    background: rgba(43,213,118,.12);
+    border:1px solid rgba(43,213,118,.35);
+    color: var(--good);
+    font-weight:800;
+  }
+</style>
+</head>
+
+<body>
+  <div class="wrapGame">
+
+    <!-- START PANEL -->
+    <section class="panel" id="startPanel">
+      <div class="row" style="justify-content:space-between;">
+        <div>
+          <div class="meta">
+            <span class="chip chip-accent">CS14–15</span>
+            <span class="chip">Back-to-Basics</span>
+            <span class="chip">100% required</span>
+          </div>
+          <h1>Gov Basics 6 — Rights, Responsibilities & Civil Rights</h1>
+          <p>
+            Rights vs responsibilities, majority rule vs minority rights, incorporation, and how civil rights expanded.
+            Auto-submit on click. Correct = auto-advance. Wrong = hint. Ticket only at <b>100% accuracy</b>.
+          </p>
+        </div>
+        <span class="liveGreen" style="align-self:flex-start;">LIVE</span>
+      </div>
+
+      <label for="studentName">Enter your name to begin:</label>
+      <input id="studentName" class="input" placeholder="Student name" autocomplete="off" />
+
+      <div class="btnRow">
+        <button class="btn" id="startBtn" type="button">Start Game</button>
+      </div>
+      <p class="muted" style="margin-top:10px;font-size:12px;">
+        Tip: If your Chromebook sleeps, refresh may restart the game. That’s okay — mastery requires 100%.
+      </p>
+    </section>
+
+    <!-- GAME PANEL -->
+    <section class="panel" id="gamePanel" style="display:none;">
+      <div class="meta">
+        <span class="chip chip-accent" id="qCountChip">Q 1 / 36</span>
+        <span class="chip">Civil Rights + Civic Duties</span>
+        <span class="chip" id="accChip">Accuracy: 100%</span>
+      </div>
+
+      <h2 id="questionText"></h2>
+      <div id="choices"></div>
+
+      <div id="msg" class="msg"></div>
+
+      <div class="hud">
+        <div class="hudItem">Name: <b id="hudName"></b></div>
+        <div class="hudItem">Start: <b id="hudStart"></b></div>
+        <div class="hudItem">Running: <b id="hudRun">0:00</b></div>
+        <div class="hudItem">Attempts: <b id="hudAttempts">0</b> • Correct: <b id="hudCorrect">0</b></div>
+      </div>
+
+      <div class="btnRow">
+        <button class="btn btn-small" id="restartBtn" type="button">Restart</button>
+      </div>
+    </section>
+
+    <!-- TICKET PANEL -->
+    <section class="panel" id="ticketPanel" style="display:none;">
+      <div class="meta">
+        <span class="chip chip-accent">Completion Ticket</span>
+        <span class="chip">100% accuracy</span>
+      </div>
+      <h2>Submit this ticket</h2>
+      <div id="ticket" class="ticket"></div>
+      <div class="btnRow">
+        <button class="btn btn-small" id="playAgainBtn" type="button">Play again</button>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+  function shuffle(arr){
+    for(let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+  function fmtClock(totalSec){
+    const m = Math.floor(totalSec/60);
+    const s = totalSec % 60;
+    return m + ":" + (s<10 ? "0" : "") + s;
+  }
+
+  // CS14–15 BANK (36) — rights/responsibilities + majority/minority + incorporation + civil rights expansion
+  const BANK = [
+    // Rights vs responsibilities
+    { q:"A civil right is best defined as", a:"A right guaranteed by law and equal protection", d:["A tradition","A privilege given by a private club","A suggestion from the media"], hint:"Think: legal protection and equality." },
+    { q:"A civil liberty is best defined as", a:"A freedom protected from government interference", d:["A government service","A party platform","A court budget"], hint:"Liberty = freedom from government." },
+    { q:"A civic responsibility is", a:"A duty citizens should fulfill in a democracy", d:["A personal hobby","A court ruling","A presidential order"], hint:"Responsibilities are duties." },
+    { q:"Which is a civic responsibility?", a:"Serving on a jury when called", d:["Censoring speech","Ignoring laws","Overriding vetoes"], hint:"Jury duty is a civic responsibility." },
+    { q:"Which is a civic responsibility?", a:"Paying taxes", d:["Declaring war","Issuing executive orders","Writing Supreme Court opinions"], hint:"Taxes fund government services." },
+    { q:"Which is a civic responsibility?", a:"Obeying laws", d:["Passing bills","Nominating judges","Controlling the money supply"], hint:"Citizens must follow laws." },
+
+    // Majority rule vs minority rights
+    { q:"Majority rule means", a:"Decisions are made by the greater number of voters/representatives", d:["Only the president decides","Courts always decide","States always decide"], hint:"More votes = decision." },
+    { q:"Minority rights means", a:"Protections ensure small groups keep constitutional rights", d:["Minorities always win elections","Minorities write all laws","Minorities can ignore laws"], hint:"Rights exist even if you’re outvoted." },
+    { q:"A major danger of pure majority rule is", a:"Tyranny of the majority", d:["Too much federalism","Too many amendments","No elections"], hint:"Majorities can violate rights without limits." },
+    { q:"The Bill of Rights primarily protects", a:"Minority rights from government power", d:["Only majority interests","Only government officials","Only political parties"], hint:"Rights protect everyone, especially minorities." },
+
+    // Incorporation (14th Amendment)
+    { q:"Incorporation applies the Bill of Rights to states through the", a:"14th Amendment", d:["10th Amendment","22nd Amendment","Commerce Clause"], hint:"14th = due process/equal protection." },
+    { q:"Incorporation is most connected to the 14th Amendment’s", a:"Due process clause", d:["Supremacy clause","Necessary and Proper clause","Establishment clause"], hint:"Due process used to apply rights to states." },
+    { q:"Before incorporation, most Bill of Rights limits applied mainly to", a:"The federal government", d:["Private businesses","Foreign governments","State governments only"], hint:"Originally federal only." },
+
+    // Extension of civil rights (general mechanisms)
+    { q:"Civil rights have expanded through", a:"Amendments, laws, executive actions, and court decisions", d:["Only political parties","Only state constitutions","Only the media"], hint:"Multiple branches and methods." },
+    { q:"Congress expanded civil rights most directly by passing", a:"Legislation", d:["Treaties","Executive orders only","Campaign speeches"], hint:"Laws passed by Congress." },
+    { q:"The Supreme Court impacts civil rights mainly through", a:"Interpreting the Constitution and setting precedent", d:["Writing bills","Enforcing laws directly","Running elections"], hint:"Court interpretation + precedent." },
+    { q:"The president can influence civil rights through", a:"Enforcing laws and issuing executive actions", d:["Ratifying amendments","Confirming judges alone","Writing Supreme Court decisions"], hint:"Executive enforcement." },
+
+    // Voting rights expansions (quick reps tied to CS14–15 themes)
+    { q:"The 19th Amendment expanded civil rights by", a:"Granting women the right to vote", d:["Ending slavery","Banning poll taxes","Lowering the voting age"], hint:"Women’s suffrage." },
+    { q:"The 24th Amendment helped expand voting access by", a:"Banning poll taxes in federal elections", d:["Banning all taxes","Creating term limits","Ending the Electoral College"], hint:"No pay-to-vote (federal)." },
+    { q:"The 26th Amendment expanded voting by", a:"Lowering the voting age to 18", d:["Creating direct election of senators","Giving DC electors","Banning literacy tests"], hint:"18-year-old vote." },
+
+    // Equality concepts
+    { q:"Equal protection means government must", a:"Treat people equally under the law", d:["Guarantee equal wealth","Eliminate elections","Ban political parties"], hint:"Equal treatment in law." },
+    { q:"Due process means government must", a:"Follow fair procedures", d:["Always win court cases","Ban protests","Require unanimous votes"], hint:"Fair process." },
+
+    // Rights vs privileges
+    { q:"Which is an example of a civil liberty?", a:"Freedom of speech", d:["A driver’s license","A club membership","A sports trophy"], hint:"Liberty = freedom." },
+    { q:"Which is most accurately described as a privilege, not a constitutional right?", a:"Driving a car", d:["Free exercise of religion","Protection from unreasonable searches","Right to counsel"], hint:"Driving is regulated by the state." },
+
+    // Participation and civic engagement
+    { q:"Voting is best described as", a:"A civic responsibility and a form of participation", d:["A court power","An executive order","A judicial duty"], hint:"Citizen participation." },
+    { q:"Contacting elected officials is an example of", a:"Political participation", d:["Judicial review","Impeachment","Ratification"], hint:"Citizens influencing government." },
+
+    // Majority/minority scenario drills
+    { q:"If a majority votes to ban a religion, the Constitution protects", a:"Minority rights", d:["Only majority interests","Only state power","Only the president"], hint:"First Amendment limits majority power." },
+    { q:"If a city bans peaceful protest because most residents dislike it, the issue involves", a:"Minority rights and civil liberties", d:["Tax policy","Foreign policy","Term limits"], hint:"Assembly/speech rights." },
+
+    // General civil rights movement / extension (non-case-specific)
+    { q:"A key idea behind civil rights expansion is", a:"Equal opportunity and protection for marginalized groups", d:["Majorities always get their way","Government should have unlimited power","Rights apply only to citizens who vote"], hint:"Equality and protection." },
+    { q:"When courts apply rights against states, that is", a:"Incorporation", d:["Nullification","Filibuster","Ratification"], hint:"Applying Bill of Rights to states." },
+
+    // Responsibilities vs rights contrast
+    { q:"Which pair is MOST accurate?", a:"Rights = protections; Responsibilities = duties", d:["Rights = duties; Responsibilities = protections","Rights = taxes; Responsibilities = laws","Rights = elections; Responsibilities = courts"], hint:"Rights protect; responsibilities require action." },
+    { q:"Serving on a jury supports democracy by", a:"Helping ensure fair trials and citizen participation", d:["Writing new laws","Electing judges","Declaring war"], hint:"Juries = citizen role in justice." },
+
+    // Civil rights protections
+    { q:"The 14th Amendment is important because it", a:"Protects citizenship, due process, and equal protection", d:["Sets term limits","Creates the Electoral College","Bans alcohol"], hint:"Citizenship + protections." },
+    { q:"A government policy that treats groups differently without justification raises", a:"Equal protection concerns", d:["Commerce Clause concerns only","Treaty concerns only","Impeachment concerns only"], hint:"Equality under law." },
+
+    // Participation reps
+    { q:"Peaceful protest and petitioning government are protected by the", a:"First Amendment", d:["Third Amendment","Seventh Amendment","Twenty-Second Amendment"], hint:"Speech/assembly/petition." },
+    { q:"Joining an interest group is an example of", a:"Civic participation", d:["Judicial review","Executive enforcement","Ratification"], hint:"Participation through groups." },
+
+    // Final rote reps
+    { q:"Civil liberties mainly limit", a:"Government power over individuals", d:["Private choices only","Foreign policy only","Sports leagues"], hint:"Limits on government." },
+    { q:"Civil rights mainly focus on", a:"Equal treatment and protection under the law", d:["Military strategy","Budget writing","Party nominations"], hint:"Equality and protection." },
+    { q:"The best reason democracies protect minority rights is", a:"Rights should not depend on being in the majority", d:["Minorities always win elections","Majorities have no power","Courts should run everything"], hint:"Rights are not up for a vote." },
+    { q:"A key civic responsibility that supports public services is", a:"Paying taxes", d:["Declaring war","Vetoing bills","Confirming judges"], hint:"Taxes fund services." },
+    { q:"A key civic responsibility that supports rule of law is", a:"Obeying laws", d:["Writing laws","Issuing executive orders","Interpreting the Constitution"], hint:"Citizens follow laws." },
+    { q:"Applying the Bill of Rights to states is called", a:"Incorporation", d:["Nullification","Filibuster","Treaty making"], hint:"14th Amendment application." }
+  ];
+
+  let deck = [];
+  let idx = 0;
+  let attempts = 0;
+  let correct = 0;
+  let startTime = null;
+  let timerId = null;
+  let locked = false;
+
+  const startPanel = document.getElementById("startPanel");
+  const gamePanel = document.getElementById("gamePanel");
+  const ticketPanel = document.getElementById("ticketPanel");
+
+  const studentNameEl = document.getElementById("studentName");
+  const startBtn = document.getElementById("startBtn");
+  const restartBtn = document.getElementById("restartBtn");
+  const playAgainBtn = document.getElementById("playAgainBtn");
+
+  const qCountChip = document.getElementById("qCountChip");
+  const accChip = document.getElementById("accChip");
+  const questionText = document.getElementById("questionText");
+  const choicesEl = document.getElementById("choices");
+  const msgEl = document.getElementById("msg");
+
+  const hudName = document.getElementById("hudName");
+  const hudStart = document.getElementById("hudStart");
+  const hudRun = document.getElementById("hudRun");
+  const hudAttempts = document.getElementById("hudAttempts");
+  const hudCorrect = document.getElementById("hudCorrect");
+
+  function computeAccuracy(){
+    if(attempts === 0) return 100;
+    return Math.round((correct / attempts) * 100);
+  }
+  function updateHUD(){
+    qCountChip.textContent = `Q ${idx+1} / ${deck.length}`;
+    accChip.textContent = `Accuracy: ${computeAccuracy()}%`;
+    hudAttempts.textContent = String(attempts);
+    hudCorrect.textContent = String(correct);
+  }
+  function tick(){
+    const now = new Date();
+    const diffSec = Math.max(0, Math.floor((now - startTime) / 1000));
+    hudRun.textContent = fmtClock(diffSec);
+  }
+
+  function startGame(){
+    const name = studentNameEl.value.trim();
+    if(!name){
+      alert("Enter your name to begin.");
+      studentNameEl.focus();
+      return;
+    }
+
+    deck = BANK.map(x => ({...x}));
+    shuffle(deck);
+
+    idx = 0; attempts = 0; correct = 0; locked = false;
+
+    startTime = new Date();
+    hudName.textContent = name;
+    hudStart.textContent = startTime.toLocaleString();
+
+    startPanel.style.display = "none";
+    ticketPanel.style.display = "none";
+    gamePanel.style.display = "block";
+
+    if(timerId) clearInterval(timerId);
+    timerId = setInterval(tick, 1000);
+    tick();
+
+    showQuestion();
+  }
+
+  function showQuestion(){
+    msgEl.className = "msg";
+    msgEl.style.display = "none";
+    choicesEl.innerHTML = "";
+
+    const item = deck[idx];
+    questionText.textContent = item.q;
+
+    const options = [item.a, ...item.d];
+    shuffle(options);
+
+    options.forEach(opt => {
+      const div = document.createElement("div");
+      div.className = "choice";
+      div.textContent = opt;
+      div.addEventListener("click", () => pick(div, opt));
+      choicesEl.appendChild(div);
+    });
+
+    updateHUD();
+  }
+
+  function pick(choiceDiv, chosenText){
+    if(locked) return;
+    locked = true;
+
+    attempts++;
+    const item = deck[idx];
+
+    [...choicesEl.querySelectorAll(".choice")].forEach(c => c.classList.remove("correct","wrong"));
+
+    if(chosenText === item.a){
+      correct++;
+      choiceDiv.classList.add("correct");
+      msgEl.className = "msg good";
+      msgEl.textContent = "Correct!";
+      msgEl.style.display = "block";
+      updateHUD();
+
+      setTimeout(() => {
+        idx++;
+        locked = false;
+        if(idx >= deck.length) finishGame();
+        else showQuestion();
+      }, 450);
+
+    }else{
+      choiceDiv.classList.add("wrong");
+      msgEl.className = "msg bad";
+      msgEl.textContent = "Hint: " + item.hint;
+      msgEl.style.display = "block";
+      updateHUD();
+      locked = false;
+    }
+  }
+
+  function finishGame(){
+    clearInterval(timerId);
+    const endTime = new Date();
+    const run = hudRun.textContent;
+    const acc = computeAccuracy();
+
+    if(acc !== 100){
+      alert("Mastery requires 100% accuracy. Restart and try again.");
+      restart();
+      return;
+    }
+
+    gamePanel.style.display = "none";
+    ticketPanel.style.display = "block";
+
+    const name = studentNameEl.value.trim();
+    const ticketText =
+`Name: ${name}
+Game: Gov Basics 6 — Rights, Responsibilities & Civil Rights (CS14–15)
+Passed: YES
+Accuracy: ${acc}%
+Start: ${startTime.toLocaleString()}
+End: ${endTime.toLocaleString()}
+Running Time: ${run}
+Total Questions: ${deck.length}
+Attempts: ${attempts}
+Correct: ${correct}`;
+
+    document.getElementById("ticket").textContent = ticketText;
+  }
+
+  function restart(){ location.reload(); }
+
+  startBtn.addEventListener("click", startGame);
+  restartBtn.addEventListener("click", restart);
+  playAgainBtn.addEventListener("click", restart);
+  studentNameEl.addEventListener("keydown", (e)=>{ if(e.key === "Enter") startGame(); });
+</script>
+</body>
+</html>
