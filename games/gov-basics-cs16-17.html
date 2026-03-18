@@ -1,205 +1,121 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gov Basics 7 — Ohio Constitution & Civic Responsibility (CS16–17)</title>
-
-<link rel="stylesheet" href="../styles.css">
-
-<style>
-  .wrapGame{width:min(980px,92vw);margin:30px auto;padding:0 0 30px;}
-  .panel{
-    background:linear-gradient(180deg, rgba(17,26,47,.95), rgba(15,23,48,.92));
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:var(--radius);
-    box-shadow:0 14px 40px rgba(0,0,0,.35);
-    padding:18px;
-    position:relative;
-    overflow:hidden;
-  }
-  .panel::before{
-    content:"";
-    position:absolute; inset:-2px;
-    background: radial-gradient(520px 220px at 18% 0%, rgba(122,162,255,.18), transparent 60%);
-    pointer-events:none;
-  }
-  .panel > *{position:relative;}
-
-  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
-  .chip{
-    display:inline-flex;align-items:center;gap:6px;
-    font-size:12px;padding:6px 10px;border-radius:999px;
-    background:var(--chip);border:1px solid var(--chipLine);color:var(--text);
-  }
-  .chip-accent{background: rgba(122,162,255,.16);border-color: rgba(122,162,255,.35);}
-
-  h1{margin:0 0 8px;font-size:24px;line-height:1.15}
-  h2{margin:0 0 10px;font-size:18px;line-height:1.25}
-  p{margin:8px 0;color:var(--muted);line-height:1.35}
-  label{display:block;margin-top:10px;color:var(--muted);font-size:13px}
-
-  .input{
-    width:min(420px,100%);
-    background: rgba(255,255,255,.03);
-    border:1px solid var(--line);
-    color: var(--text);
-    border-radius: 12px;
-    padding:10px 12px;
-    outline:none;
-    margin-top:8px;
-  }
-
-  .choice{
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:14px;
-    padding:12px 12px;
-    margin:10px 0;
-    cursor:pointer;
-    transition: filter .12s ease, transform .06s ease, border-color .12s ease;
-    background: rgba(255,255,255,.02);
-  }
-  .choice:hover{border-color:var(--accent);filter:brightness(1.06)}
-  .choice:active{transform: translateY(1px)}
-  .choice.correct{border-color: rgba(43,213,118,.55); background: rgba(43,213,118,.10)}
-  .choice.wrong{border-color: rgba(255,92,122,.55); background: rgba(255,92,122,.08)}
-
-  .msg{
-    margin-top:12px;padding:10px 12px;border-radius:12px;
-    display:none;font-size:13px;line-height:1.3;
-  }
-  .msg.good{background:rgba(43,213,118,.12);border:1px solid rgba(43,213,118,.25);display:block}
-  .msg.bad{background:rgba(255,92,122,.10);border:1px solid rgba(255,92,122,.25);display:block}
-
-  .hud{
-    margin-top:14px;
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:10px;
-  }
-  @media(max-width:720px){ .hud{grid-template-columns:1fr;} }
-  .hudItem{
-    border:1px dashed rgba(255,255,255,.14);
-    border-radius:14px;
-    padding:10px 12px;
-    color:var(--muted);
-    background: rgba(255,255,255,.02);
-  }
-  .hudItem b{color:var(--text);font-family:var(--mono);font-size:12px}
-
-  .ticket{
-    margin-top:14px;
-    background: rgba(255,255,255,.03);
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:14px;
-    padding:12px;
-    font-family: var(--mono);
-    color: var(--text);
-    font-size: 12px;
-    line-height:1.5;
-    white-space: pre-wrap;
-  }
-
-  .btnRow{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
-  .liveGreen{
-    font-size:12px;
-    padding:5px 10px;
-    border-radius:999px;
-    background: rgba(43,213,118,.12);
-    border:1px solid rgba(43,213,118,.35);
-    color: var(--good);
-    font-weight:800;
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gov Basics 7 — Ohio Constitution & Civic Responsibility (CS 16–17)</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    :root{--bg:#0b1220;--panel:#121a2f;--card:#111a2e;--text:#e7eefc;--muted:#a8b4cf;--line:rgba(255,255,255,.12);--shadow:0 18px 55px rgba(0,0,0,.40);--radius:18px;--good:#2bd576;--bad:#ff5c7a;--warn:#ffd166;--accent:#7aa2ff;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b1220,#070b14);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;min-height:100vh}
+    .wrap{width:min(980px,92vw);margin:22px auto 40px}.topbar{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 14px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;justify-content:space-between}
+    .kicker{letter-spacing:.14em;font-size:12px;color:var(--muted);font-weight:700} h1{margin:6px 0 6px;font-size:24px}.sub{margin:0;color:var(--muted);line-height:1.35}
+    .pillrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.pill{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted);white-space:nowrap}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}@media (max-width:900px){.grid{grid-template-columns:1fr}}
+    .panel{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.label{color:var(--muted);font-size:12px;letter-spacing:.08em;font-weight:800}
+    .statline{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.stat{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:140px}.stat .big{font-size:16px;font-weight:800}.stat .small{font-size:12px;color:var(--muted);margin-top:2px}
+    .qtitle{margin:10px 0 6px;font-size:18px}.qtext{color:var(--text);line-height:1.4;margin:0 0 12px;white-space:pre-wrap}
+    .opts{display:grid;gap:10px;margin-top:10px}.optbtn{text-align:left;width:100%;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);padding:12px;color:var(--text);cursor:pointer;transition:transform .04s ease,border-color .15s ease,background .15s ease}.optbtn:hover{border-color:rgba(122,162,255,.45)}.optbtn:active{transform:scale(.995)}.optbtn[disabled]{opacity:.65;cursor:not-allowed}.optbtn .ltr{font-family:var(--mono);font-weight:900;margin-right:8px;color:var(--accent)}
+    .msg{border-radius:14px;border:1px solid var(--line);padding:12px;margin-top:12px;display:none}.msg.good{display:block;border-color:rgba(43,213,118,.35);background:rgba(43,213,118,.08)}.msg.warn{display:block;border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.08)}.msg .t{font-weight:800;margin-bottom:4px}.msg .b{color:var(--muted);line-height:1.35}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.btn{border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);padding:10px 12px;cursor:pointer;font-weight:800}.btn:hover{border-color:rgba(122,162,255,.45)}.btn.primary{border-color:rgba(122,162,255,.45);background:rgba(122,162,255,.10)}.btn[disabled]{opacity:.6;cursor:not-allowed}
+    .field{display:grid;gap:6px;margin-top:10px} input[type="text"]{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
+    .errbox{display:none;margin-top:14px;border:1px solid rgba(255,92,122,.45);background:rgba(255,92,122,.10);border-radius:14px;padding:12px}.errbox .t{font-weight:900}.errbox pre{margin:8px 0 0;white-space:pre-wrap;color:var(--text);font-family:var(--mono);font-size:12px}
+    .muted{color:var(--muted)} .ticket{margin-top:12px;border:1px solid rgba(43,213,118,.35);background:rgba(43,213,118,.07);border-radius:14px;padding:12px}.ticket .code{font-family:var(--mono);font-weight:900;letter-spacing:.06em;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);margin-top:8px;word-break:break-word}.summary{margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px}
+  </style>
 </head>
-
 <body>
-  <div class="wrapGame">
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <div class="kicker">LEGEND MASTERY SERIES</div>
+        <h1>Gov Basics 7 — Ohio Constitution & Civic Responsibility (CS 16–17)</h1>
+        <p class="sub">Ohio Constitution similarities and differences, the 1851 Constitution, and ways Ohio citizens help state and local government. Mastery requires <b>100% accuracy</b>.</p>
+      </div>
+      <div class="pillrow">
+        <div class="pill">Mastery (100%) ✅</div>
+        <div class="pill">Name + timestamps ✅</div>
+        <div class="pill">Submission ticket ✅</div>
+      </div>
+    </div>
 
-    <section class="panel" id="startPanel">
-      <div class="row" style="justify-content:space-between;">
-        <div>
-          <div class="meta">
-            <span class="chip chip-accent">CS16–17</span>
-            <span class="chip">Back-to-Basics</span>
-            <span class="chip">100% required</span>
+    <div id="errbox" class="errbox"><div class="t">On-page error box</div><pre id="errtext"></pre></div>
+
+    <div class="grid">
+      <section class="panel">
+        <div class="row">
+          <div class="label">QUESTION</div>
+          <div class="statline">
+            <div class="stat"><div class="big" id="qpos">—</div><div class="small">Progress</div></div>
+            <div class="stat"><div class="big" id="acc">—</div><div class="small">Accuracy</div></div>
+            <div class="stat"><div class="big" id="runtime">—</div><div class="small">Runtime</div></div>
           </div>
-          <h1>Gov Basics 7 — Ohio Constitution & Civic Responsibility</h1>
-          <p>
-            Ohio Constitution similarities and differences + ways Ohio citizens help state and local government.
-            Auto-submit on click. Correct = auto-advance. Wrong = hint. Ticket only at <b>100% accuracy</b>.
-          </p>
         </div>
-        <span class="liveGreen" style="align-self:flex-start;">LIVE</span>
-      </div>
 
-      <label for="studentName">Enter your name to begin:</label>
-      <input id="studentName" class="input" placeholder="Student name" autocomplete="off" />
+        <h2 class="qtitle" id="qtitle">Enter your name to begin</h2>
+        <p class="qtext" id="qtext">Use your real name. A submission ticket appears only if you finish with 100% accuracy.</p>
 
-      <div class="btnRow">
-        <button class="btn" id="startBtn" type="button">Start Game</button>
-      </div>
-      <p class="muted" style="margin-top:10px;font-size:12px;">
-        Tip: If your Chromebook sleeps, refresh may restart the game. That’s okay — mastery requires 100%.
-      </p>
-    </section>
+        <div id="nameBox" class="field">
+          <label class="muted" for="studentName"><b>Student Name</b></label>
+          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" />
+          <div class="actions">
+            <button class="btn primary" id="btnStart">Start</button>
+            <button class="btn" id="btnResetAll">Reset Game</button>
+          </div>
+        </div>
 
-    <section class="panel" id="gamePanel" style="display:none;">
-      <div class="meta">
-        <span class="chip chip-accent" id="qCountChip">Q 1 / 36</span>
-        <span class="chip">Ohio Government</span>
-        <span class="chip" id="accChip">Accuracy: 100%</span>
-      </div>
+        <div id="questionBox" style="display:none;">
+          <div class="opts" id="opts"></div>
+          <div id="feedback" class="msg"><div class="t" id="fbTitle"></div><div class="b" id="fbBody"></div></div>
+          <div class="actions">
+            <button class="btn" id="btnHint" disabled>Hint</button>
+            <button class="btn primary" id="btnNext" disabled>Next</button>
+            <button class="btn" id="btnRestartMid">Restart Game</button>
+          </div>
+        </div>
 
-      <h2 id="questionText"></h2>
-      <div id="choices"></div>
+        <div id="finishBox" style="display:none;">
+          <h2 class="qtitle">Finish</h2>
+          <p class="qtext">Finish screen always shows name + date + start/end + runtime. Ticket appears only if you have <b>100% accuracy</b>.</p>
+          <div class="summary">
+            <div><b>Attempt Summary</b></div>
+            <div class="muted" style="margin-top:6px;line-height:1.35">
+              Name: <span id="sName"></span><br>Date: <span id="sDate"></span><br>Start: <span id="sStart"></span><br>End: <span id="sEnd"></span><br>Runtime: <span id="sRun"></span><br>Accuracy: <span id="sAcc"></span>
+            </div>
+          </div>
+          <div id="finishMsg" class="msg warn" style="display:block;"><div class="t" id="finishTitle">Checking mastery…</div><div class="b" id="finishBody">—</div></div>
+          <div id="ticket" class="ticket" style="display:none;">
+            <div><b>Submission Ticket</b> (screenshot this)</div>
+            <div class="muted" style="margin-top:6px;line-height:1.35">
+              Name: <span id="tName"></span><br>Date: <span id="tDate"></span><br>Start: <span id="tStart"></span><br>End: <span id="tEnd"></span><br>Runtime: <span id="tRun"></span><br>Accuracy: <span id="tAcc"></span>
+            </div>
+            <div class="code" id="tCode">—</div>
+            <div class="actions" style="margin-top:10px;"><button class="btn primary" id="btnCopy">Copy Ticket Code</button><button class="btn" id="btnReset">Play Again</button></div>
+          </div>
+          <div class="actions" style="margin-top:10px;"><button class="btn" id="btnRestartGame">Restart Game</button><button class="btn" id="btnBackHome">Back to Hub</button></div>
+        </div>
+      </section>
 
-      <div id="msg" class="msg"></div>
-
-      <div class="hud">
-        <div class="hudItem">Name: <b id="hudName"></b></div>
-        <div class="hudItem">Start: <b id="hudStart"></b></div>
-        <div class="hudItem">Running: <b id="hudRun">0:00</b></div>
-        <div class="hudItem">Attempts: <b id="hudAttempts">0</b> • Correct: <b id="hudCorrect">0</b></div>
-      </div>
-
-      <div class="btnRow">
-        <button class="btn btn-small" id="restartBtn" type="button">Restart</button>
-      </div>
-    </section>
-
-    <section class="panel" id="ticketPanel" style="display:none;">
-      <div class="meta">
-        <span class="chip chip-accent">Completion Ticket</span>
-        <span class="chip">100% accuracy</span>
-      </div>
-      <h2>Submit this ticket</h2>
-      <div id="ticket" class="ticket"></div>
-      <div class="btnRow">
-        <button class="btn btn-small" id="playAgainBtn" type="button">Play again</button>
-      </div>
-    </section>
-
+      <aside class="panel">
+        <div class="label">RULES</div>
+        <ul class="muted" style="margin:10px 0 0;line-height:1.45;">
+          <li><b>Mastery</b> = finish all items with <b>0 misses</b>.</li>
+          <li>Wrong answer → hint appears → retry until correct, but accuracy keeps the miss.</li>
+          <li>Ticket includes name + timestamps + runtime.</li>
+        </ul>
+        <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+        <div class="label">WHAT THIS GAME PRACTICES</div>
+        <p class="muted" style="margin:10px 0 0;line-height:1.45;">Ohio and U.S. Constitution similarities and differences, elected judges, initiative and referendum, the 1851 Ohio Constitution, and citizen participation at the state and local levels.</p>
+        <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+        <div class="label">SAVED PROGRESS</div>
+        <p class="muted" style="margin:10px 0 0;line-height:1.45;">Progress saves automatically in this browser until you finish or reset this game.</p>
+      </aside>
+    </div>
   </div>
 
 <script>
-  function shuffle(arr){
-    for(let i = arr.length - 1; i > 0; i--){
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }
-  function fmtClock(totalSec){
-    const m = Math.floor(totalSec/60);
-    const s = totalSec % 60;
-    return m + ":" + (s<10 ? "0" : "") + s;
-  }
-
-  // CS16–17 BANK (36)
+(() => {
   const BANK = [
-    // Similarities Ohio / U.S. Constitution
     { q:"Both the Ohio and U.S. Constitutions include", a:"Separation of powers", d:["A king","Hereditary judges","Unlimited executive power"], hint:"Both divide government into branches." },
     { q:"Both the Ohio and U.S. Constitutions include", a:"Checks and balances", d:["A national monarchy","Appointed governors for life","No elections"], hint:"Both restrain branch power." },
     { q:"Both the Ohio and U.S. Constitutions include", a:"Limited government", d:["Unlimited federal power","Only direct democracy","No courts"], hint:"Government power is restricted." },
@@ -207,7 +123,6 @@
     { q:"Both the Ohio and U.S. Constitutions reflect", a:"Popular sovereignty", d:["Divine right of kings","One-party rule","No citizen role"], hint:"Power comes from the people." },
     { q:"Both constitutions rely on", a:"Elections", d:["Inheritance","Military rule","Appointment only for all offices"], hint:"Citizens vote in both systems." },
 
-    // Differences
     { q:"A key feature of the Ohio Constitution is that citizens can directly vote on laws through", a:"Initiative and referendum", d:["The Electoral College","Judicial review","Impeachment"], hint:"Direct vote on laws/issues." },
     { q:"Unlike the U.S. Constitution, the Ohio Constitution allows citizens to use", a:"Initiative and referendum", d:["A federal veto override","The Necessary and Proper Clause","A treaty power"], hint:"Ohio citizens can vote directly on laws/issues." },
     { q:"Under the Ohio Constitution, judges are generally", a:"Elected", d:["Appointed for life","Chosen by Congress","Selected by the president"], hint:"Ohio judges are voted into office." },
@@ -215,7 +130,6 @@
     { q:"Under the Ohio Constitution, legislators are", a:"Term-limited", d:["Chosen for life","Appointed by judges","Not elected"], hint:"Ohio has legislative term limits." },
     { q:"Under the U.S. Constitution, legislators are", a:"Not term-limited", d:["Limited to one term","Appointed by governors","Chosen by judges"], hint:"Members of Congress can run again and again." },
 
-    // 1851 Ohio Constitution
     { q:"The Ohio Constitution was rewritten in", a:"1851", d:["1776","1787","1865"], hint:"Mid-19th century rewrite." },
     { q:"One reason Ohio adopted a new constitution in 1851 was to", a:"Address difficulties governing the state", d:["Join the Confederacy","Create a monarchy","Eliminate elections"], hint:"It was rewritten to improve governing." },
     { q:"A change made in the 1851 Ohio Constitution was that major executive officials would be", a:"Elected", d:["Appointed by Congress","Selected by judges","Chosen by referendum only"], hint:"More officials chosen by voters." },
@@ -223,206 +137,141 @@
     { q:"A change made in the 1851 Ohio Constitution was the addition of", a:"District courts", d:["The U.S. Supreme Court","Military tribunals","A fourth branch"], hint:"New courts were added." },
     { q:"A change made in the 1851 Ohio Constitution involved", a:"Debt limitations", d:["Presidential term limits","A national bank","A federal treaty system"], hint:"The state limited debt." },
 
-    // State-level citizen roles
     { q:"An Ohio citizen helping at the state level might", a:"Vote in state elections", d:["Declare war","Appoint federal judges","Negotiate treaties"], hint:"Voting is a key state role." },
     { q:"An Ohio citizen helping at the state level might", a:"Run for state office", d:["Write Supreme Court decisions","Confirm treaties","Command the military"], hint:"Citizens can seek office." },
     { q:"An Ohio citizen helping at the state level might", a:"Sign petitions to place issues on the ballot", d:["Impeach senators directly","Issue executive orders","Ratify treaties"], hint:"Petitions can put issues before voters." },
     { q:"An Ohio citizen helping at the state level might", a:"Serve in the National Guard", d:["Appoint state judges","Veto bills","Write constitutional amendments alone"], hint:"State/national service role." },
     { q:"Paying taxes is a way Ohio citizens help", a:"State and local government function", d:["The Supreme Court interpret laws","The president appoint judges","Foreign nations ratify treaties"], hint:"Taxes fund government services." },
 
-    // Local-level citizen roles
     { q:"An Ohio citizen helping at the local level might", a:"Attend local board or commission meetings", d:["Approve treaties","Nominate Supreme Court justices","Declare war"], hint:"Local meetings are a civic role." },
     { q:"An Ohio citizen helping at the local level might", a:"Run for local office", d:["Override vetoes","Ratify federal amendments alone","Issue court rulings"], hint:"Citizens can serve locally." },
     { q:"An Ohio citizen helping at the local level might", a:"Join a community watch group", d:["Write federal law","Create a cabinet department","Review Supreme Court cases"], hint:"Local safety/civic role." },
     { q:"An Ohio citizen helping at the local level might", a:"Serve in a volunteer fire department", d:["Appoint governors","Write state constitutions alone","Approve ambassadors"], hint:"Direct community service." },
     { q:"An Ohio citizen helping at the local level might", a:"Organize civic activities", d:["Nominate federal judges","Command the military","Declare a state law unconstitutional"], hint:"Community organizing helps solve local problems." },
 
-    // Compare / contrast drills
     { q:"Which is true of Ohio but not the U.S. Constitution?", a:"Citizens can use initiative and referendum", d:["There are elections","There is a bill of rights","There are three branches"], hint:"Direct vote on laws/issues is Ohio-specific here." },
     { q:"Which is true of Ohio but not the federal system?", a:"Judges are elected", d:["There is judicial power","There are courts","There is a legislature"], hint:"Federal judges are appointed." },
     { q:"Which is true of Ohio but not Congress?", a:"Legislators have term limits", d:["Laws are passed","Citizens vote","There is an executive"], hint:"Ohio term-limits legislators." },
     { q:"Which is a similarity between Ohio and U.S. Constitutions?", a:"Both divide power among branches", d:["Both elect federal judges","Both use initiative and referendum","Both term-limit legislators"], hint:"Shared basic structure." },
 
-    // Responsibility framing
     { q:"The main idea of CS17 is that Ohio citizens should", a:"Assist state and local government in solving community problems", d:["Leave all issues to judges","Avoid civic involvement","Wait for the federal government to solve everything"], hint:"Citizens have responsibility to help." },
     { q:"Attending a school board meeting is an example of", a:"Local civic participation", d:["Federal foreign policy","Judicial review","National treaty approval"], hint:"Local board involvement." },
     { q:"Signing a ballot issue petition in Ohio is an example of", a:"State-level civic involvement", d:["Military command","Federal impeachment","Supreme Court review"], hint:"Petitions are a state-level participation tool." },
 
-    // Extra rote reps
     { q:"Ohio’s 1851 Constitution changed government partly by making more officials", a:"Elected by the people", d:["Appointed for life","Chosen by federal judges","Selected by Congress"], hint:"More direct voter control." },
     { q:"Debt limitations in the Ohio Constitution were intended to", a:"Improve how the state was governed", d:["Expand presidential power","Create federal courts","End voting"], hint:"A reform to fix governing problems." },
     { q:"A citizen helping solve a zoning issue by attending a city council meeting is working at the", a:"Local level", d:["Federal level","International level","Judicial branch only"], hint:"City council is local." }
   ];
 
-  let deck = [];
-  let idx = 0;
-  let attempts = 0;
-  let correct = 0;
-  let startTime = null;
-  let timerId = null;
-  let locked = false;
+  const QUESTIONS = BANK.map((item, i) => ({
+    id:`g7_${String(i+1).padStart(2,'0')}`,
+    title:'CS 16–17 Review',
+    prompt:item.q,
+    options:[item.a, ...item.d],
+    answerIndex:0,
+    hint:item.hint,
+    explain:`Correct: ${item.a}.`
+  }));
 
-  const startPanel = document.getElementById("startPanel");
-  const gamePanel = document.getElementById("gamePanel");
-  const ticketPanel = document.getElementById("ticketPanel");
+  const STORAGE_KEY='BTB_GOV_CS16_17_V2';
+  const errbox=document.getElementById('errbox'), errtext=document.getElementById('errtext');
+  window.addEventListener('error', e=>{ errbox.style.display='block'; errtext.textContent=`Error: ${e.message}\nSource: ${e.filename}:${e.lineno}:${e.colno}`; });
 
-  const studentNameEl = document.getElementById("studentName");
-  const startBtn = document.getElementById("startBtn");
-  const restartBtn = document.getElementById("restartBtn");
-  const playAgainBtn = document.getElementById("playAgainBtn");
+  const $=id=>document.getElementById(id);
+  const pad2=n=>String(n).padStart(2,'0');
+  const fmtDate=d=>`${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}`;
+  const fmtTime=d=>{ const hr=d.getHours(), ampm=hr>=12?'PM':'AM', h12=hr%12||12; return `${h12}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())} ${ampm}`; };
+  const msToHMS=ms=>{ const s=Math.max(0,Math.floor(ms/1000)); const hh=Math.floor(s/3600), mm=Math.floor((s%3600)/60), ss=s%60; return `${hh}:${pad2(mm)}:${pad2(ss)}`; };
+  const hash32=str=>{ let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619);} return h>>>0; };
+  const base36=n=>n.toString(36).toUpperCase();
+  function mulberry32(seed){ return function(){ let t=seed+=0x6D2B79F5; t=Math.imul(t^(t>>>15), t|1); t^=t+Math.imul(t^(t>>>7), t|61); return ((t^(t>>>14))>>>0)/4294967296; }; }
+  function shuffledIndices(n, seed){ const idx=Array.from({length:n},(_,i)=>i); const rnd=mulberry32(seed>>>0); for(let i=n-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; } return idx; }
 
-  const qCountChip = document.getElementById("qCountChip");
-  const accChip = document.getElementById("accChip");
-  const questionText = document.getElementById("questionText");
-  const choicesEl = document.getElementById("choices");
-  const msgEl = document.getElementById("msg");
-
-  const hudName = document.getElementById("hudName");
-  const hudStart = document.getElementById("hudStart");
-  const hudRun = document.getElementById("hudRun");
-  const hudAttempts = document.getElementById("hudAttempts");
-  const hudCorrect = document.getElementById("hudCorrect");
-
-  function computeAccuracy(){
-    if(attempts === 0) return 100;
-    return Math.round((correct / attempts) * 100);
-  }
-  function updateHUD(){
-    qCountChip.textContent = `Q ${idx+1} / ${deck.length}`;
-    accChip.textContent = `Accuracy: ${computeAccuracy()}%`;
-    hudAttempts.textContent = String(attempts);
-    hudCorrect.textContent = String(correct);
-  }
-  function tick(){
-    const now = new Date();
-    const diffSec = Math.max(0, Math.floor((now - startTime) / 1000));
-    hudRun.textContent = fmtClock(diffSec);
-  }
-
-  function startGame(){
-    const name = studentNameEl.value.trim();
-    if(!name){
-      alert("Enter your name to begin.");
-      studentNameEl.focus();
-      return;
-    }
-
-    deck = BANK.map(x => ({...x}));
-    shuffle(deck);
-
-    idx = 0;
-    attempts = 0;
-    correct = 0;
-    locked = false;
-
-    startTime = new Date();
-    hudName.textContent = name;
-    hudStart.textContent = startTime.toLocaleString();
-
-    startPanel.style.display = "none";
-    ticketPanel.style.display = "none";
-    gamePanel.style.display = "block";
-
-    if(timerId) clearInterval(timerId);
-    timerId = setInterval(tick, 1000);
-    tick();
-
-    showQuestion();
-  }
+  let state={name:'',startedAtISO:'',startedAtMS:0,idx:0,runSeed:0,qmeta:[]};
+  const freshMeta=()=>QUESTIONS.map(()=>({done:false,missed:false,order:null,correctShown:null}));
+  function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  function load(){ try{ const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return false; const parsed=JSON.parse(raw); if(!parsed.name || !parsed.startedAtISO || !Array.isArray(parsed.qmeta)) return false; state=parsed; return true; } catch { return false; } }
+  function clearSave(){ localStorage.removeItem(STORAGE_KEY); }
+  function counts(){ const done=state.qmeta.filter(m=>m.done).length, perfect=state.qmeta.filter(m=>m.done && !m.missed).length; return {done,perfect}; }
+  function accuracyPct(){ const {done,perfect}=counts(); return done===0 ? 0 : Math.round((perfect/done)*100); }
+  function updateStats(){ $('qpos').textContent=`${Math.min(state.idx+1, QUESTIONS.length)} / ${QUESTIONS.length}`; $('acc').textContent=`${accuracyPct()}%`; $('runtime').textContent=state.startedAtMS ? msToHMS(Date.now()-state.startedAtMS) : '0:00:00'; }
+  setInterval(updateStats,500);
+  function setFeedback(kind,title,body){ $('feedback').className=`msg ${kind}`; $('fbTitle').textContent=title; $('fbBody').textContent=body; }
+  function clearFeedback(){ $('feedback').className='msg'; $('fbTitle').textContent=''; $('fbBody').textContent=''; }
+  function ensureOrder(i){ const q=QUESTIONS[i], meta=state.qmeta[i]; if(Array.isArray(meta.order)) return; const seed=hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`)^0x555AAA; meta.order=shuffledIndices(q.options.length, seed); meta.correctShown=meta.order.indexOf(q.answerIndex); }
+  function disableInputs(disabled){ document.querySelectorAll('.optbtn').forEach(b=>b.disabled=disabled); }
 
   function showQuestion(){
-    msgEl.className = "msg";
-    msgEl.style.display = "none";
-    choicesEl.innerHTML = "";
-
-    const item = deck[idx];
-    questionText.textContent = item.q;
-
-    const options = [item.a, ...item.d];
-    shuffle(options);
-
-    options.forEach(opt => {
-      const div = document.createElement("div");
-      div.className = "choice";
-      div.textContent = opt;
-      div.addEventListener("click", () => pick(div, opt));
-      choicesEl.appendChild(div);
+    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    clearFeedback(); $('btnNext').disabled=true; $('btnHint').disabled=true; $('qtitle').textContent=q.title; $('qtext').textContent=q.prompt; $('opts').innerHTML='';
+    ensureOrder(state.idx);
+    const letters=['A','B','C','D'];
+    meta.order.forEach((origIdx, shownIdx)=>{
+      const b=document.createElement('button');
+      b.className='optbtn';
+      b.innerHTML=`<span class="ltr">${letters[shownIdx]}.</span>${q.options[origIdx]}`;
+      b.addEventListener('click',()=>answer(shownIdx));
+      $('opts').appendChild(b);
     });
-
-    updateHUD();
+    if(meta.done){
+      disableInputs(true);
+      $('btnNext').disabled=false;
+      setFeedback(meta.missed?'warn':'good','Already completed', meta.missed?'This item was completed with a miss.':'This item was completed with no miss.');
+    } else disableInputs(false);
+    save(); updateStats();
   }
 
-  function pick(choiceDiv, chosenText){
-    if(locked) return;
-    locked = true;
+  function answer(shownIdx){
+    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    if(meta.done) return;
+    if(shownIdx===meta.correctShown){
+      meta.done=true;
+      setFeedback('good','Correct ✅', q.explain);
+      disableInputs(true);
+      $('btnNext').disabled=false;
+    } else {
+      meta.missed=true;
+      setFeedback('warn','Hint 💡', q.hint);
+    }
+    save(); updateStats();
+  }
 
-    attempts++;
-    const item = deck[idx];
+  $('btnNext').addEventListener('click', ()=>{
+    if(!state.qmeta[state.idx].done) return;
+    state.idx++;
+    if(state.idx>=QUESTIONS.length) return finish();
+    showQuestion();
+  });
 
-    [...choicesEl.querySelectorAll(".choice")].forEach(c => c.classList.remove("correct","wrong"));
-
-    if(chosenText === item.a){
-      correct++;
-      choiceDiv.classList.add("correct");
-      msgEl.className = "msg good";
-      msgEl.textContent = "Correct!";
-      msgEl.style.display = "block";
-      updateHUD();
-
-      setTimeout(() => {
-        idx++;
-        locked = false;
-        if(idx >= deck.length) finishGame();
-        else showQuestion();
-      }, 450);
-
-    }else{
-      choiceDiv.classList.add("wrong");
-      msgEl.className = "msg bad";
-      msgEl.textContent = "Hint: " + item.hint;
-      msgEl.style.display = "block";
-      updateHUD();
-      locked = false;
+  function finish(){
+    $('nameBox').style.display='none'; $('questionBox').style.display='none'; $('finishBox').style.display='';
+    const ended=new Date(), start=new Date(state.startedAtISO), runMS=Date.now()-state.startedAtMS;
+    const total=QUESTIONS.length, {perfect}=counts(), acc=Math.round((perfect/total)*100);
+    $('sName').textContent=state.name; $('sDate').textContent=fmtDate(ended); $('sStart').textContent=fmtTime(start); $('sEnd').textContent=fmtTime(ended); $('sRun').textContent=msToHMS(runMS); $('sAcc').textContent=`${acc}%`;
+    if(perfect===total){
+      $('finishTitle').textContent='Mastery achieved ✅'; $('finishBody').textContent='You finished with 100% accuracy (0 misses). Screenshot the ticket.'; $('ticket').style.display='';
+      $('tName').textContent=state.name; $('tDate').textContent=fmtDate(ended); $('tStart').textContent=fmtTime(start); $('tEnd').textContent=fmtTime(ended); $('tRun').textContent=msToHMS(runMS); $('tAcc').textContent=`${acc}%`;
+      const raw=`${state.name}|${state.startedAtISO}|${ended.toISOString()}|${perfect}|${total}|${state.runSeed}`;
+      $('tCode').textContent=`BTB-CS16-17-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
+      clearSave();
+    } else {
+      $('finishTitle').textContent='Mastery NOT achieved ❌'; $('finishBody').textContent=`Accuracy: ${acc}%. Mastery requires 100%.`; $('ticket').style.display='none';
     }
   }
 
-  function finishGame(){
-    clearInterval(timerId);
-    const endTime = new Date();
-    const run = hudRun.textContent;
-    const acc = computeAccuracy();
-
-    if(acc !== 100){
-      alert("Mastery requires 100% accuracy. Restart and try again.");
-      restart();
-      return;
-    }
-
-    gamePanel.style.display = "none";
-    ticketPanel.style.display = "block";
-
-    const name = studentNameEl.value.trim();
-    const ticketText =
-`Name: ${name}
-Game: Gov Basics 7 — Ohio Constitution & Civic Responsibility (CS16–17)
-Passed: YES
-Accuracy: ${acc}%
-Start: ${startTime.toLocaleString()}
-End: ${endTime.toLocaleString()}
-Running Time: ${run}
-Total Questions: ${deck.length}
-Attempts: ${attempts}
-Correct: ${correct}`;
-
-    document.getElementById("ticket").textContent = ticketText;
-  }
-
-  function restart(){ location.reload(); }
-
-  startBtn.addEventListener("click", startGame);
-  restartBtn.addEventListener("click", restart);
-  playAgainBtn.addEventListener("click", restart);
-  studentNameEl.addEventListener("keydown", (e)=>{ if(e.key === "Enter") startGame(); });
+  function restartGame(){ clearSave(); location.reload(); }
+  $('btnStart').addEventListener('click', ()=>{
+    const name=($('studentName').value||'').trim();
+    if(name.length<2){ setFeedback('warn','Name required','Enter your name to begin.'); return; }
+    state.name=name; state.startedAtISO=new Date().toISOString(); state.startedAtMS=Date.now(); state.idx=0; state.runSeed=(Math.floor(Math.random()*1e9)^hash32(name+'|'+state.startedAtISO))>>>0; state.qmeta=freshMeta(); for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i); save(); $('nameBox').style.display='none'; $('questionBox').style.display=''; showQuestion();
+  });
+  $('studentName').addEventListener('keydown', e=>{ if(e.key==='Enter') $('btnStart').click(); });
+  $('btnResetAll').addEventListener('click', restartGame); $('btnRestartMid').addEventListener('click', restartGame); $('btnRestartGame').addEventListener('click', restartGame); $('btnReset').addEventListener('click', restartGame);
+  $('btnBackHome').addEventListener('click', ()=>location.href='../index.html');
+  $('btnCopy').addEventListener('click', async ()=>{ try{ await navigator.clipboard.writeText($('tCode').textContent.trim()); $('btnCopy').textContent='Copied ✅'; setTimeout(()=>$('btnCopy').textContent='Copy Ticket Code',1000);} catch {} });
+  if(load()){ $('studentName').value=state.name||''; $('nameBox').style.display='none'; $('questionBox').style.display=''; showQuestion(); }
+  updateStats();
+})();
 </script>
 </body>
 </html>
