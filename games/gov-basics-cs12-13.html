@@ -1,439 +1,222 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gov Basics 5 — Branch Powers & Checks (CS12–13)</title>
-
-<link rel="stylesheet" href="../styles.css">
-
-<style>
-  .wrapGame{width:min(980px,92vw);margin:30px auto;padding:0 0 30px;}
-  .panel{
-    background:linear-gradient(180deg, rgba(17,26,47,.95), rgba(15,23,48,.92));
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:var(--radius);
-    box-shadow:0 14px 40px rgba(0,0,0,.35);
-    padding:18px;
-    position:relative;
-    overflow:hidden;
-  }
-  .panel::before{
-    content:"";
-    position:absolute; inset:-2px;
-    background: radial-gradient(520px 220px at 18% 0%, rgba(122,162,255,.18), transparent 60%);
-    pointer-events:none;
-  }
-  .panel > *{position:relative;}
-
-  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
-  .chip{
-    display:inline-flex;align-items:center;gap:6px;
-    font-size:12px;padding:6px 10px;border-radius:999px;
-    background:var(--chip);border:1px solid var(--chipLine);color:var(--text);
-  }
-  .chip-accent{background: rgba(122,162,255,.16);border-color: rgba(122,162,255,.35);}
-
-  h1{margin:0 0 8px;font-size:24px;line-height:1.15}
-  h2{margin:0 0 10px;font-size:18px;line-height:1.25}
-  p{margin:8px 0;color:var(--muted);line-height:1.35}
-  label{display:block;margin-top:10px;color:var(--muted);font-size:13px}
-
-  .input{
-    width:min(420px,100%);
-    background: rgba(255,255,255,.03);
-    border:1px solid var(--line);
-    color: var(--text);
-    border-radius: 12px;
-    padding:10px 12px;
-    outline:none;
-    margin-top:8px;
-  }
-
-  .choice{
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:14px;
-    padding:12px 12px;
-    margin:10px 0;
-    cursor:pointer;
-    transition: filter .12s ease, transform .06s ease, border-color .12s ease;
-    background: rgba(255,255,255,.02);
-  }
-  .choice:hover{border-color:var(--accent);filter:brightness(1.06)}
-  .choice:active{transform: translateY(1px)}
-  .choice.correct{border-color: rgba(43,213,118,.55); background: rgba(43,213,118,.10)}
-  .choice.wrong{border-color: rgba(255,92,122,.55); background: rgba(255,92,122,.08)}
-
-  .msg{
-    margin-top:12px;padding:10px 12px;border-radius:12px;
-    display:none;font-size:13px;line-height:1.3;
-  }
-  .msg.good{background:rgba(43,213,118,.12);border:1px solid rgba(43,213,118,.25);display:block}
-  .msg.bad{background:rgba(255,92,122,.10);border:1px solid rgba(255,92,122,.25);display:block}
-
-  .hud{
-    margin-top:14px;
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:10px;
-  }
-  @media(max-width:720px){ .hud{grid-template-columns:1fr;} }
-  .hudItem{
-    border:1px dashed rgba(255,255,255,.14);
-    border-radius:14px;
-    padding:10px 12px;
-    color:var(--muted);
-    background: rgba(255,255,255,.02);
-  }
-  .hudItem b{color:var(--text);font-family:var(--mono);font-size:12px}
-
-  .ticket{
-    margin-top:14px;
-    background: rgba(255,255,255,.03);
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:14px;
-    padding:12px;
-    font-family: var(--mono);
-    color: var(--text);
-    font-size: 12px;
-    line-height:1.5;
-    white-space: pre-wrap;
-  }
-
-  .btnRow{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
-  .liveGreen{
-    font-size:12px;
-    padding:5px 10px;
-    border-radius:999px;
-    background: rgba(43,213,118,.12);
-    border:1px solid rgba(43,213,118,.35);
-    color: var(--good);
-    font-weight:800;
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gov Basics 5 — Branch Powers & Checks (CS 12–13)</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    :root{--bg:#0b1220;--panel:#121a2f;--card:#111a2e;--text:#e7eefc;--muted:#a8b4cf;--line:rgba(255,255,255,.12);--shadow:0 18px 55px rgba(0,0,0,.40);--radius:18px;--good:#2bd576;--bad:#ff5c7a;--warn:#ffd166;--accent:#7aa2ff;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
+    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b1220,#070b14);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;min-height:100vh}
+    .wrap{width:min(980px,92vw);margin:22px auto 40px}.topbar{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 14px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;justify-content:space-between}
+    .kicker{letter-spacing:.14em;font-size:12px;color:var(--muted);font-weight:700} h1{margin:6px 0 6px;font-size:24px}.sub{margin:0;color:var(--muted);line-height:1.35}
+    .pillrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.pill{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted);white-space:nowrap}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}@media (max-width:900px){.grid{grid-template-columns:1fr}}
+    .panel{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.label{color:var(--muted);font-size:12px;letter-spacing:.08em;font-weight:800}
+    .statline{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.stat{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:140px}.stat .big{font-size:16px;font-weight:800}.stat .small{font-size:12px;color:var(--muted);margin-top:2px}
+    .qtitle{margin:10px 0 6px;font-size:18px}.qtext{color:var(--text);line-height:1.4;margin:0 0 12px;white-space:pre-wrap}
+    .opts{display:grid;gap:10px;margin-top:10px}.optbtn{text-align:left;width:100%;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);padding:12px;color:var(--text);cursor:pointer;transition:transform .04s ease,border-color .15s ease,background .15s ease}.optbtn:hover{border-color:rgba(122,162,255,.45)}.optbtn:active{transform:scale(.995)}.optbtn[disabled]{opacity:.65;cursor:not-allowed}.optbtn .ltr{font-family:var(--mono);font-weight:900;margin-right:8px;color:var(--accent)}
+    .msg{border-radius:14px;border:1px solid var(--line);padding:12px;margin-top:12px;display:none}.msg.good{display:block;border-color:rgba(43,213,118,.35);background:rgba(43,213,118,.08)}.msg.warn{display:block;border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.08)}.msg .t{font-weight:800;margin-bottom:4px}.msg .b{color:var(--muted);line-height:1.35}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.btn{border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);padding:10px 12px;cursor:pointer;font-weight:800}.btn:hover{border-color:rgba(122,162,255,.45)}.btn.primary{border-color:rgba(122,162,255,.45);background:rgba(122,162,255,.10)}.btn[disabled]{opacity:.6;cursor:not-allowed}
+    .field{display:grid;gap:6px;margin-top:10px} input[type="text"]{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
+    .errbox{display:none;margin-top:14px;border:1px solid rgba(255,92,122,.45);background:rgba(255,92,122,.10);border-radius:14px;padding:12px}.errbox .t{font-weight:900}.errbox pre{margin:8px 0 0;white-space:pre-wrap;color:var(--text);font-family:var(--mono);font-size:12px}
+    .muted{color:var(--muted)} .ticket{margin-top:12px;border:1px solid rgba(43,213,118,.35);background:rgba(43,213,118,.07);border-radius:14px;padding:12px}.ticket .code{font-family:var(--mono);font-weight:900;letter-spacing:.06em;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);margin-top:8px;word-break:break-word}.summary{margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px}
+  </style>
 </head>
-
 <body>
-  <div class="wrapGame">
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <div class="kicker">LEGEND MASTERY SERIES</div>
+        <h1>Gov Basics 5 — Branch Powers & Checks (CS 12–13)</h1>
+        <p class="sub">Legislative, executive, and judicial powers plus checks and balances. Mastery requires <b>100% accuracy</b>.</p>
+      </div>
+      <div class="pillrow">
+        <div class="pill">Mastery (100%) ✅</div>
+        <div class="pill">Name + timestamps ✅</div>
+        <div class="pill">Submission ticket ✅</div>
+      </div>
+    </div>
 
-    <!-- START PANEL -->
-    <section class="panel" id="startPanel">
-      <div class="row" style="justify-content:space-between;">
-        <div>
-          <div class="meta">
-            <span class="chip chip-accent">CS12–13</span>
-            <span class="chip">Back-to-Basics</span>
-            <span class="chip">100% required</span>
+    <div id="errbox" class="errbox"><div class="t">On-page error box</div><pre id="errtext"></pre></div>
+
+    <div class="grid">
+      <section class="panel">
+        <div class="row">
+          <div class="label">QUESTION</div>
+          <div class="statline">
+            <div class="stat"><div class="big" id="qpos">—</div><div class="small">Progress</div></div>
+            <div class="stat"><div class="big" id="acc">—</div><div class="small">Accuracy</div></div>
+            <div class="stat"><div class="big" id="runtime">—</div><div class="small">Runtime</div></div>
           </div>
-          <h1>Gov Basics 5 — Branch Powers & Checks</h1>
-          <p>
-            Legislative, Executive, Judicial powers + checks and balances.
-            Auto-submit on click. Correct = auto-advance. Wrong = hint. Ticket only at <b>100% accuracy</b>.
-          </p>
         </div>
-        <span class="liveGreen" style="align-self:flex-start;">LIVE</span>
-      </div>
 
-      <label for="studentName">Enter your name to begin:</label>
-      <input id="studentName" class="input" placeholder="Student name" autocomplete="off" />
+        <h2 class="qtitle" id="qtitle">Enter your name to begin</h2>
+        <p class="qtext" id="qtext">Use your real name. A submission ticket appears only if you finish with 100% accuracy.</p>
 
-      <div class="btnRow">
-        <button class="btn" id="startBtn" type="button">Start Game</button>
-      </div>
-      <p class="muted" style="margin-top:10px;font-size:12px;">
-        Tip: If your Chromebook sleeps, refresh may restart the game. That’s okay — mastery requires 100%.
-      </p>
-    </section>
+        <div id="nameBox" class="field">
+          <label class="muted" for="studentName"><b>Student Name</b></label>
+          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" />
+          <div class="actions">
+            <button class="btn primary" id="btnStart">Start</button>
+            <button class="btn" id="btnResetAll">Reset Game</button>
+          </div>
+        </div>
 
-    <!-- GAME PANEL -->
-    <section class="panel" id="gamePanel" style="display:none;">
-      <div class="meta">
-        <span class="chip chip-accent" id="qCountChip">Q 1 / 38</span>
-        <span class="chip">Branches + Checks</span>
-        <span class="chip" id="accChip">Accuracy: 100%</span>
-      </div>
+        <div id="questionBox" style="display:none;">
+          <div class="opts" id="opts"></div>
+          <div id="feedback" class="msg"><div class="t" id="fbTitle"></div><div class="b" id="fbBody"></div></div>
+          <div class="actions">
+            <button class="btn" id="btnHint" disabled>Hint</button>
+            <button class="btn primary" id="btnNext" disabled>Next</button>
+            <button class="btn" id="btnRestartMid">Restart Game</button>
+          </div>
+        </div>
 
-      <h2 id="questionText"></h2>
-      <div id="choices"></div>
+        <div id="finishBox" style="display:none;">
+          <h2 class="qtitle">Finish</h2>
+          <p class="qtext">Finish screen always shows name + date + start/end + runtime. Ticket appears only if you have <b>100% accuracy</b>.</p>
+          <div class="summary">
+            <div><b>Attempt Summary</b></div>
+            <div class="muted" style="margin-top:6px;line-height:1.35">
+              Name: <span id="sName"></span><br>Date: <span id="sDate"></span><br>Start: <span id="sStart"></span><br>End: <span id="sEnd"></span><br>Runtime: <span id="sRun"></span><br>Accuracy: <span id="sAcc"></span>
+            </div>
+          </div>
+          <div id="finishMsg" class="msg warn" style="display:block;"><div class="t" id="finishTitle">Checking mastery…</div><div class="b" id="finishBody">—</div></div>
+          <div id="ticket" class="ticket" style="display:none;">
+            <div><b>Submission Ticket</b> (screenshot this)</div>
+            <div class="muted" style="margin-top:6px;line-height:1.35">
+              Name: <span id="tName"></span><br>Date: <span id="tDate"></span><br>Start: <span id="tStart"></span><br>End: <span id="tEnd"></span><br>Runtime: <span id="tRun"></span><br>Accuracy: <span id="tAcc"></span>
+            </div>
+            <div class="code" id="tCode">—</div>
+            <div class="actions" style="margin-top:10px;"><button class="btn primary" id="btnCopy">Copy Ticket Code</button><button class="btn" id="btnReset">Play Again</button></div>
+          </div>
+          <div class="actions" style="margin-top:10px;"><button class="btn" id="btnRestartGame">Restart Game</button><button class="btn" id="btnBackHome">Back to Hub</button></div>
+        </div>
+      </section>
 
-      <div id="msg" class="msg"></div>
-
-      <div class="hud">
-        <div class="hudItem">Name: <b id="hudName"></b></div>
-        <div class="hudItem">Start: <b id="hudStart"></b></div>
-        <div class="hudItem">Running: <b id="hudRun">0:00</b></div>
-        <div class="hudItem">Attempts: <b id="hudAttempts">0</b> • Correct: <b id="hudCorrect">0</b></div>
-      </div>
-
-      <div class="btnRow">
-        <button class="btn btn-small" id="restartBtn" type="button">Restart</button>
-      </div>
-    </section>
-
-    <!-- TICKET PANEL -->
-    <section class="panel" id="ticketPanel" style="display:none;">
-      <div class="meta">
-        <span class="chip chip-accent">Completion Ticket</span>
-        <span class="chip">100% accuracy</span>
-      </div>
-      <h2>Submit this ticket</h2>
-      <div id="ticket" class="ticket"></div>
-      <div class="btnRow">
-        <button class="btn btn-small" id="playAgainBtn" type="button">Play again</button>
-      </div>
-    </section>
-
+      <aside class="panel">
+        <div class="label">RULES</div>
+        <ul class="muted" style="margin:10px 0 0;line-height:1.45;">
+          <li><b>Mastery</b> = finish all items with <b>0 misses</b>.</li>
+          <li>Wrong answer → hint appears → retry until correct, but accuracy keeps the miss.</li>
+          <li>Ticket includes name + timestamps + runtime.</li>
+        </ul>
+        <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+        <div class="label">WHAT THIS GAME PRACTICES</div>
+        <p class="muted" style="margin:10px 0 0;line-height:1.45;">Congress, presidency, courts, vetoes, confirmations, impeachment, and judicial review.</p>
+        <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+        <div class="label">SAVED PROGRESS</div>
+        <p class="muted" style="margin:10px 0 0;line-height:1.45;">Progress saves automatically in this browser until you finish or reset this game.</p>
+      </aside>
+    </div>
   </div>
 
 <script>
-  function shuffle(arr){
-    for(let i = arr.length - 1; i > 0; i--){
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }
-  function fmtClock(totalSec){
-    const m = Math.floor(totalSec/60);
-    const s = totalSec % 60;
-    return m + ":" + (s<10 ? "0" : "") + s;
-  }
-
-  // CS12–13 BANK (38) — rote branch powers + checks
-  // correct stored as TEXT
-  const BANK = [
-    // Legislative (Congress)
-    { q:"The primary job of the legislative branch is to", a:"Make laws", d:["Interpret laws","Enforce laws","Command the military"], hint:"Congress writes/passes laws." },
-    { q:"Congress is made up of", a:"The House of Representatives and the Senate", d:["The president and vice president","State legislatures only","The Supreme Court and federal courts"], hint:"Bicameral legislature." },
-    { q:"The House of Representatives is based on", a:"Population", d:["Equal representation for every state","Judicial precedent","Executive orders"], hint:"More people = more reps." },
-    { q:"The Senate gives each state", a:"Two senators", d:["Senators based on population","One senator total","Ten senators"], hint:"Equal state representation." },
-    { q:"The power to declare war belongs to", a:"Congress", d:["The president alone","The Supreme Court","State governors"], hint:"Article I power." },
-    { q:"The power to coin money belongs to", a:"Congress", d:["The president","The Supreme Court","State courts"], hint:"Legislative enumerated power." },
-    { q:"The power to approve treaties belongs to", a:"The Senate", d:["The House only","The Supreme Court","State legislatures"], hint:"Senate advice/consent." },
-    { q:"The power to confirm presidential appointments belongs to", a:"The Senate", d:["The House only","The Supreme Court","The vice president"], hint:"Advice/consent." },
-    { q:"The power of impeachment is best described as", a:"Bringing charges against an official", d:["Convicting an official","Vetoing a bill","Declaring a law unconstitutional"], hint:"House impeaches; Senate tries." },
-    { q:"The House of Representatives has the power to", a:"Impeach federal officials", d:["Ratify treaties","Declare laws unconstitutional","Appoint justices"], hint:"House brings charges." },
-    { q:"The Senate’s role in impeachment is to", a:"Hold the trial and vote to convict or remove", d:["Write the articles of impeachment","Veto bills","Review constitutionality"], hint:"Senate tries the case." },
-
-    // Executive (President)
-    { q:"The primary job of the executive branch is to", a:"Enforce laws", d:["Make laws","Interpret laws","Write the Constitution"], hint:"Exec carries out laws." },
-    { q:"The president’s power to reject a bill is called", a:"Veto", d:["Judicial review","Cloture","Ratification"], hint:"President can reject legislation." },
-    { q:"The president is the commander in chief of the", a:"Armed forces", d:["Supreme Court","House of Representatives","State legislatures"], hint:"Military commander." },
-    { q:"An executive order is", a:"A directive from the president that manages operations of the federal government", d:["A law passed by Congress","A Supreme Court opinion","A treaty with another country"], hint:"Presidential directive (not a law from Congress)." },
-    { q:"The president makes treaties, but they must be approved by", a:"The Senate", d:["The House only","The Supreme Court","State courts"], hint:"Advice/consent." },
-    { q:"The president appoints federal judges, but they must be confirmed by", a:"The Senate", d:["The House","The Supreme Court","The Cabinet only"], hint:"Senate confirms." },
-
-    // Judicial (Courts)
-    { q:"The primary job of the judicial branch is to", a:"Interpret laws and the Constitution", d:["Enforce laws","Write laws","Collect taxes"], hint:"Courts interpret." },
-    { q:"The highest court in the United States is the", a:"Supreme Court", d:["Court of Appeals","District Court","State Supreme Court"], hint:"Top federal court." },
-    { q:"Judicial review means the courts can", a:"Declare laws unconstitutional", d:["Write laws","Command armies","Collect taxes"], hint:"Strike laws that violate Constitution." },
-
-    // Checks and balances examples
-    { q:"A presidential veto is a check by the", a:"Executive branch on the legislative branch", d:["Legislative branch on the executive","Judicial branch on the executive","State governments on Congress"], hint:"President checks Congress." },
-    { q:"Congress can override a veto with", a:"A two-thirds vote in both houses", d:["A simple majority vote","A Supreme Court order","A state referendum"], hint:"Supermajority override." },
-    { q:"The Senate’s confirmation power is a check by the", a:"Legislative branch on the executive branch", d:["Executive on judicial","Judicial on legislative","States on federal"], hint:"Advice/consent checks president." },
-    { q:"Declaring a law unconstitutional is a check by the", a:"Judicial branch on the legislative branch", d:["Executive on legislative","Legislative on judicial","States on courts"], hint:"Courts check laws." },
-    { q:"Impeachment is a check by the", a:"Legislative branch on the executive or judicial branch", d:["Executive on legislative","Judicial on executive","States on Congress"], hint:"Congress can remove officials." },
-    { q:"The president appointing judges is a check by the", a:"Executive branch on the judicial branch", d:["Judicial on executive","Legislative on judicial","States on judiciary"], hint:"Appointments influence courts." },
-
-    // Key roles in lawmaking (rote)
-    { q:"A bill becomes a law after it is passed by Congress and", a:"Signed by the president (or Congress overrides a veto)", d:["Approved by the Supreme Court first","Approved by state governors","Passed by the Electoral College"], hint:"Signature or override." },
-    { q:"If the president vetoes a bill, Congress can still make it law by", a:"Overriding the veto", d:["Asking the Supreme Court","Having states ratify it","Holding a new election"], hint:"2/3 in both houses." },
-
-    // Court system basics
-    { q:"Federal district courts are generally", a:"Trial courts", d:["The final court of appeal","Where treaties are ratified","Where bills are written"], hint:"District courts = trials." },
-    { q:"Courts of appeals primarily", a:"Review decisions from lower courts", d:["Write laws","Run elections","Command the military"], hint:"Appellate review." },
-
-    // More checks and balances drills
-    { q:"The Supreme Court justices are nominated by the", a:"President", d:["Speaker of the House","State governors","Senate Majority Leader"], hint:"Executive nominates." },
-    { q:"Supreme Court justices are confirmed by the", a:"Senate", d:["House","President","State courts"], hint:"Senate confirms." },
-    { q:"The power to approve the federal budget is held by", a:"Congress", d:["The Supreme Court","The president alone","State legislatures"], hint:"Congress controls spending." },
-    { q:"The power to enforce court decisions belongs mainly to the", a:"Executive branch", d:["Legislative branch","Judicial branch","Media"], hint:"Courts rely on executive enforcement." },
-
-    // Scenario checks (still rote)
-    { q:"If Congress investigates an executive agency through hearings, that is", a:"Legislative oversight (a check on the executive)", d:["Judicial review","An executive order","Ratification"], hint:"Oversight hearings." },
-    { q:"If the Supreme Court rules an executive order unconstitutional, that is", a:"Judicial check on the executive", d:["Executive check on Congress","Legislative check on states","State nullification"], hint:"Courts can strike executive action." },
-    { q:"If the Senate refuses to confirm a nominee, that is", a:"Legislative check on executive appointments", d:["Executive check on courts","Judicial check on Congress","State check on federal law"], hint:"Advice/consent." },
-
-    // More branch ID drills
-    { q:"Which branch is most directly responsible for enforcing federal laws?", a:"Executive", d:["Legislative","Judicial","State"], hint:"Exec carries out laws." },
-    { q:"Which branch is most directly responsible for interpreting the Constitution?", a:"Judicial", d:["Executive","Legislative","Media"], hint:"Courts interpret." },
-    { q:"Which branch is most directly responsible for writing federal laws?", a:"Legislative", d:["Judicial","Executive","Bureaucracy"], hint:"Congress writes bills." },
-
-    // Extra checks reps
-    { q:"Treaty approval is a check by the", a:"Senate on the president", d:["House on Senate","Supreme Court on Congress","President on courts"], hint:"2/3 Senate approval." },
-    { q:"Veto override is a check by the", a:"Congress on the president", d:["President on courts","Courts on Congress","States on Congress"], hint:"Congress can override." },
-    { q:"Judicial review is a check mainly used by the", a:"Courts", d:["President","Congress","State governors"], hint:"Court power." },
-    { q:"Impeachment and removal can apply to", a:"Federal officials (executive or judicial)", d:["Only private citizens","Only state governors","Only voters"], hint:"Applies to federal officers." }
+(() => {
+  const QUESTIONS = [
+    {id:'g5_01', title:'Legislative role', prompt:'The primary job of the legislative branch is to', options:['Make laws','Interpret laws','Enforce laws','Command the military'], answerIndex:0, hint:'Congress writes laws.', explain:'Correct: the legislative branch makes laws.'},
+    {id:'g5_02', title:'Congress structure', prompt:'Congress is made up of', options:['The House of Representatives and the Senate','The president and vice president','State legislatures only','The Supreme Court and federal courts'], answerIndex:0, hint:'Bicameral legislature.', explain:'Correct: Congress consists of the House and Senate.'},
+    {id:'g5_03', title:'House basis', prompt:'The House of Representatives is based on', options:['Population','Equal representation for every state','Judicial precedent','Executive orders'], answerIndex:0, hint:'More people = more representatives.', explain:'Correct: House membership is based on population.'},
+    {id:'g5_04', title:'Senate basis', prompt:'The Senate gives each state', options:['Two senators','Senators based on population','One senator total','Ten senators'], answerIndex:0, hint:'Equal state representation.', explain:'Correct: each state has two senators.'},
+    {id:'g5_05', title:'Declare war', prompt:'The power to declare war belongs to', options:['Congress','The president alone','The Supreme Court','State governors'], answerIndex:0, hint:'Article I power.', explain:'Correct: Congress has the power to declare war.'},
+    {id:'g5_06', title:'Confirm appointments', prompt:'The power to confirm presidential appointments belongs to', options:['The Senate','The House only','The Supreme Court','The vice president'], answerIndex:0, hint:'Advice and consent.', explain:'Correct: the Senate confirms presidential appointments.'},
+    {id:'g5_07', title:'Impeachment', prompt:'The power of impeachment is best described as', options:['Bringing charges against an official','Convicting an official','Vetoing a bill','Declaring a law unconstitutional'], answerIndex:0, hint:'House impeaches; Senate tries.', explain:'Correct: impeachment means bringing charges.'},
+    {id:'g5_08', title:'House power', prompt:'The House of Representatives has the power to', options:['Impeach federal officials','Ratify treaties','Declare laws unconstitutional','Appoint justices'], answerIndex:0, hint:'House brings charges.', explain:'Correct: the House impeaches federal officials.'},
+    {id:'g5_09', title:'Senate in impeachment', prompt:'The Senate’s role in impeachment is to', options:['Hold the trial and vote to convict or remove','Write the articles of impeachment','Veto bills','Review constitutionality'], answerIndex:0, hint:'Senate tries the case.', explain:'Correct: the Senate holds impeachment trials.'},
+    {id:'g5_10', title:'Executive role', prompt:'The primary job of the executive branch is to', options:['Enforce laws','Make laws','Interpret laws','Write the Constitution'], answerIndex:0, hint:'Exec carries out laws.', explain:'Correct: the executive branch enforces laws.'},
+    {id:'g5_11', title:'Veto', prompt:'The president’s power to reject a bill is called', options:['Veto','Judicial review','Cloture','Ratification'], answerIndex:0, hint:'Rejecting legislation.', explain:'Correct: the president rejects bills through the veto power.'},
+    {id:'g5_12', title:'Commander in chief', prompt:'The president is the commander in chief of the', options:['Armed forces','Supreme Court','House of Representatives','State legislatures'], answerIndex:0, hint:'Military commander.', explain:'Correct: the president is commander in chief of the armed forces.'},
+    {id:'g5_13', title:'Executive order', prompt:'An executive order is', options:['A directive from the president that manages operations of the federal government','A law passed by Congress','A Supreme Court opinion','A treaty with another country'], answerIndex:0, hint:'Presidential directive.', explain:'Correct: executive orders are presidential directives.'},
+    {id:'g5_14', title:'Treaty approval', prompt:'The president makes treaties, but they must be approved by', options:['The Senate','The House only','The Supreme Court','State courts'], answerIndex:0, hint:'Senate advice and consent.', explain:'Correct: the Senate approves treaties.'},
+    {id:'g5_15', title:'Judicial role', prompt:'The primary job of the judicial branch is to', options:['Interpret laws and the Constitution','Enforce laws','Write laws','Collect taxes'], answerIndex:0, hint:'Courts interpret.', explain:'Correct: the judicial branch interprets laws and the Constitution.'},
+    {id:'g5_16', title:'Highest court', prompt:'The highest court in the United States is the', options:['Supreme Court','Court of Appeals','District Court','State Supreme Court'], answerIndex:0, hint:'Top federal court.', explain:'Correct: the Supreme Court is the highest federal court.'},
+    {id:'g5_17', title:'Judicial review', prompt:'Judicial review means the courts can', options:['Declare laws unconstitutional','Write laws','Command armies','Collect taxes'], answerIndex:0, hint:'Strike unconstitutional laws.', explain:'Correct: judicial review allows courts to declare laws unconstitutional.'},
+    {id:'g5_18', title:'Veto as check', prompt:'A presidential veto is a check by the', options:['Executive branch on the legislative branch','Legislative branch on the executive','Judicial branch on the executive','State governments on Congress'], answerIndex:0, hint:'President checks Congress.', explain:'Correct: a veto is an executive check on the legislative branch.'},
+    {id:'g5_19', title:'Override', prompt:'Congress can override a veto with', options:['A two-thirds vote in both houses','A simple majority vote','A Supreme Court order','A state referendum'], answerIndex:0, hint:'Supermajority override.', explain:'Correct: Congress overrides vetoes with a two-thirds vote in both houses.'},
+    {id:'g5_20', title:'Senate confirmation as check', prompt:'The Senate’s confirmation power is a check by the', options:['Legislative branch on the executive branch','Executive on judicial','Judicial on legislative','States on federal'], answerIndex:0, hint:'Advice and consent checks the president.', explain:'Correct: Senate confirmation checks executive appointments.'},
+    {id:'g5_21', title:'Court check on Congress', prompt:'Declaring a law unconstitutional is a check by the', options:['Judicial branch on the legislative branch','Executive on legislative','Legislative on judicial','States on courts'], answerIndex:0, hint:'Courts check laws.', explain:'Correct: judicial review is a judicial check on Congress.'},
+    {id:'g5_22', title:'Impeachment as check', prompt:'Impeachment is a check by the', options:['Legislative branch on the executive or judicial branch','Executive on legislative','Judicial on executive','States on Congress'], answerIndex:0, hint:'Congress can remove officials.', explain:'Correct: impeachment is a legislative check on executive and judicial officials.'},
+    {id:'g5_23', title:'Appointing judges', prompt:'The president appointing judges is a check by the', options:['Executive branch on the judicial branch','Judicial on executive','Legislative on judicial','States on judiciary'], answerIndex:0, hint:'Appointments shape courts.', explain:'Correct: appointing judges gives the executive branch influence over the judiciary.'},
+    {id:'g5_24', title:'Bill becomes law', prompt:'A bill becomes a law after it is passed by Congress and', options:['Signed by the president or passed over a veto','Approved by the Supreme Court first','Approved by state governors','Passed by the Electoral College'], answerIndex:0, hint:'Signature or override.', explain:'Correct: a bill becomes law by presidential signature or veto override.'},
+    {id:'g5_25', title:'District courts', prompt:'Federal district courts are generally', options:['Trial courts','The final court of appeal','Where treaties are ratified','Where bills are written'], answerIndex:0, hint:'District courts hear trials.', explain:'Correct: district courts are federal trial courts.'},
+    {id:'g5_26', title:'Oversight', prompt:'If Congress investigates an executive agency through hearings, that is', options:['Legislative oversight','Judicial review','An executive order','Ratification'], answerIndex:0, hint:'Monitoring executive action.', explain:'Correct: hearings to investigate agencies are legislative oversight.'}
   ];
 
-  let deck = [];
-  let idx = 0;
-  let attempts = 0;
-  let correct = 0;
-  let startTime = null;
-  let timerId = null;
-  let locked = false;
+  const STORAGE_KEY='BTB_GOV_CS12_13_V2';
+  const errbox=document.getElementById('errbox'), errtext=document.getElementById('errtext');
+  window.addEventListener('error', e=>{ errbox.style.display='block'; errtext.textContent=`Error: ${e.message}\nSource: ${e.filename}:${e.lineno}:${e.colno}`; });
 
-  const startPanel = document.getElementById("startPanel");
-  const gamePanel = document.getElementById("gamePanel");
-  const ticketPanel = document.getElementById("ticketPanel");
+  const $=id=>document.getElementById(id);
+  const pad2=n=>String(n).padStart(2,'0');
+  const fmtDate=d=>`${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}`;
+  const fmtTime=d=>{ const hr=d.getHours(), ampm=hr>=12?'PM':'AM', h12=hr%12||12; return `${h12}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())} ${ampm}`; };
+  const msToHMS=ms=>{ const s=Math.max(0,Math.floor(ms/1000)); const hh=Math.floor(s/3600), mm=Math.floor((s%3600)/60), ss=s%60; return `${hh}:${pad2(mm)}:${pad2(ss)}`; };
+  const hash32=str=>{ let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619);} return h>>>0; };
+  const base36=n=>n.toString(36).toUpperCase();
+  function mulberry32(seed){ return function(){ let t=seed+=0x6D2B79F5; t=Math.imul(t^(t>>>15), t|1); t^=t+Math.imul(t^(t>>>7), t|61); return ((t^(t>>>14))>>>0)/4294967296; }; }
+  function shuffledIndices(n, seed){ const idx=Array.from({length:n},(_,i)=>i); const rnd=mulberry32(seed>>>0); for(let i=n-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; } return idx; }
 
-  const studentNameEl = document.getElementById("studentName");
-  const startBtn = document.getElementById("startBtn");
-  const restartBtn = document.getElementById("restartBtn");
-  const playAgainBtn = document.getElementById("playAgainBtn");
-
-  const qCountChip = document.getElementById("qCountChip");
-  const accChip = document.getElementById("accChip");
-  const questionText = document.getElementById("questionText");
-  const choicesEl = document.getElementById("choices");
-  const msgEl = document.getElementById("msg");
-
-  const hudName = document.getElementById("hudName");
-  const hudStart = document.getElementById("hudStart");
-  const hudRun = document.getElementById("hudRun");
-  const hudAttempts = document.getElementById("hudAttempts");
-  const hudCorrect = document.getElementById("hudCorrect");
-
-  function computeAccuracy(){
-    if(attempts === 0) return 100;
-    return Math.round((correct / attempts) * 100);
-  }
-  function updateHUD(){
-    qCountChip.textContent = `Q ${idx+1} / ${deck.length}`;
-    accChip.textContent = `Accuracy: ${computeAccuracy()}%`;
-    hudAttempts.textContent = String(attempts);
-    hudCorrect.textContent = String(correct);
-  }
-  function tick(){
-    const now = new Date();
-    const diffSec = Math.max(0, Math.floor((now - startTime) / 1000));
-    hudRun.textContent = fmtClock(diffSec);
-  }
-
-  function startGame(){
-    const name = studentNameEl.value.trim();
-    if(!name){
-      alert("Enter your name to begin.");
-      studentNameEl.focus();
-      return;
-    }
-
-    deck = BANK.map(x => ({...x}));
-    shuffle(deck);
-
-    idx = 0; attempts = 0; correct = 0; locked = false;
-
-    startTime = new Date();
-    hudName.textContent = name;
-    hudStart.textContent = startTime.toLocaleString();
-
-    startPanel.style.display = "none";
-    ticketPanel.style.display = "none";
-    gamePanel.style.display = "block";
-
-    if(timerId) clearInterval(timerId);
-    timerId = setInterval(tick, 1000);
-    tick();
-
-    showQuestion();
-  }
+  let state={name:'',startedAtISO:'',startedAtMS:0,idx:0,runSeed:0,qmeta:[]};
+  const freshMeta=()=>QUESTIONS.map(()=>({done:false,missed:false,order:null,correctShown:null}));
+  function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  function load(){ try{ const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return false; const parsed=JSON.parse(raw); if(!parsed.name || !parsed.startedAtISO || !Array.isArray(parsed.qmeta)) return false; state=parsed; return true; } catch { return false; } }
+  function clearSave(){ localStorage.removeItem(STORAGE_KEY); }
+  function counts(){ const done=state.qmeta.filter(m=>m.done).length, perfect=state.qmeta.filter(m=>m.done && !m.missed).length; return {done,perfect}; }
+  function accuracyPct(){ const {done,perfect}=counts(); return done===0 ? 0 : Math.round((perfect/done)*100); }
+  function updateStats(){ $('qpos').textContent=`${Math.min(state.idx+1, QUESTIONS.length)} / ${QUESTIONS.length}`; $('acc').textContent=`${accuracyPct()}%`; $('runtime').textContent=state.startedAtMS ? msToHMS(Date.now()-state.startedAtMS) : '0:00:00'; }
+  setInterval(updateStats,500);
+  function setFeedback(kind,title,body){ $('feedback').className=`msg ${kind}`; $('fbTitle').textContent=title; $('fbBody').textContent=body; }
+  function clearFeedback(){ $('feedback').className='msg'; $('fbTitle').textContent=''; $('fbBody').textContent=''; }
+  function ensureOrder(i){ const q=QUESTIONS[i], meta=state.qmeta[i]; if(Array.isArray(meta.order)) return; const seed=hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`)^0x555AAA; meta.order=shuffledIndices(q.options.length, seed); meta.correctShown=meta.order.indexOf(q.answerIndex); }
+  function disableInputs(disabled){ document.querySelectorAll('.optbtn').forEach(b=>b.disabled=disabled); }
 
   function showQuestion(){
-    msgEl.className = "msg";
-    msgEl.style.display = "none";
-    choicesEl.innerHTML = "";
-
-    const item = deck[idx];
-    questionText.textContent = item.q;
-
-    const options = [item.a, ...item.d];
-    shuffle(options);
-
-    options.forEach(opt => {
-      const div = document.createElement("div");
-      div.className = "choice";
-      div.textContent = opt;
-      div.addEventListener("click", () => pick(div, opt));
-      choicesEl.appendChild(div);
-    });
-
-    updateHUD();
+    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    clearFeedback(); $('btnNext').disabled=true; $('btnHint').disabled=true; $('qtitle').textContent=q.title; $('qtext').textContent=q.prompt; $('opts').innerHTML='';
+    ensureOrder(state.idx);
+    const letters=['A','B','C','D'];
+    meta.order.forEach((origIdx, shownIdx)=>{ const b=document.createElement('button'); b.className='optbtn'; b.innerHTML=`<span class="ltr">${letters[shownIdx]}.</span>${q.options[origIdx]}`; b.addEventListener('click',()=>answer(shownIdx)); $('opts').appendChild(b); });
+    if(meta.done){ disableInputs(true); $('btnNext').disabled=false; setFeedback(meta.missed?'warn':'good','Already completed', meta.missed?'This item was completed with a miss.':'This item was completed with no miss.'); } else disableInputs(false);
+    save(); updateStats();
   }
 
-  function pick(choiceDiv, chosenText){
-    if(locked) return;
-    locked = true;
+  function answer(shownIdx){
+    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    if(meta.done) return;
+    if(shownIdx===meta.correctShown){ meta.done=true; setFeedback('good','Correct ✅', q.explain); disableInputs(true); $('btnNext').disabled=false; }
+    else { meta.missed=true; setFeedback('warn','Hint 💡', q.hint); }
+    save(); updateStats();
+  }
 
-    attempts++;
-    const item = deck[idx];
+  $('btnNext').addEventListener('click', ()=>{ if(!state.qmeta[state.idx].done) return; state.idx++; if(state.idx>=QUESTIONS.length) return finish(); showQuestion(); });
 
-    [...choicesEl.querySelectorAll(".choice")].forEach(c => c.classList.remove("correct","wrong"));
-
-    if(chosenText === item.a){
-      correct++;
-      choiceDiv.classList.add("correct");
-      msgEl.className = "msg good";
-      msgEl.textContent = "Correct!";
-      msgEl.style.display = "block";
-      updateHUD();
-
-      setTimeout(() => {
-        idx++;
-        locked = false;
-        if(idx >= deck.length) finishGame();
-        else showQuestion();
-      }, 450);
-
-    }else{
-      choiceDiv.classList.add("wrong");
-      msgEl.className = "msg bad";
-      msgEl.textContent = "Hint: " + item.hint;
-      msgEl.style.display = "block";
-      updateHUD();
-      locked = false;
+  function finish(){
+    $('nameBox').style.display='none'; $('questionBox').style.display='none'; $('finishBox').style.display='';
+    const ended=new Date(), start=new Date(state.startedAtISO), runMS=Date.now()-state.startedAtMS;
+    const total=QUESTIONS.length, {perfect}=counts(), acc=Math.round((perfect/total)*100);
+    $('sName').textContent=state.name; $('sDate').textContent=fmtDate(ended); $('sStart').textContent=fmtTime(start); $('sEnd').textContent=fmtTime(ended); $('sRun').textContent=msToHMS(runMS); $('sAcc').textContent=`${acc}%`;
+    if(perfect===total){
+      $('finishTitle').textContent='Mastery achieved ✅'; $('finishBody').textContent='You finished with 100% accuracy (0 misses). Screenshot the ticket.'; $('ticket').style.display='';
+      $('tName').textContent=state.name; $('tDate').textContent=fmtDate(ended); $('tStart').textContent=fmtTime(start); $('tEnd').textContent=fmtTime(ended); $('tRun').textContent=msToHMS(runMS); $('tAcc').textContent=`${acc}%`;
+      const raw=`${state.name}|${state.startedAtISO}|${ended.toISOString()}|${perfect}|${total}|${state.runSeed}`;
+      $('tCode').textContent=`BTB-CS12-13-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
+      clearSave();
+    } else {
+      $('finishTitle').textContent='Mastery NOT achieved ❌'; $('finishBody').textContent=`Accuracy: ${acc}%. Mastery requires 100%.`; $('ticket').style.display='none';
     }
   }
 
-  function finishGame(){
-    clearInterval(timerId);
-    const endTime = new Date();
-    const run = hudRun.textContent;
-    const acc = computeAccuracy();
-
-    if(acc !== 100){
-      alert("Mastery requires 100% accuracy. Restart and try again.");
-      restart();
-      return;
-    }
-
-    gamePanel.style.display = "none";
-    ticketPanel.style.display = "block";
-
-    const name = studentNameEl.value.trim();
-    const ticketText =
-`Name: ${name}
-Game: Gov Basics 5 — Branch Powers & Checks (CS12–13)
-Passed: YES
-Accuracy: ${acc}%
-Start: ${startTime.toLocaleString()}
-End: ${endTime.toLocaleString()}
-Running Time: ${run}
-Total Questions: ${deck.length}
-Attempts: ${attempts}
-Correct: ${correct}`;
-
-    document.getElementById("ticket").textContent = ticketText;
-  }
-
-  function restart(){ location.reload(); }
-
-  startBtn.addEventListener("click", startGame);
-  restartBtn.addEventListener("click", restart);
-  playAgainBtn.addEventListener("click", restart);
-  studentNameEl.addEventListener("keydown", (e)=>{ if(e.key === "Enter") startGame(); });
+  function restartGame(){ clearSave(); location.reload(); }
+  $('btnStart').addEventListener('click', ()=>{ const name=($('studentName').value||'').trim(); if(name.length<2){ setFeedback('warn','Name required','Enter your name to begin.'); return; } state.name=name; state.startedAtISO=new Date().toISOString(); state.startedAtMS=Date.now(); state.idx=0; state.runSeed=(Math.floor(Math.random()*1e9)^hash32(name+'|'+state.startedAtISO))>>>0; state.qmeta=freshMeta(); for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i); save(); $('nameBox').style.display='none'; $('questionBox').style.display=''; showQuestion(); });
+  $('studentName').addEventListener('keydown', e=>{ if(e.key==='Enter') $('btnStart').click(); });
+  $('btnResetAll').addEventListener('click', restartGame); $('btnRestartMid').addEventListener('click', restartGame); $('btnRestartGame').addEventListener('click', restartGame); $('btnReset').addEventListener('click', restartGame);
+  $('btnBackHome').addEventListener('click', ()=>location.href='../index.html');
+  $('btnCopy').addEventListener('click', async ()=>{ try{ await navigator.clipboard.writeText($('tCode').textContent.trim()); $('btnCopy').textContent='Copied ✅'; setTimeout(()=>$('btnCopy').textContent='Copy Ticket Code',1000);} catch {}});
+  if(load()){ $('studentName').value=state.name||''; $('nameBox').style.display='none'; $('questionBox').style.display=''; showQuestion(); }
+  updateStats();
+})();
 </script>
 </body>
 </html>
