@@ -6,22 +6,58 @@
   <title>Gov Basics 3 — Constitutional Change & Bill of Rights (CS 7–8)</title>
   <link rel="stylesheet" href="../styles.css" />
   <style>
-    :root{--bg:#0b1220;--panel:#121a2f;--card:#111a2e;--text:#e7eefc;--muted:#a8b4cf;--line:rgba(255,255,255,.12);--shadow:0 18px 55px rgba(0,0,0,.40);--radius:18px;--good:#2bd576;--bad:#ff5c7a;--warn:#ffd166;--accent:#7aa2ff;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
-    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b1220,#070b14);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;min-height:100vh}
-    .wrap{width:min(980px,92vw);margin:22px auto 40px}.topbar{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 14px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;justify-content:space-between}
-    .kicker{letter-spacing:.14em;font-size:12px;color:var(--muted);font-weight:700} h1{margin:6px 0 6px;font-size:24px}.sub{margin:0;color:var(--muted);line-height:1.35}
-    .pillrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.pill{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted);white-space:nowrap}
-    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}@media (max-width:900px){.grid{grid-template-columns:1fr}}
+    :root{
+      --bg:#0b1220;--panel:#121a2f;--card:#111a2e;--text:#e7eefc;--muted:#a8b4cf;
+      --line:rgba(255,255,255,.12);--shadow:0 18px 55px rgba(0,0,0,.40);--radius:18px;
+      --good:#2bd576;--bad:#ff5c7a;--warn:#ffd166;--accent:#7aa2ff;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#0b1220,#070b14);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;min-height:100vh}
+    .wrap{width:min(980px,92vw);margin:22px auto 40px}
+    .topbar{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 14px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;justify-content:space-between}
+    .kicker{letter-spacing:.14em;font-size:12px;color:var(--muted);font-weight:700}
+    h1{margin:6px 0 6px;font-size:24px}
+    .sub{margin:0;color:var(--muted);line-height:1.35}
+    .pillrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .pill{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted);white-space:nowrap}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
     .panel{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
-    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.label{color:var(--muted);font-size:12px;letter-spacing:.08em;font-weight:800}
-    .statline{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.stat{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:140px}.stat .big{font-size:16px;font-weight:800}.stat .small{font-size:12px;color:var(--muted);margin-top:2px}
-    .qtitle{margin:10px 0 6px;font-size:18px}.qtext{color:var(--text);line-height:1.4;margin:0 0 12px;white-space:pre-wrap}
-    .opts{display:grid;gap:10px;margin-top:10px}.optbtn{text-align:left;width:100%;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);padding:12px;color:var(--text);cursor:pointer;transition:transform .04s ease,border-color .15s ease,background .15s ease}.optbtn:hover{border-color:rgba(122,162,255,.45)}.optbtn:active{transform:scale(.995)}.optbtn[disabled]{opacity:.65;cursor:not-allowed}.optbtn .ltr{font-family:var(--mono);font-weight:900;margin-right:8px;color:var(--accent)}
-    .msg{border-radius:14px;border:1px solid var(--line);padding:12px;margin-top:12px;display:none}.msg.good{display:block;border-color:rgba(43,213,118,.35);background:rgba(43,213,118,.08)}.msg.bad{display:block;border-color:rgba(255,92,122,.35);background:rgba(255,92,122,.08)}.msg.warn{display:block;border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.08)}.msg .t{font-weight:800;margin-bottom:4px}.msg .b{color:var(--muted);line-height:1.35}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.btn{border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);padding:10px 12px;cursor:pointer;font-weight:800}.btn:hover{border-color:rgba(122,162,255,.45)}.btn.primary{border-color:rgba(122,162,255,.45);background:rgba(122,162,255,.10)}.btn[disabled]{opacity:.6;cursor:not-allowed}
-    .field{display:grid;gap:6px;margin-top:10px} input[type="text"]{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
-    .errbox{display:none;margin-top:14px;border:1px solid rgba(255,92,122,.45);background:rgba(255,92,122,.10);border-radius:14px;padding:12px}.errbox .t{font-weight:900}.errbox pre{margin:8px 0 0;white-space:pre-wrap;color:var(--text);font-family:var(--mono);font-size:12px}
-    .muted{color:var(--muted)} .ticket{margin-top:12px;border:1px solid rgba(43,213,118,.35);background:rgba(43,213,118,.07);border-radius:14px;padding:12px}.ticket .code{font-family:var(--mono);font-weight:900;letter-spacing:.06em;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);margin-top:8px;word-break:break-word}.summary{margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px}
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .label{color:var(--muted);font-size:12px;letter-spacing:.08em;font-weight:800}
+    .statline{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .stat{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:140px}
+    .stat .big{font-size:16px;font-weight:800}
+    .stat .small{font-size:12px;color:var(--muted);margin-top:2px}
+    .qtitle{margin:10px 0 6px;font-size:18px}
+    .qtext{color:var(--text);line-height:1.4;margin:0 0 12px;white-space:pre-wrap}
+    .opts{display:grid;gap:10px;margin-top:10px}
+    .optbtn{text-align:left;width:100%;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);padding:12px;color:var(--text);cursor:pointer;transition:transform .04s ease,border-color .15s ease,background .15s ease}
+    .optbtn:hover{border-color:rgba(122,162,255,.45)}
+    .optbtn:active{transform:scale(.995)}
+    .optbtn[disabled]{opacity:.65;cursor:not-allowed}
+    .optbtn .ltr{font-family:var(--mono);font-weight:900;margin-right:8px;color:var(--accent)}
+    .msg{border-radius:14px;border:1px solid var(--line);padding:12px;margin-top:12px;display:none}
+    .msg.good{display:block;border-color:rgba(43,213,118,.35);background:rgba(43,213,118,.08)}
+    .msg.bad{display:block;border-color:rgba(255,92,122,.35);background:rgba(255,92,122,.08)}
+    .msg.warn{display:block;border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.08)}
+    .msg .t{font-weight:800;margin-bottom:4px}
+    .msg .b{color:var(--muted);line-height:1.35}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);padding:10px 12px;cursor:pointer;font-weight:800}
+    .btn:hover{border-color:rgba(122,162,255,.45)}
+    .btn.primary{border-color:rgba(122,162,255,.45);background:rgba(122,162,255,.10)}
+    .btn[disabled]{opacity:.6;cursor:not-allowed}
+    .field{display:grid;gap:6px;margin-top:10px}
+    input[type="text"]{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
+    .errbox{display:none;margin-top:14px;border:1px solid rgba(255,92,122,.45);background:rgba(255,92,122,.10);border-radius:14px;padding:12px}
+    .errbox .t{font-weight:900}
+    .errbox pre{margin:8px 0 0;white-space:pre-wrap;color:var(--text);font-family:var(--mono);font-size:12px}
+    .muted{color:var(--muted)}
+    .ticket{margin-top:12px;border:1px solid rgba(43,213,118,.35);background:rgba(43,213,118,.07);border-radius:14px;padding:12px}
+    .ticket .code{font-family:var(--mono);font-weight:900;letter-spacing:.06em;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);margin-top:8px;word-break:break-word}
+    .summary{margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px}
   </style>
 </head>
 <body>
@@ -30,9 +66,10 @@
       <div>
         <div class="kicker">LEGEND MASTERY SERIES</div>
         <h1>Gov Basics 3 — Constitutional Change & Bill of Rights (CS 7–8)</h1>
-        <p class="sub">Amendments, judicial review, legislation, informal practices, Bill of Rights, and incorporation basics. Mastery requires <b>100% accuracy</b>.</p>
+        <p class="sub">Bill of Rights, judicial review, constitutional change, and incorporation. Built with short OST-style micro-scenarios. Mastery requires <b>100% accuracy</b>.</p>
       </div>
       <div class="pillrow">
+        <div class="pill">Micro-scenarios ✅</div>
         <div class="pill">Mastery (100%) ✅</div>
         <div class="pill">Name + timestamps ✅</div>
         <div class="pill">Submission ticket ✅</div>
@@ -66,7 +103,10 @@
 
         <div id="questionBox" style="display:none;">
           <div class="opts" id="opts"></div>
-          <div id="feedback" class="msg"><div class="t" id="fbTitle"></div><div class="b" id="fbBody"></div></div>
+          <div id="feedback" class="msg">
+            <div class="t" id="fbTitle"></div>
+            <div class="b" id="fbBody"></div>
+          </div>
           <div class="actions">
             <button class="btn" id="btnHint" disabled>Hint</button>
             <button class="btn primary" id="btnNext" disabled>Next</button>
@@ -83,16 +123,25 @@
               Name: <span id="sName"></span><br>Date: <span id="sDate"></span><br>Start: <span id="sStart"></span><br>End: <span id="sEnd"></span><br>Runtime: <span id="sRun"></span><br>Accuracy: <span id="sAcc"></span>
             </div>
           </div>
-          <div id="finishMsg" class="msg warn" style="display:block;"><div class="t" id="finishTitle">Checking mastery…</div><div class="b" id="finishBody">—</div></div>
+          <div id="finishMsg" class="msg warn" style="display:block;">
+            <div class="t" id="finishTitle">Checking mastery…</div>
+            <div class="b" id="finishBody">—</div>
+          </div>
           <div id="ticket" class="ticket" style="display:none;">
             <div><b>Submission Ticket</b> (screenshot this)</div>
             <div class="muted" style="margin-top:6px;line-height:1.35">
               Name: <span id="tName"></span><br>Date: <span id="tDate"></span><br>Start: <span id="tStart"></span><br>End: <span id="tEnd"></span><br>Runtime: <span id="tRun"></span><br>Accuracy: <span id="tAcc"></span>
             </div>
             <div class="code" id="tCode">—</div>
-            <div class="actions" style="margin-top:10px;"><button class="btn primary" id="btnCopy">Copy Ticket Code</button><button class="btn" id="btnReset">Play Again</button></div>
+            <div class="actions" style="margin-top:10px;">
+              <button class="btn primary" id="btnCopy">Copy Ticket Code</button>
+              <button class="btn" id="btnReset">Play Again</button>
+            </div>
           </div>
-          <div class="actions" style="margin-top:10px;"><button class="btn" id="btnRestartGame">Restart Game</button><button class="btn" id="btnBackHome">Back to Hub</button></div>
+          <div class="actions" style="margin-top:10px;">
+            <button class="btn" id="btnRestartGame">Restart Game</button>
+            <button class="btn" id="btnBackHome">Back to Hub</button>
+          </div>
         </div>
       </section>
 
@@ -101,11 +150,11 @@
         <ul class="muted" style="margin:10px 0 0;line-height:1.45;">
           <li><b>Mastery</b> = finish all items with <b>0 misses</b>.</li>
           <li>Wrong answer → hint appears → retry until correct, but accuracy keeps the miss.</li>
-          <li>Ticket includes name + timestamps + runtime.</li>
+          <li>Questions are short and scenario-based to match OST recognition patterns.</li>
         </ul>
         <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
         <div class="label">WHAT THIS GAME PRACTICES</div>
-        <p class="muted" style="margin:10px 0 0;line-height:1.45;">Constitutional change through amendments, Supreme Court interpretation, legislation, informal practices, civil liberties, and incorporation.</p>
+        <p class="muted" style="margin:10px 0 0;line-height:1.45;">First, Fourth, Fifth, Sixth, and Eighth Amendments, judicial review, due process, and incorporation through the 14th Amendment.</p>
         <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
         <div class="label">SAVED PROGRESS</div>
         <p class="muted" style="margin:10px 0 0;line-height:1.45;">Progress saves automatically in this browser until you finish or reset this game.</p>
@@ -116,75 +165,390 @@
 <script>
 (() => {
   const QUESTIONS = [
-    {id:'g3_01', title:'Formal change', prompt:'The formal process to change the Constitution is called', options:['Amendment','Judicial review','Executive privilege','Filibuster'], answerIndex:0, hint:'It is added to the Constitution.', explain:'Correct: an amendment is the formal method of changing the Constitution.'},
-    {id:'g3_02', title:'Judicial interpretation', prompt:'A Supreme Court decision changes constitutional meaning through', options:['Interpretation of the Constitution','Ratification','Treaties','Executive appointments'], answerIndex:0, hint:'Courts interpret constitutional meaning.', explain:'Correct: Supreme Court decisions change meaning through interpretation.'},
-    {id:'g3_03', title:'Legislation', prompt:'Congress changes constitutional practice through', options:['Legislation','Veto overrides only','Jury deliberations','Campaign ads'], answerIndex:0, hint:'Laws passed by Congress.', explain:'Correct: legislation builds on the constitutional framework.'},
-    {id:'g3_04', title:'Informal practice', prompt:'An “informal practice” changing government is best described as', options:['Traditions/customs not written into the Constitution','Amendments','Court cases','Treaties'], answerIndex:0, hint:'Unwritten but repeated over time.', explain:'Correct: informal practices are not spelled out in the Constitution but shape government.'},
-    {id:'g3_05', title:'Oversight', prompt:'A good example of an informal practice is', options:['Congressional oversight of executive agencies','Ratifying an amendment','Declaring a law unconstitutional','Electing the president directly'], answerIndex:0, hint:'Oversight is not spelled out in detail.', explain:'Correct: legislative oversight is a common example of informal practice.'},
-    {id:'g3_06', title:'Judicial review', prompt:'Judicial review is the power of courts to', options:['Declare laws unconstitutional','Write laws','Enforce laws','Command the military'], answerIndex:0, hint:'Courts check constitutionality.', explain:'Correct: judicial review allows courts to declare actions unconstitutional.'},
-    {id:'g3_07', title:'Marbury', prompt:'The case most associated with establishing judicial review is', options:['Marbury v. Madison','McCulloch v. Maryland','Gibbons v. Ogden','Brown v. Board'], answerIndex:0, hint:'John Marshall case.', explain:'Correct: Marbury v. Madison established judicial review.'},
-    {id:'g3_08', title:'Ratification', prompt:'A proposed amendment becomes part of the Constitution when it is', options:['Ratified by the states','Signed by the president','Approved by the Supreme Court','Passed by a simple majority of voters'], answerIndex:0, hint:'States must approve.', explain:'Correct: amendments become part of the Constitution through ratification by the states.'},
-    {id:'g3_09', title:'Proposal method', prompt:'One method to propose an amendment is', options:['Two-thirds vote of both houses of Congress','Presidential order','Supreme Court ruling','State governors’ approval'], answerIndex:0, hint:'Supermajority in Congress.', explain:'Correct: one proposal method is a two-thirds vote of both houses of Congress.'},
-    {id:'g3_10', title:'Bill of Rights', prompt:'The Bill of Rights is best described as', options:['The first ten amendments protecting civil liberties','The Preamble','The Articles of Confederation','A Supreme Court decision'], answerIndex:0, hint:'First ten amendments.', explain:'Correct: the Bill of Rights is the first ten amendments.'},
-    {id:'g3_11', title:'Civil liberties', prompt:'Civil liberties are', options:['Protections from government power','Government services','Political parties','Economic policies'], answerIndex:0, hint:'Limits on government.', explain:'Correct: civil liberties protect individuals from government intrusion.'},
-    {id:'g3_12', title:'First Amendment', prompt:'The First Amendment protects', options:['Speech, religion, press, assembly, petition','Right to bear arms','Voting rights','Trial by jury in all cases'], answerIndex:0, hint:'Five freedoms.', explain:'Correct: the First Amendment protects religion, speech, press, assembly, and petition.'},
-    {id:'g3_13', title:'Fourth Amendment', prompt:'The Fourth Amendment protects against', options:['Unreasonable searches and seizures','Double jeopardy','Self-incrimination','Cruel and unusual punishment'], answerIndex:0, hint:'Searches and warrants.', explain:'Correct: the Fourth Amendment guards against unreasonable searches and seizures.'},
-    {id:'g3_14', title:'Fifth Amendment', prompt:'The Fifth Amendment includes protection against', options:['Self-incrimination','Prior restraint','Quartering soldiers','Excessive bail'], answerIndex:0, hint:'Right to remain silent.', explain:'Correct: the Fifth Amendment protects against self-incrimination.'},
-    {id:'g3_15', title:'Sixth Amendment', prompt:'The Sixth Amendment guarantees', options:['Rights of the accused in criminal prosecutions','Right to vote','Right to privacy','Freedom of religion'], answerIndex:0, hint:'Trial rights.', explain:'Correct: the Sixth Amendment guarantees key criminal trial rights.'},
-    {id:'g3_16', title:'Eighth Amendment', prompt:'The Eighth Amendment prohibits', options:['Cruel and unusual punishment','Search warrants','Speech limits','Quartering troops'], answerIndex:0, hint:'Punishment limits.', explain:'Correct: the Eighth Amendment bans cruel and unusual punishment.'},
-    {id:'g3_17', title:'Incorporation', prompt:'Incorporation refers to', options:['Applying the Bill of Rights to the states through the 14th Amendment','Adding new amendments','Applying state law to the federal government','Granting states supremacy'], answerIndex:0, hint:'14th Amendment + states.', explain:'Correct: incorporation applies many Bill of Rights protections to the states.'},
-    {id:'g3_18', title:'Due process', prompt:'The 14th Amendment is most tied to incorporation through its', options:['Due process clause','Commerce clause','Supremacy clause','Necessary and Proper clause'], answerIndex:0, hint:'Due process used to apply rights.', explain:'Correct: incorporation is tied to the 14th Amendment’s due process clause.'},
-    {id:'g3_19', title:'Original limit', prompt:'Before incorporation, the Bill of Rights primarily limited', options:['The federal government','State governments only','Private businesses only','Foreign governments'], answerIndex:0, hint:'Originally federal only.', explain:'Correct: originally the Bill of Rights mainly restricted the federal government.'},
-    {id:'g3_20', title:'Precedent', prompt:'A Supreme Court decision can change government by', options:['Setting a precedent that guides future cases','Ratifying amendments','Passing budgets','Signing treaties'], answerIndex:0, hint:'Precedent influences future rulings.', explain:'Correct: court precedents shape future constitutional interpretation.'},
-    {id:'g3_21', title:'Legislation effect', prompt:'A law passed by Congress can shift government power by', options:['Expanding or restricting what agencies can do','Changing the Bill of Rights automatically','Replacing the Constitution','Eliminating states'], answerIndex:0, hint:'Legislation shapes policy and power.', explain:'Correct: Congress can define and limit government operations through legislation.'},
-    {id:'g3_22', title:'Formal vs informal', prompt:'Which is a FORMAL constitutional change?', options:['Amendment','Congressional oversight tradition','Political party caucuses','Media coverage'], answerIndex:0, hint:'Formal = in the text.', explain:'Correct: amendments are formal constitutional changes.'},
-    {id:'g3_23', title:'Not formal', prompt:'Which is NOT a formal change method?', options:['Unwritten tradition','Amendment','Legislation affecting practice','Supreme Court interpretation'], answerIndex:0, hint:'Unwritten = informal.', explain:'Correct: unwritten traditions are informal practices, not formal changes.'},
-    {id:'g3_24', title:'Warrant standard', prompt:'A warrant generally requires', options:['Probable cause','A simple hunch','A media report','A vote in Congress'], answerIndex:0, hint:'Reasonable grounds supported by facts.', explain:'Correct: warrants generally require probable cause.'},
-    {id:'g3_25', title:'Press freedom', prompt:'Freedom of the press means', options:['Government generally cannot censor news reporting','Reporters can break any law','Only approved news is legal','Courts write newspapers'], answerIndex:0, hint:'Limits on censorship.', explain:'Correct: freedom of the press limits government censorship.'},
-    {id:'g3_26', title:'Petition', prompt:'The right to petition means', options:['You may ask government to address grievances','You can veto laws','You can arrest officials','You can suspend elections'], answerIndex:0, hint:'Request action from government.', explain:'Correct: petition means asking government to address complaints or grievances.'}
+    // 1st Amendment (4)
+    {
+      id:'g3r_01',
+      title:'First Amendment',
+      prompt:'A student is punished for criticizing school policy online. Which right is MOST relevant?',
+      options:['Freedom of speech','Protection from searches','Right to counsel','Due process'],
+      answerIndex:0,
+      hint:'Criticizing government or policy points to one of the five freedoms.',
+      explain:'Correct: freedom of speech protects expression and criticism.'
+    },
+    {
+      id:'g3r_02',
+      title:'First Amendment',
+      prompt:'The government tries to stop a newspaper from publishing a story. Which freedom is being challenged?',
+      options:['Freedom of the press','Freedom of assembly','Protection from self-incrimination','Right to a speedy trial'],
+      answerIndex:0,
+      hint:'Think newspapers and reporting.',
+      explain:'Correct: freedom of the press limits government censorship of news reporting.'
+    },
+    {
+      id:'g3r_03',
+      title:'First Amendment',
+      prompt:'Citizens gather peacefully outside the statehouse to protest a law. Which right are they using?',
+      options:['Freedom of assembly','Judicial review','Due process','Protection from cruel punishment'],
+      answerIndex:0,
+      hint:'Peaceful gathering is one of the five freedoms.',
+      explain:'Correct: freedom of assembly protects peaceful public gatherings.'
+    },
+    {
+      id:'g3r_04',
+      title:'First Amendment',
+      prompt:'A citizen writes to Congress asking it to change a law. Which right is this?',
+      options:['Right to petition','Freedom of religion','Right to bear arms','Equal protection'],
+      answerIndex:0,
+      hint:'This right means asking government to address grievances.',
+      explain:'Correct: the right to petition allows citizens to ask government for change.'
+    },
+
+    // 4th Amendment (4)
+    {
+      id:'g3r_05',
+      title:'Fourth Amendment',
+      prompt:'Police search a home without a warrant or clear evidence. What right is MOST relevant?',
+      options:['Protection from unreasonable searches','Freedom of speech','Right to counsel','Equal protection'],
+      answerIndex:0,
+      hint:'Searches and seizures point to one amendment.',
+      explain:'Correct: the Fourth Amendment protects against unreasonable searches and seizures.'
+    },
+    {
+      id:'g3r_06',
+      title:'Fourth Amendment',
+      prompt:'A judge approves a search after seeing strong evidence. This approval is based on',
+      options:['Probable cause','Judicial activism','Popular sovereignty','Double jeopardy'],
+      answerIndex:0,
+      hint:'A warrant generally needs factual grounds.',
+      explain:'Correct: probable cause means there are reasonable grounds supported by facts.'
+    },
+    {
+      id:'g3r_07',
+      title:'Fourth Amendment',
+      prompt:'Which situation BEST shows a likely violation of the Fourth Amendment?',
+      options:['Police search property without cause or warrant','A jury hears evidence in court','Congress passes a bill','A citizen votes in an election'],
+      answerIndex:0,
+      hint:'Look for an unreasonable search.',
+      explain:'Correct: searching without cause or a warrant is the clearest Fourth Amendment problem.'
+    },
+    {
+      id:'g3r_08',
+      title:'Fourth Amendment',
+      prompt:'Before searching private property, police generally must have',
+      options:['A warrant based on probable cause','Approval from Congress','A campaign promise','A public opinion poll'],
+      answerIndex:0,
+      hint:'Think judge + evidence.',
+      explain:'Correct: a warrant is generally based on probable cause.'
+    },
+
+    // 5th Amendment / due process (4)
+    {
+      id:'g3r_09',
+      title:'Fifth Amendment',
+      prompt:'A person is forced to testify against themselves in court. Which right is violated?',
+      options:['Protection against self-incrimination','Freedom of assembly','Right to a speedy trial','Protection from searches'],
+      answerIndex:0,
+      hint:'“Remain silent” is the clue.',
+      explain:'Correct: the Fifth Amendment protects against self-incrimination.'
+    },
+    {
+      id:'g3r_10',
+      title:'Fifth Amendment',
+      prompt:'A suspect refuses to answer police questions to avoid confessing. This is protected by the',
+      options:['Fifth Amendment','First Amendment','Eighth Amendment','Tenth Amendment'],
+      answerIndex:0,
+      hint:'Think the amendment tied to self-incrimination.',
+      explain:'Correct: the Fifth Amendment protects the right not to incriminate oneself.'
+    },
+    {
+      id:'g3r_11',
+      title:'Due Process',
+      prompt:'Which situation BEST shows due process?',
+      options:['A fair hearing before punishment','Immediate punishment without trial','A newspaper deciding guilt','Citizens voting on a budget'],
+      answerIndex:0,
+      hint:'Due process is about fair procedures.',
+      explain:'Correct: due process requires fair procedures before the government takes life, liberty, or property.'
+    },
+    {
+      id:'g3r_12',
+      title:'Due Process',
+      prompt:'The government must follow fair procedures before taking away rights. This principle is called',
+      options:['Due process','Judicial review','Federalism','Popular sovereignty'],
+      answerIndex:0,
+      hint:'Fair procedures is the anchor phrase.',
+      explain:'Correct: due process means the government must act fairly and lawfully.'
+    },
+
+    // 6th Amendment (3)
+    {
+      id:'g3r_13',
+      title:'Sixth Amendment',
+      prompt:'A defendant cannot afford a lawyer and is given one by the court. Which amendment applies?',
+      options:['Sixth Amendment','Fourth Amendment','First Amendment','Ninth Amendment'],
+      answerIndex:0,
+      hint:'Think trial rights and counsel.',
+      explain:'Correct: the Sixth Amendment includes the right to counsel.'
+    },
+    {
+      id:'g3r_14',
+      title:'Sixth Amendment',
+      prompt:'A person is guaranteed a speedy public trial. This right comes from the',
+      options:['Sixth Amendment','Fifth Amendment','Second Amendment','Tenth Amendment'],
+      answerIndex:0,
+      hint:'This amendment covers criminal trial rights.',
+      explain:'Correct: the Sixth Amendment guarantees a speedy and public trial.'
+    },
+    {
+      id:'g3r_15',
+      title:'Sixth Amendment',
+      prompt:'Which situation BEST reflects the Sixth Amendment?',
+      options:['A fair and public criminal trial','Protection from cruel punishment','A protest at city hall','A ban on unreasonable searches'],
+      answerIndex:0,
+      hint:'Focus on criminal court procedures.',
+      explain:'Correct: the Sixth Amendment protects the rights of the accused during criminal prosecutions.'
+    },
+
+    // 8th Amendment (3)
+    {
+      id:'g3r_16',
+      title:'Eighth Amendment',
+      prompt:'A punishment is extremely harsh compared with the crime committed. Which amendment is MOST relevant?',
+      options:['Eighth Amendment','First Amendment','Fourth Amendment','Fifth Amendment'],
+      answerIndex:0,
+      hint:'This amendment limits punishments.',
+      explain:'Correct: the Eighth Amendment prohibits cruel and unusual punishment.'
+    },
+    {
+      id:'g3r_17',
+      title:'Eighth Amendment',
+      prompt:'Which situation BEST shows a likely violation of the Eighth Amendment?',
+      options:['Excessive punishment for a minor crime','A public trial','A peaceful protest','A lawful search with a warrant'],
+      answerIndex:0,
+      hint:'Look for punishment out of proportion to the offense.',
+      explain:'Correct: excessive punishment is the clearest Eighth Amendment issue.'
+    },
+    {
+      id:'g3r_18',
+      title:'Eighth Amendment',
+      prompt:'The Eighth Amendment mainly protects against',
+      options:['Cruel and unusual punishment','Unreasonable searches','Self-incrimination','Restrictions on religion'],
+      answerIndex:0,
+      hint:'Think punishment, not search or speech.',
+      explain:'Correct: the Eighth Amendment protects against cruel and unusual punishment.'
+    },
+
+    // Judicial review (3)
+    {
+      id:'g3r_19',
+      title:'Judicial Review',
+      prompt:'The Supreme Court declares a law unconstitutional. What happens next?',
+      options:['The law is no longer valid','Congress must enforce it','The president automatically rewrites it','States ignore the decision'],
+      answerIndex:0,
+      hint:'If it is unconstitutional, government cannot keep using it as valid law.',
+      explain:'Correct: when a law is struck down as unconstitutional, it is no longer valid.'
+    },
+    {
+      id:'g3r_20',
+      title:'Judicial Review',
+      prompt:'Judicial review allows courts to',
+      options:['Declare laws unconstitutional','Write laws','Enforce laws','Conduct elections'],
+      answerIndex:0,
+      hint:'This is the court’s power to judge constitutionality.',
+      explain:'Correct: judicial review is the power to declare laws or actions unconstitutional.'
+    },
+    {
+      id:'g3r_21',
+      title:'Judicial Review',
+      prompt:'Which situation BEST shows judicial review?',
+      options:['A court overturns a law for violating the Constitution','Congress passes a law','The president vetoes a bill','A governor gives a speech'],
+      answerIndex:0,
+      hint:'Look for courts deciding constitutionality.',
+      explain:'Correct: a court overturning a law as unconstitutional is judicial review.'
+    },
+
+    // Incorporation / 14th (3)
+    {
+      id:'g3r_22',
+      title:'Incorporation',
+      prompt:'A state government limits freedom of speech. Which principle allows federal rights to apply to the state?',
+      options:['Incorporation','Popular sovereignty','Checks and balances','Federalism'],
+      answerIndex:0,
+      hint:'Think Bill of Rights applied to the states.',
+      explain:'Correct: incorporation applies many Bill of Rights protections to the states.'
+    },
+    {
+      id:'g3r_23',
+      title:'Bill of Rights',
+      prompt:'Before incorporation, the Bill of Rights mainly limited the',
+      options:['Federal government','State governments only','Local school boards only','Media only'],
+      answerIndex:0,
+      hint:'Originally, these protections were aimed at one level of government.',
+      explain:'Correct: the Bill of Rights originally mainly limited the federal government.'
+    },
+    {
+      id:'g3r_24',
+      title:'14th Amendment',
+      prompt:'The Bill of Rights is applied to the states mainly through the 14th Amendment’s',
+      options:['Due process clause','Commerce clause','Elastic clause','Supremacy clause'],
+      answerIndex:0,
+      hint:'This clause is closely tied to fair procedures and incorporation.',
+      explain:'Correct: incorporation is tied primarily to the due process clause of the 14th Amendment.'
+    },
+
+    // Constitutional change / reinforcement (2)
+    {
+      id:'g3r_25',
+      title:'Constitutional Change',
+      prompt:'The formal process for changing the Constitution is called an',
+      options:['Amendment','Executive order','Court opinion','Cabinet rule'],
+      answerIndex:0,
+      hint:'A formal written addition or change.',
+      explain:'Correct: an amendment is the formal way to change the Constitution.'
+    },
+    {
+      id:'g3r_26',
+      title:'Constitutional Change',
+      prompt:'A Supreme Court decision can change government practice by',
+      options:['Interpreting the Constitution in a new way','Ratifying amendments','Electing senators','Approving treaties'],
+      answerIndex:0,
+      hint:'Courts change meaning through interpretation.',
+      explain:'Correct: Supreme Court decisions can change constitutional meaning through interpretation and precedent.'
+    }
   ];
 
-  const STORAGE_KEY = 'BTB_GOV_CS7_8_V2';
+  const STORAGE_KEY = 'BTB_GOV_CS7_8_REBUILT_V1';
+
   const errbox=document.getElementById('errbox'), errtext=document.getElementById('errtext');
-  window.addEventListener('error', e => { errbox.style.display='block'; errtext.textContent=`Error: ${e.message}\nSource: ${e.filename}:${e.lineno}:${e.colno}`; });
+  window.addEventListener('error', e=>{ errbox.style.display='block'; errtext.textContent=`Error: ${e.message}\nSource: ${e.filename}:${e.lineno}:${e.colno}`; });
+  window.addEventListener('unhandledrejection', e=>{ errbox.style.display='block'; errtext.textContent=String(e.reason && e.reason.stack ? e.reason.stack : e.reason); });
 
   const $ = id => document.getElementById(id);
   const pad2 = n => String(n).padStart(2,'0');
   const fmtDate = d => `${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}`;
-  const fmtTime = d => { const hr=d.getHours(), ampm=hr>=12?'PM':'AM', h12=hr%12||12; return `${h12}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())} ${ampm}`; };
-  const msToHMS = ms => { const s=Math.max(0,Math.floor(ms/1000)); const hh=Math.floor(s/3600), mm=Math.floor((s%3600)/60), ss=s%60; return `${hh}:${pad2(mm)}:${pad2(ss)}`; };
-  const hash32 = str => { let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619);} return h>>>0; };
+  const fmtTime = d => {
+    const hr=d.getHours(), ampm=hr>=12?'PM':'AM', h12=hr%12||12;
+    return `${h12}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())} ${ampm}`;
+  };
+  const msToHMS = ms => {
+    const s=Math.max(0,Math.floor(ms/1000));
+    const hh=Math.floor(s/3600), mm=Math.floor((s%3600)/60), ss=s%60;
+    return `${hh}:${pad2(mm)}:${pad2(ss)}`;
+  };
+  const hash32 = str => {
+    let h=2166136261>>>0;
+    for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619); }
+    return h>>>0;
+  };
   const base36 = n => n.toString(36).toUpperCase();
-  function mulberry32(seed){ return function(){ let t = seed += 0x6D2B79F5; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
-  function shuffledIndices(n, seed){ const idx=Array.from({length:n},(_,i)=>i); const rnd=mulberry32(seed>>>0); for(let i=n-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; } return idx; }
+  function mulberry32(seed){
+    return function(){
+      let t = seed += 0x6D2B79F5;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function shuffledIndices(n, seed){
+    const idx=Array.from({length:n},(_,i)=>i);
+    const rnd=mulberry32(seed>>>0);
+    for(let i=n-1;i>0;i--){
+      const j=Math.floor(rnd()*(i+1));
+      [idx[i],idx[j]]=[idx[j],idx[i]];
+    }
+    return idx;
+  }
 
   let state={name:'',startedAtISO:'',startedAtMS:0,idx:0,runSeed:0,qmeta:[]};
   const freshMeta=()=>QUESTIONS.map(()=>({done:false,missed:false,order:null,correctShown:null}));
+
   function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-  function load(){ try{ const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return false; const parsed=JSON.parse(raw); if(!parsed.name || !parsed.startedAtISO || !Array.isArray(parsed.qmeta)) return false; state=parsed; return true; } catch { return false; } }
+  function load(){
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(!raw) return false;
+      const parsed=JSON.parse(raw);
+      if(!parsed.name || !parsed.startedAtISO || !Array.isArray(parsed.qmeta)) return false;
+      state=parsed;
+      return true;
+    } catch { return false; }
+  }
   function clearSave(){ localStorage.removeItem(STORAGE_KEY); }
-  function counts(){ const done=state.qmeta.filter(m=>m.done).length, perfect=state.qmeta.filter(m=>m.done && !m.missed).length; return {done,perfect}; }
-  function accuracyPct(){ const {done,perfect}=counts(); return done===0 ? 0 : Math.round((perfect/done)*100); }
-  function updateStats(){ $('qpos').textContent=`${Math.min(state.idx+1, QUESTIONS.length)} / ${QUESTIONS.length}`; $('acc').textContent=`${accuracyPct()}%`; $('runtime').textContent=state.startedAtMS ? msToHMS(Date.now()-state.startedAtMS) : '0:00:00'; }
-  setInterval(updateStats,500);
-  function setFeedback(kind,title,body){ $('feedback').className=`msg ${kind}`; $('fbTitle').textContent=title; $('fbBody').textContent=body; }
-  function clearFeedback(){ $('feedback').className='msg'; $('fbTitle').textContent=''; $('fbBody').textContent=''; }
-  function ensureOrder(i){ const q=QUESTIONS[i], meta=state.qmeta[i]; if(Array.isArray(meta.order)) return; const seed=hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`)^0x777888; meta.order=shuffledIndices(q.options.length, seed); meta.correctShown=meta.order.indexOf(q.answerIndex); }
-  function disableInputs(disabled){ document.querySelectorAll('.optbtn').forEach(b=>b.disabled=disabled); }
+
+  function counts(){
+    const done=state.qmeta.filter(m=>m.done).length;
+    const perfect=state.qmeta.filter(m=>m.done && !m.missed).length;
+    return {done, perfect};
+  }
+  function accuracyPct(){
+    const {done,perfect}=counts();
+    return done===0 ? 0 : Math.round((perfect/done)*100);
+  }
+
+  function updateStats(){
+    $('qpos').textContent=`${Math.min(state.idx+1, QUESTIONS.length)} / ${QUESTIONS.length}`;
+    $('acc').textContent=`${accuracyPct()}%`;
+    $('runtime').textContent=state.startedAtMS ? msToHMS(Date.now()-state.startedAtMS) : '0:00:00';
+  }
+  setInterval(updateStats, 500);
+
+  function setFeedback(kind,title,body){
+    $('feedback').className=`msg ${kind}`;
+    $('fbTitle').textContent=title;
+    $('fbBody').textContent=body;
+  }
+  function clearFeedback(){
+    $('feedback').className='msg';
+    $('fbTitle').textContent='';
+    $('fbBody').textContent='';
+  }
+
+  function ensureOrder(i){
+    const q=QUESTIONS[i], meta=state.qmeta[i];
+    if(Array.isArray(meta.order)) return;
+    const seed=hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`)^0x777888;
+    meta.order=shuffledIndices(q.options.length, seed);
+    meta.correctShown=meta.order.indexOf(q.answerIndex);
+  }
+
+  function disableInputs(disabled){
+    document.querySelectorAll('.optbtn').forEach(b=>b.disabled=disabled);
+  }
 
   function showQuestion(){
     const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
-    clearFeedback(); $('btnNext').disabled=true; $('btnHint').disabled=true; $('qtitle').textContent=q.title; $('qtext').textContent=q.prompt; $('opts').innerHTML='';
+    clearFeedback();
+    $('btnNext').disabled=true;
+    $('btnHint').disabled=true;
+    $('qtitle').textContent=q.title;
+    $('qtext').textContent=q.prompt;
+    $('opts').innerHTML='';
     ensureOrder(state.idx);
+
     const letters=['A','B','C','D'];
-    meta.order.forEach((origIdx, shownIdx)=>{ const b=document.createElement('button'); b.className='optbtn'; b.innerHTML=`<span class="ltr">${letters[shownIdx]}.</span>${q.options[origIdx]}`; b.addEventListener('click',()=>answer(shownIdx)); $('opts').appendChild(b); });
-    if(meta.done){ disableInputs(true); $('btnNext').disabled=false; setFeedback(meta.missed?'warn':'good','Already completed', meta.missed?'This item was completed with a miss.':'This item was completed with no miss.'); } else disableInputs(false);
-    save(); updateStats();
+    meta.order.forEach((origIdx, shownIdx)=>{
+      const b=document.createElement('button');
+      b.className='optbtn';
+      b.innerHTML=`<span class="ltr">${letters[shownIdx]}.</span>${q.options[origIdx]}`;
+      b.addEventListener('click',()=>answer(shownIdx));
+      $('opts').appendChild(b);
+    });
+
+    if(meta.done){
+      disableInputs(true);
+      $('btnNext').disabled=false;
+      setFeedback(meta.missed?'warn':'good','Already completed', meta.missed ? 'This item was completed with a miss.' : 'This item was completed with no miss.');
+    } else {
+      disableInputs(false);
+    }
+
+    save();
+    updateStats();
   }
 
   function answer(shownIdx){
     const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
     if(meta.done) return;
+
     if(shownIdx===meta.correctShown){
       meta.done=true;
       setFeedback('good','Correct ✅', q.explain);
@@ -194,34 +558,99 @@
       meta.missed=true;
       setFeedback('warn','Hint 💡', q.hint);
     }
-    save(); updateStats();
+
+    save();
+    updateStats();
   }
 
-  $('btnNext').addEventListener('click', ()=>{ if(!state.qmeta[state.idx].done) return; state.idx++; if(state.idx>=QUESTIONS.length) return finish(); showQuestion(); });
+  $('btnNext').addEventListener('click', ()=>{
+    if(!state.qmeta[state.idx].done) return;
+    state.idx++;
+    if(state.idx>=QUESTIONS.length) return finish();
+    showQuestion();
+  });
 
   function finish(){
-    $('nameBox').style.display='none'; $('questionBox').style.display='none'; $('finishBox').style.display='';
+    $('nameBox').style.display='none';
+    $('questionBox').style.display='none';
+    $('finishBox').style.display='';
+
     const ended=new Date(), start=new Date(state.startedAtISO), runMS=Date.now()-state.startedAtMS;
     const total=QUESTIONS.length, {perfect}=counts(), acc=Math.round((perfect/total)*100);
-    $('sName').textContent=state.name; $('sDate').textContent=fmtDate(ended); $('sStart').textContent=fmtTime(start); $('sEnd').textContent=fmtTime(ended); $('sRun').textContent=msToHMS(runMS); $('sAcc').textContent=`${acc}%`;
+
+    $('sName').textContent=state.name;
+    $('sDate').textContent=fmtDate(ended);
+    $('sStart').textContent=fmtTime(start);
+    $('sEnd').textContent=fmtTime(ended);
+    $('sRun').textContent=msToHMS(runMS);
+    $('sAcc').textContent=`${acc}%`;
+
     if(perfect===total){
-      $('finishTitle').textContent='Mastery achieved ✅'; $('finishBody').textContent='You finished with 100% accuracy (0 misses). Screenshot the ticket.'; $('ticket').style.display='';
-      $('tName').textContent=state.name; $('tDate').textContent=fmtDate(ended); $('tStart').textContent=fmtTime(start); $('tEnd').textContent=fmtTime(ended); $('tRun').textContent=msToHMS(runMS); $('tAcc').textContent=`${acc}%`;
+      $('finishTitle').textContent='Mastery achieved ✅';
+      $('finishBody').textContent='You finished with 100% accuracy (0 misses). Screenshot the ticket.';
+      $('ticket').style.display='';
+      $('tName').textContent=state.name;
+      $('tDate').textContent=fmtDate(ended);
+      $('tStart').textContent=fmtTime(start);
+      $('tEnd').textContent=fmtTime(ended);
+      $('tRun').textContent=msToHMS(runMS);
+      $('tAcc').textContent=`${acc}%`;
       const raw=`${state.name}|${state.startedAtISO}|${ended.toISOString()}|${perfect}|${total}|${state.runSeed}`;
-      $('tCode').textContent=`BTB-CS7-8-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
+      $('tCode').textContent=`BTB-CS7-8-R1-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
       clearSave();
     } else {
-      $('finishTitle').textContent='Mastery NOT achieved ❌'; $('finishBody').textContent=`Accuracy: ${acc}%. Mastery requires 100%.`; $('ticket').style.display='none';
+      $('finishTitle').textContent='Mastery NOT achieved ❌';
+      $('finishBody').textContent=`Accuracy: ${acc}%. Mastery requires 100%.`;
+      $('ticket').style.display='none';
     }
   }
 
-  function restartGame(){ clearSave(); location.reload(); }
-  $('btnStart').addEventListener('click', ()=>{ const name=($('studentName').value||'').trim(); if(name.length<2){ setFeedback('bad','Name required','Enter your name to begin.'); return; } state.name=name; state.startedAtISO=new Date().toISOString(); state.startedAtMS=Date.now(); state.idx=0; state.runSeed=(Math.floor(Math.random()*1e9)^hash32(name+'|'+state.startedAtISO))>>>0; state.qmeta=freshMeta(); for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i); save(); $('nameBox').style.display='none'; $('questionBox').style.display=''; showQuestion(); });
+  function restartGame(){
+    clearSave();
+    location.reload();
+  }
+
+  $('btnStart').addEventListener('click', ()=>{
+    const name=($('studentName').value||'').trim();
+    if(name.length<2){
+      setFeedback('bad','Name required','Enter your name to begin.');
+      return;
+    }
+    state.name=name;
+    state.startedAtISO=new Date().toISOString();
+    state.startedAtMS=Date.now();
+    state.idx=0;
+    state.runSeed=(Math.floor(Math.random()*1e9)^hash32(name+'|'+state.startedAtISO))>>>0;
+    state.qmeta=freshMeta();
+    for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i);
+    save();
+    $('nameBox').style.display='none';
+    $('questionBox').style.display='';
+    showQuestion();
+  });
+
   $('studentName').addEventListener('keydown', e=>{ if(e.key==='Enter') $('btnStart').click(); });
-  $('btnResetAll').addEventListener('click', restartGame); $('btnRestartMid').addEventListener('click', restartGame); $('btnRestartGame').addEventListener('click', restartGame); $('btnReset').addEventListener('click', restartGame);
+  $('btnResetAll').addEventListener('click', restartGame);
+  $('btnRestartMid').addEventListener('click', restartGame);
+  $('btnRestartGame').addEventListener('click', restartGame);
+  $('btnReset').addEventListener('click', restartGame);
   $('btnBackHome').addEventListener('click', ()=>location.href='../index.html');
-  $('btnCopy').addEventListener('click', async ()=>{ try{ await navigator.clipboard.writeText($('tCode').textContent.trim()); $('btnCopy').textContent='Copied ✅'; setTimeout(()=>$('btnCopy').textContent='Copy Ticket Code',1000);} catch {}});
-  if(load()){ $('studentName').value=state.name||''; $('nameBox').style.display='none'; $('questionBox').style.display=''; showQuestion(); }
+
+  $('btnCopy').addEventListener('click', async ()=>{
+    try{
+      await navigator.clipboard.writeText($('tCode').textContent.trim());
+      $('btnCopy').textContent='Copied ✅';
+      setTimeout(()=>$('btnCopy').textContent='Copy Ticket Code',1000);
+    } catch {}
+  });
+
+  if(load()){
+    $('studentName').value=state.name||'';
+    $('nameBox').style.display='none';
+    $('questionBox').style.display='';
+    showQuestion();
+  }
+
   updateStats();
 })();
 </script>
