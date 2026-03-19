@@ -3,25 +3,62 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Gov Basics 9 — Law & Public Policy (CS 20–21)</title>
+  <title>Gov Basics 9 — Government and the Economy (CS 20–21)</title>
   <link rel="stylesheet" href="../styles.css" />
   <style>
-    :root{--bg:#0b1220;--panel:#121a2f;--card:#111a2e;--text:#e7eefc;--muted:#a8b4cf;--line:rgba(255,255,255,.12);--shadow:0 18px 55px rgba(0,0,0,.40);--radius:18px;--good:#2bd576;--bad:#ff5c7a;--warn:#ffd166;--accent:#7aa2ff;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
-    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b1220,#070b14);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;min-height:100vh}
-    .wrap{width:min(980px,92vw);margin:22px auto 40px}.topbar{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 14px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;justify-content:space-between}
-    .kicker{letter-spacing:.14em;font-size:12px;color:var(--muted);font-weight:700} h1{margin:6px 0 6px;font-size:24px}.sub{margin:0;color:var(--muted);line-height:1.35}
-    .pillrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.pill{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted);white-space:nowrap}
-    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}@media (max-width:900px){.grid{grid-template-columns:1fr}}
+    :root{
+      --bg:#0b1220;--panel:#121a2f;--card:#111a2e;--text:#e7eefc;--muted:#a8b4cf;
+      --line:rgba(255,255,255,.12);--shadow:0 18px 55px rgba(0,0,0,.40);--radius:18px;
+      --good:#2bd576;--bad:#ff5c7a;--warn:#ffd166;--accent:#7aa2ff;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#0b1220,#070b14);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;min-height:100vh}
+    .wrap{width:min(980px,92vw);margin:22px auto 40px}
+    .topbar{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 14px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;justify-content:space-between}
+    .kicker{letter-spacing:.14em;font-size:12px;color:var(--muted);font-weight:700}
+    h1{margin:6px 0 6px;font-size:24px}
+    .sub{margin:0;color:var(--muted);line-height:1.35}
+    .pillrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .pill{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted);white-space:nowrap}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
     .panel{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
-    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.label{color:var(--muted);font-size:12px;letter-spacing:.08em;font-weight:800}
-    .statline{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.stat{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:140px}.stat .big{font-size:16px;font-weight:800}.stat .small{font-size:12px;color:var(--muted);margin-top:2px}
-    .qtitle{margin:10px 0 6px;font-size:18px}.qtext{color:var(--text);line-height:1.4;margin:0 0 12px;white-space:pre-wrap}
-    .opts{display:grid;gap:10px;margin-top:10px}.optbtn{text-align:left;width:100%;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);padding:12px;color:var(--text);cursor:pointer;transition:transform .04s ease,border-color .15s ease,background .15s ease}.optbtn:hover{border-color:rgba(122,162,255,.45)}.optbtn:active{transform:scale(.995)}.optbtn[disabled]{opacity:.65;cursor:not-allowed}.optbtn .ltr{font-family:var(--mono);font-weight:900;margin-right:8px;color:var(--accent)}
-    .msg{border-radius:14px;border:1px solid var(--line);padding:12px;margin-top:12px;display:none}.msg.good{display:block;border-color:rgba(43,213,118,.35);background:rgba(43,213,118,.08)}.msg.warn{display:block;border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.08)}.msg .t{font-weight:800;margin-bottom:4px}.msg .b{color:var(--muted);line-height:1.35}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.btn{border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);padding:10px 12px;cursor:pointer;font-weight:800}.btn:hover{border-color:rgba(122,162,255,.45)}.btn.primary{border-color:rgba(122,162,255,.45);background:rgba(122,162,255,.10)}.btn[disabled]{opacity:.6;cursor:not-allowed}
-    .field{display:grid;gap:6px;margin-top:10px} input[type="text"]{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
-    .errbox{display:none;margin-top:14px;border:1px solid rgba(255,92,122,.45);background:rgba(255,92,122,.10);border-radius:14px;padding:12px}.errbox .t{font-weight:900}.errbox pre{margin:8px 0 0;white-space:pre-wrap;color:var(--text);font-family:var(--mono);font-size:12px}
-    .muted{color:var(--muted)} .ticket{margin-top:12px;border:1px solid rgba(43,213,118,.35);background:rgba(43,213,118,.07);border-radius:14px;padding:12px}.ticket .code{font-family:var(--mono);font-weight:900;letter-spacing:.06em;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);margin-top:8px;word-break:break-word}.summary{margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px}
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .label{color:var(--muted);font-size:12px;letter-spacing:.08em;font-weight:800}
+    .statline{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .stat{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:140px}
+    .stat .big{font-size:16px;font-weight:800}
+    .stat .small{font-size:12px;color:var(--muted);margin-top:2px}
+    .qtitle{margin:10px 0 6px;font-size:18px}
+    .qtext{color:var(--text);line-height:1.4;margin:0 0 12px;white-space:pre-wrap}
+    .opts{display:grid;gap:10px;margin-top:10px}
+    .optbtn{text-align:left;width:100%;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);padding:12px;color:var(--text);cursor:pointer;transition:transform .04s ease,border-color .15s ease,background .15s ease}
+    .optbtn:hover{border-color:rgba(122,162,255,.45)}
+    .optbtn:active{transform:scale(.995)}
+    .optbtn[disabled]{opacity:.65;cursor:not-allowed}
+    .optbtn .ltr{font-family:var(--mono);font-weight:900;margin-right:8px;color:var(--accent)}
+    .msg{border-radius:14px;border:1px solid var(--line);padding:12px;margin-top:12px;display:none}
+    .msg.good{display:block;border-color:rgba(43,213,118,.35);background:rgba(43,213,118,.08)}
+    .msg.bad{display:block;border-color:rgba(255,92,122,.35);background:rgba(255,92,122,.08)}
+    .msg.warn{display:block;border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.08)}
+    .msg .t{font-weight:800;margin-bottom:4px}
+    .msg .b{color:var(--muted);line-height:1.35}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);padding:10px 12px;cursor:pointer;font-weight:800}
+    .btn:hover{border-color:rgba(122,162,255,.45)}
+    .btn.primary{border-color:rgba(122,162,255,.45);background:rgba(122,162,255,.10)}
+    .btn[disabled]{opacity:.6;cursor:not-allowed}
+    .field{display:grid;gap:6px;margin-top:10px}
+    input[type="text"]{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
+    input[type="text"]:focus{border-color:rgba(122,162,255,.55)}
+    .errbox{display:none;margin-top:14px;border:1px solid rgba(255,92,122,.45);background:rgba(255,92,122,.10);border-radius:14px;padding:12px}
+    .errbox .t{font-weight:900}
+    .errbox pre{margin:8px 0 0;white-space:pre-wrap;color:var(--text);font-family:var(--mono);font-size:12px}
+    .muted{color:var(--muted)}
+    .ticket{margin-top:12px;border:1px solid rgba(43,213,118,.35);background:rgba(43,213,118,.07);border-radius:14px;padding:12px}
+    .ticket .code{font-family:var(--mono);font-weight:900;letter-spacing:.06em;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);margin-top:8px;word-break:break-word}
+    .summary{margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px}
   </style>
 </head>
 <body>
@@ -29,10 +66,11 @@
     <div class="topbar">
       <div>
         <div class="kicker">LEGEND MASTERY SERIES</div>
-        <h1>Gov Basics 9 — Law & Public Policy (CS 20–21)</h1>
-        <p class="sub">How laws and public policy are created, interpreted, enforced, and influenced through checks and balances, political parties, interest groups, media, and public opinion. Mastery requires <b>100% accuracy</b>.</p>
+        <h1>Gov Basics 9 — Government and the Economy (CS 20–21)</h1>
+        <p class="sub">Fiscal policy, regulation, and Federal Reserve monetary tools through short OST-style micro-scenarios. Mastery requires <b>100% accuracy</b>.</p>
       </div>
       <div class="pillrow">
+        <div class="pill">Micro-scenarios ✅</div>
         <div class="pill">Mastery (100%) ✅</div>
         <div class="pill">Name + timestamps ✅</div>
         <div class="pill">Submission ticket ✅</div>
@@ -66,7 +104,12 @@
 
         <div id="questionBox" style="display:none;">
           <div class="opts" id="opts"></div>
-          <div id="feedback" class="msg"><div class="t" id="fbTitle"></div><div class="b" id="fbBody"></div></div>
+
+          <div id="feedback" class="msg" aria-live="polite">
+            <div class="t" id="fbTitle"></div>
+            <div class="b" id="fbBody"></div>
+          </div>
+
           <div class="actions">
             <button class="btn" id="btnHint" disabled>Hint</button>
             <button class="btn primary" id="btnNext" disabled>Next</button>
@@ -77,154 +120,389 @@
         <div id="finishBox" style="display:none;">
           <h2 class="qtitle">Finish</h2>
           <p class="qtext">Finish screen always shows name + date + start/end + runtime. Ticket appears only if you have <b>100% accuracy</b>.</p>
+
           <div class="summary">
             <div><b>Attempt Summary</b></div>
             <div class="muted" style="margin-top:6px;line-height:1.35">
-              Name: <span id="sName"></span><br>Date: <span id="sDate"></span><br>Start: <span id="sStart"></span><br>End: <span id="sEnd"></span><br>Runtime: <span id="sRun"></span><br>Accuracy: <span id="sAcc"></span>
+              Name: <span id="sName"></span><br>
+              Date: <span id="sDate"></span><br>
+              Start: <span id="sStart"></span><br>
+              End: <span id="sEnd"></span><br>
+              Runtime: <span id="sRun"></span><br>
+              Accuracy: <span id="sAcc"></span>
             </div>
           </div>
-          <div id="finishMsg" class="msg warn" style="display:block;"><div class="t" id="finishTitle">Checking mastery…</div><div class="b" id="finishBody">—</div></div>
+
+          <div id="finishMsg" class="msg warn" style="display:block;">
+            <div class="t" id="finishTitle">Checking mastery…</div>
+            <div class="b" id="finishBody">—</div>
+          </div>
+
           <div id="ticket" class="ticket" style="display:none;">
             <div><b>Submission Ticket</b> (screenshot this)</div>
             <div class="muted" style="margin-top:6px;line-height:1.35">
-              Name: <span id="tName"></span><br>Date: <span id="tDate"></span><br>Start: <span id="tStart"></span><br>End: <span id="tEnd"></span><br>Runtime: <span id="tRun"></span><br>Accuracy: <span id="tAcc"></span>
+              Name: <span id="tName"></span><br>
+              Date: <span id="tDate"></span><br>
+              Start: <span id="tStart"></span><br>
+              End: <span id="tEnd"></span><br>
+              Runtime: <span id="tRun"></span><br>
+              Accuracy: <span id="tAcc"></span>
             </div>
             <div class="code" id="tCode">—</div>
-            <div class="actions" style="margin-top:10px;"><button class="btn primary" id="btnCopy">Copy Ticket Code</button><button class="btn" id="btnReset">Play Again</button></div>
+            <div class="actions" style="margin-top:10px;">
+              <button class="btn primary" id="btnCopy">Copy Ticket Code</button>
+              <button class="btn" id="btnReset">Play Again</button>
+            </div>
           </div>
-          <div class="actions" style="margin-top:10px;"><button class="btn" id="btnRestartGame">Restart Game</button><button class="btn" id="btnBackHome">Back to Hub</button></div>
+
+          <div class="actions" style="margin-top:10px;">
+            <button class="btn" id="btnRestartGame">Restart Game</button>
+            <button class="btn" id="btnBackHome">Back to Hub</button>
+          </div>
         </div>
       </section>
 
       <aside class="panel">
         <div class="label">RULES</div>
-        <ul class="muted" style="margin:10px 0 0;line-height:1.45;">
+        <ul class="muted" style="margin:10px 0 0; line-height:1.45;">
           <li><b>Mastery</b> = finish all items with <b>0 misses</b>.</li>
           <li>Wrong answer → hint appears → retry until correct, but accuracy keeps the miss.</li>
-          <li>Ticket includes name + timestamps + runtime.</li>
+          <li>Questions are short and built for fast recognition, not long reading.</li>
         </ul>
+
         <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+
         <div class="label">WHAT THIS GAME PRACTICES</div>
-        <p class="muted" style="margin:10px 0 0;line-height:1.45;">Lawmaking, executive enforcement, judicial interpretation, checks and balances, political parties, interest groups, media influence, public opinion, and informal relationships between branches.</p>
+        <p class="muted" style="margin:10px 0 0;line-height:1.45;">
+          Fiscal policy, regulation costs and benefits, and Federal Reserve monetary tools including buying and selling bonds, reserve requirements, and interest rates.
+        </p>
+
         <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+
         <div class="label">SAVED PROGRESS</div>
-        <p class="muted" style="margin:10px 0 0;line-height:1.45;">Progress saves automatically in this browser until you finish or reset this game.</p>
+        <p class="muted" style="margin:10px 0 0;line-height:1.45;">
+          Progress saves automatically in this browser until you finish or reset this game.
+        </p>
       </aside>
     </div>
   </div>
 
 <script>
 (() => {
-  const BANK = [
-    { q:"The legislative branch’s primary role in public policy is to", a:"Make laws", d:["Enforce laws","Interpret laws","Command the military"], hint:"Congress writes laws." },
-    { q:"The executive branch’s primary role in public policy is to", a:"Enforce laws", d:["Make laws","Interpret laws","Ratify amendments"], hint:"The executive carries out laws." },
-    { q:"The judicial branch’s primary role in public policy is to", a:"Interpret laws", d:["Write laws","Collect taxes","Negotiate treaties"], hint:"Courts interpret laws and the Constitution." },
-    { q:"When Congress passes a law, it is exercising", a:"Legislative power", d:["Executive power","Judicial review","Military authority"], hint:"Making laws = legislative power." },
-    { q:"When the president signs or vetoes a bill, that is part of", a:"Executive involvement in lawmaking", d:["Judicial review","Direct democracy","State nullification"], hint:"The president acts on bills." },
-    { q:"When courts decide whether a law is constitutional, they are using", a:"Judicial review", d:["Federalism","Popular sovereignty","Ratification"], hint:"Courts judge constitutionality." },
+  const QUESTIONS = [
+    // Fiscal policy basics and expansionary policy
+    {
+      id:'g9e_01',
+      title:'Fiscal Policy',
+      prompt:'Congress cuts taxes to help the economy grow faster. This is an example of',
+      options:['Fiscal policy','Judicial review','Federalism','Monetary policy'],
+      answerIndex:0,
+      hint:'Taxing and spending decisions by government fit one category.',
+      explain:'Correct: fiscal policy is government decision-making about taxes and spending.'
+    },
+    {
+      id:'g9e_02',
+      title:'Fiscal Policy',
+      prompt:'The federal government increases spending during a recession. What is the main goal?',
+      options:['Encourage economic growth','Slow economic growth','Reduce money in banks','Raise reserve requirements'],
+      answerIndex:0,
+      hint:'More spending in a weak economy is meant to boost activity.',
+      explain:'Correct: increased government spending is meant to encourage economic growth.'
+    },
+    {
+      id:'g9e_03',
+      title:'Expansionary Fiscal Policy',
+      prompt:'Which action is most likely meant to speed up a slow economy?',
+      options:['Lower taxes','Raise taxes','Cut spending sharply','Sell bonds'],
+      answerIndex:0,
+      hint:'Consumers and businesses spend more when they keep more income.',
+      explain:'Correct: lowering taxes is an expansionary fiscal policy tool.'
+    },
+    {
+      id:'g9e_04',
+      title:'Expansionary Fiscal Policy',
+      prompt:'A recession causes job losses. Which federal action best matches expansionary fiscal policy?',
+      options:['Increase spending on public projects','Raise interest rates','Increase bank reserve requirements','Sell government bonds'],
+      answerIndex:0,
+      hint:'Think roads, bridges, and government spending.',
+      explain:'Correct: increased government spending on projects is expansionary fiscal policy.'
+    },
 
-    { q:"Checks and balances are important because they", a:"Prevent one branch from becoming too powerful", d:["Let states run the federal government","Eliminate disagreement","End elections"], hint:"Branches check one another." },
-    { q:"A presidential veto is a check on the", a:"Legislative branch", d:["Judicial branch","State governments","Media"], hint:"The president can reject bills." },
-    { q:"Congress checking the president through oversight hearings is an example of", a:"Legislative oversight", d:["Judicial activism","Executive privilege","Direct democracy"], hint:"Congress investigates executive action." },
-    { q:"The Senate confirming appointments is a check on the", a:"Executive branch", d:["Judicial branch","Media","Political parties"], hint:"Advice and consent limits presidential appointment power." },
-    { q:"The courts can check Congress by", a:"Declaring laws unconstitutional", d:["Issuing executive orders","Collecting taxes","Ratifying treaties"], hint:"Judicial review checks legislation." },
-    { q:"Congress can check the judiciary through", a:"Impeachment and removal of federal judges", d:["Vetoing court cases","Appointing governors","Issuing pardons"], hint:"Congress can remove federal judges." },
+    // Contractionary fiscal policy
+    {
+      id:'g9e_05',
+      title:'Contractionary Fiscal Policy',
+      prompt:'The economy is growing too fast and inflation is rising. Which fiscal action would most likely slow growth?',
+      options:['Raise taxes','Buy bonds','Lower interest rates','Reduce reserve requirements'],
+      answerIndex:0,
+      hint:'Taking more money out of the economy can slow spending.',
+      explain:'Correct: raising taxes is a contractionary fiscal policy tool.'
+    },
+    {
+      id:'g9e_06',
+      title:'Contractionary Fiscal Policy',
+      prompt:'Which government action is most likely intended to slow economic growth?',
+      options:['Decrease government spending','Increase government spending','Cut taxes','Buy bonds'],
+      answerIndex:0,
+      hint:'Less government spending means less demand in the economy.',
+      explain:'Correct: decreasing government spending is used to slow growth.'
+    },
+    {
+      id:'g9e_07',
+      title:'Fiscal Policy Comparison',
+      prompt:'How are increased spending and reduced taxes similar?',
+      options:['Both can encourage economic growth','Both slow inflation immediately','Both reduce the money supply','Both raise interest rates'],
+      answerIndex:0,
+      hint:'They are the two broad expansionary fiscal policy choices.',
+      explain:'Correct: both increased spending and reduced taxes can encourage economic growth.'
+    },
 
-    { q:"Political parties influence law and policy by", a:"Organizing candidates and shaping legislative agendas", d:["Writing court opinions","Running federal agencies","Ratifying treaties"], hint:"Parties organize policy priorities." },
-    { q:"One way interest groups influence public policy is by", a:"Lobbying government officials", d:["Commanding the military","Interpreting the Constitution","Appointing cabinet members"], hint:"Interest groups try to persuade policymakers." },
-    { q:"The media influence public policy mainly by", a:"Shaping public attention and opinion", d:["Passing laws directly","Overriding vetoes","Approving judges"], hint:"Media affect what people and leaders focus on." },
-    { q:"Public opinion can influence policymakers because elected officials often", a:"Respond to voters’ views", d:["Ignore voters completely","Appoint judges for life","Control the military"], hint:"Leaders pay attention to the public." },
+    // Regulation costs and benefits
+    {
+      id:'g9e_08',
+      title:'Regulation',
+      prompt:'A law bans unfair business practices to protect consumers. This is an example of regulation creating',
+      options:['Economic benefits','Only economic harm','Only higher interest rates','Less government involvement'],
+      answerIndex:0,
+      hint:'Consumer protection is a benefit.',
+      explain:'Correct: regulation can produce economic benefits such as consumer protections.'
+    },
+    {
+      id:'g9e_09',
+      title:'Regulation',
+      prompt:'A new federal rule increases company costs but makes products safer. This best shows that regulation',
+      options:['Can bring both costs and benefits','Always increases growth','Has no effect on business','Only helps corporate profits'],
+      answerIndex:0,
+      hint:'One side pays more, but consumers may gain protection.',
+      explain:'Correct: regulation may carry costs while also creating benefits.'
+    },
+    {
+      id:'g9e_10',
+      title:'Regulation Cost',
+      prompt:'One possible economic cost of government regulation is',
+      options:['Reduced corporate profits','More consumer protection','Prevention of unfair practices','Safer products'],
+      answerIndex:0,
+      hint:'Look for the business-side drawback.',
+      explain:'Correct: a possible cost of regulation is reduced corporate profits.'
+    },
+    {
+      id:'g9e_11',
+      title:'Regulation Benefit',
+      prompt:'One possible economic benefit of government regulation is',
+      options:['Protection for consumers','Automatic lower taxes','Unlimited business freedom','Fewer safety rules'],
+      answerIndex:0,
+      hint:'Think of why government might regulate in the first place.',
+      explain:'Correct: regulation can protect consumers and prohibit unfair business practices.'
+    },
 
-    { q:"An informal relationship between branches can affect policy because", a:"Personal cooperation or conflict can shape outcomes", d:["It replaces the Constitution","It ends elections","It eliminates lawmaking"], hint:"Relationships matter in practice." },
-    { q:"When the same political party controls both Congress and the presidency, policy making may become", a:"More coordinated", d:["Impossible","Entirely judicial","Unconstitutional"], hint:"Shared party control can smooth cooperation." },
-    { q:"When different parties control different branches, policy making may involve more", a:"Conflict and negotiation", d:["Military action","Judicial appointments only","Local government control"], hint:"Divided government often means bargaining." },
+    // Monetary policy basics
+    {
+      id:'g9e_12',
+      title:'Monetary Policy',
+      prompt:'The Federal Reserve changes the nation’s money supply. This is called',
+      options:['Monetary policy','Fiscal policy','Judicial review','Separation of powers'],
+      answerIndex:0,
+      hint:'This is the Fed, not Congress deciding taxes and spending.',
+      explain:'Correct: monetary policy involves the Federal Reserve regulating the money supply.'
+    },
+    {
+      id:'g9e_13',
+      title:'Federal Reserve',
+      prompt:'Which institution mainly uses monetary tools such as reserve requirements and bond purchases?',
+      options:['Federal Reserve System','Supreme Court','House of Representatives','State legislature'],
+      answerIndex:0,
+      hint:'The central bank system.',
+      explain:'Correct: the Federal Reserve System uses monetary tools.'
+    },
 
-    { q:"A law begins as", a:"A bill", d:["An amendment","A treaty","A court opinion"], hint:"Bills are proposed laws." },
-    { q:"A bill becomes law only after it passes Congress and is", a:"Signed by the president or passed over a veto", d:["Approved by the Supreme Court first","Ratified by governors","Passed by the Electoral College"], hint:"Signature or veto override." },
-    { q:"An executive order is", a:"A directive from the president managing federal operations", d:["A law passed by Congress","A Supreme Court ruling","A state constitutional amendment"], hint:"Presidential directive." },
-    { q:"A court precedent matters because it", a:"Guides future judicial decisions", d:["Writes new laws directly","Vetoes bills","Appoints executive officers"], hint:"Precedent influences later cases." },
+    // Reserve requirements
+    {
+      id:'g9e_14',
+      title:'Reserve Requirements',
+      prompt:'The Federal Reserve lowers reserve requirements for banks. What is the most likely goal?',
+      options:['Encourage economic growth','Slow economic growth','Raise taxes','Reduce consumer protections'],
+      answerIndex:0,
+      hint:'Banks can lend more when they must hold less.',
+      explain:'Correct: lower reserve requirements can encourage growth by allowing more lending.'
+    },
+    {
+      id:'g9e_15',
+      title:'Reserve Requirements',
+      prompt:'If banks must keep more money on reserve, they usually can',
+      options:['Make fewer loans','Make more loans','Lower taxes','Buy more products directly'],
+      answerIndex:0,
+      hint:'More reserves means less money available to lend.',
+      explain:'Correct: higher reserve requirements reduce lending.'
+    },
+    {
+      id:'g9e_16',
+      title:'Reserve Requirements',
+      prompt:'To slow economic growth, the Federal Reserve is most likely to',
+      options:['Increase reserve requirements','Decrease reserve requirements','Buy bonds','Cut taxes'],
+      answerIndex:0,
+      hint:'Less lending slows spending and growth.',
+      explain:'Correct: increasing reserve requirements is a contractionary monetary tool.'
+    },
 
-    { q:"If Congress passes a law but agencies create detailed rules for carrying it out, the agencies are helping", a:"Implement public policy", d:["Ratify amendments","Conduct impeachment trials","Elect judges"], hint:"Rules help enforce laws." },
-    { q:"If the Supreme Court narrows how a law can be used, it is affecting policy through", a:"Judicial interpretation", d:["Direct democracy","State secession","Military command"], hint:"Courts shape policy by interpreting laws." },
+    // Bonds
+    {
+      id:'g9e_17',
+      title:'Bond Purchases',
+      prompt:'The Federal Reserve buys bonds during an economic slowdown. Why?',
+      options:['To put more money into the economy','To take money out of the economy','To raise taxes','To reduce government spending'],
+      answerIndex:0,
+      hint:'Buying bonds adds money to banks and the economy.',
+      explain:'Correct: buying bonds increases the money supply and can encourage growth.'
+    },
+    {
+      id:'g9e_18',
+      title:'Bond Sales',
+      prompt:'What is the most likely effect when the Federal Reserve sells bonds?',
+      options:['Money is pulled out of the economy','Banks can lend more money','Taxes go down','Government spending rises automatically'],
+      answerIndex:0,
+      hint:'Selling bonds removes money from circulation.',
+      explain:'Correct: selling bonds takes money out of the economy and slows growth.'
+    },
+    {
+      id:'g9e_19',
+      title:'Bond Tools',
+      prompt:'Which Federal Reserve action is most likely meant to encourage economic growth?',
+      options:['Buy bonds','Sell bonds','Raise taxes','Cut federal spending'],
+      answerIndex:0,
+      hint:'This action adds money to the economy.',
+      explain:'Correct: buying bonds is an expansionary monetary policy tool.'
+    },
 
-    { q:"A major factor affecting interaction among branches is", a:"Interest group involvement", d:["Only geography","Only weather","Only population density"], hint:"Groups pressure branches and officials." },
-    { q:"A major factor affecting interaction among branches is", a:"Political party control", d:["Only military rank","Only family background","Only jury service"], hint:"Party alignment matters." },
-    { q:"A major factor affecting interaction among branches is", a:"Public interest and media coverage", d:["Only foreign elections","Only census results","Only school calendars"], hint:"Attention and visibility affect decisions." },
+    // Interest rates
+    {
+      id:'g9e_20',
+      title:'Interest Rates',
+      prompt:'The Federal Reserve takes action that lowers interest rates. What is the likely result?',
+      options:['Borrowing becomes easier and growth may increase','Borrowing becomes harder and growth may slow','Taxes increase','Reserve requirements always rise'],
+      answerIndex:0,
+      hint:'Lower rates usually encourage borrowing and spending.',
+      explain:'Correct: lower interest rates can encourage borrowing and economic growth.'
+    },
+    {
+      id:'g9e_21',
+      title:'Interest Rates',
+      prompt:'To slow an overheated economy, the Federal Reserve is most likely to',
+      options:['Raise interest rates','Lower interest rates','Buy bonds','Lower reserve requirements'],
+      answerIndex:0,
+      hint:'More expensive borrowing reduces spending.',
+      explain:'Correct: raising interest rates is used to slow economic growth.'
+    },
+    {
+      id:'g9e_22',
+      title:'Interest Rates',
+      prompt:'Higher interest rates usually make consumers and businesses',
+      options:['Borrow less','Borrow more','Spend government funds','Pay lower taxes'],
+      answerIndex:0,
+      hint:'Loans cost more when rates go up.',
+      explain:'Correct: higher interest rates usually reduce borrowing.'
+    },
 
-    { q:"If the media focus heavily on an issue, lawmakers may", a:"Feel increased pressure to act", d:["Lose all power","Ignore all voters","Give courts direct control"], hint:"Public attention can create pressure." },
-    { q:"If an interest group supports a bill, it may try to help pass it by", a:"Lobbying members of Congress", d:["Issuing court rulings","Declaring war","Appointing judges"], hint:"Congress is the lawmaking target." },
-    { q:"If voters strongly oppose a policy, elected officials may", a:"Change their position", d:["Lose all constitutional power","Appoint new judges directly","Ignore elections forever"], hint:"Officials often respond to public backlash." },
-
-    { q:"The relationship between law and public policy is that", a:"Laws are one major way policy is created and carried out", d:["Policy replaces laws entirely","Courts create all policy alone","Only local governments make policy"], hint:"Policy often takes legal form." },
-    { q:"Public policy is broader than a single law because it includes", a:"Decisions, rules, actions, and enforcement", d:["Only campaign speeches","Only courtrooms","Only one branch"], hint:"Policy includes more than statutes." },
-
-    { q:"A president using the bully pulpit to support a proposal is an example of", a:"Executive influence on policy", d:["Judicial review","Legislative oversight","Federalism"], hint:"Presidents shape public and political pressure." },
-    { q:"A committee hearing on a proposed law is part of the", a:"Legislative process", d:["Judicial sentencing process","Military chain of command","Amendment ratification process only"], hint:"Committees examine bills." },
-    { q:"A court striking down part of a law affects public policy because it", a:"Changes how government can act", d:["Writes a new constitution","Removes elections","Ends federalism"], hint:"Court decisions reshape implementation." },
-
-    { q:"The best summary of CS20 is that each branch", a:"Has powers and responsibilities that shape law and policy", d:["Does the same job","Answers only to political parties","Is controlled by local government"], hint:"Branches have different roles." },
-    { q:"The best summary of CS21 is that policy making is influenced by", a:"Formal powers and informal political forces", d:["Only the Constitution","Only courts","Only state governments"], hint:"Think parties, groups, media, public interest, and relationships." },
-
-    { q:"When members of Congress and the president bargain over a bill, they are showing", a:"Inter-branch interaction in lawmaking", d:["Judicial supremacy","Military command","Local referendum"], hint:"Branches often negotiate." },
-    { q:"When courts interpret a law differently over time, policy may", a:"Change even without a new statute", d:["End permanently","Lose all legal effect","Require no government action"], hint:"Interpretation can shift policy." },
-    { q:"When public pressure leads legislators to revise a bill, that shows", a:"Citizen influence on public policy", d:["Judicial appointment power","Executive privilege","Federal nullification"], hint:"Public input matters." }
+    // Mixed comparison / application
+    {
+      id:'g9e_23',
+      title:'Fiscal vs Monetary',
+      prompt:'Congress changes tax rates to affect the economy. This is different from the Federal Reserve because Congress is using',
+      options:['Fiscal policy','Monetary policy','Judicial policy','Foreign policy'],
+      answerIndex:0,
+      hint:'Taxes and spending belong to one side, money supply belongs to the other.',
+      explain:'Correct: Congress uses fiscal policy, while the Federal Reserve uses monetary policy.'
+    },
+    {
+      id:'g9e_24',
+      title:'Fiscal vs Monetary',
+      prompt:'Which action is an example of monetary policy rather than fiscal policy?',
+      options:['The Federal Reserve buys bonds','Congress cuts income taxes','Congress increases highway spending','A federal agency adds a safety rule'],
+      answerIndex:0,
+      hint:'Look for an action taken by the Fed.',
+      explain:'Correct: buying bonds is a monetary policy action used by the Federal Reserve.'
+    },
+    {
+      id:'g9e_25',
+      title:'Slow Growth Toolkit',
+      prompt:'Which pair of actions would most likely slow economic growth?',
+      options:['Raise taxes and sell bonds','Cut taxes and buy bonds','Increase spending and lower rates','Buy bonds and lower reserve requirements'],
+      answerIndex:0,
+      hint:'One fiscal and one monetary tool can both reduce spending.',
+      explain:'Correct: raising taxes and selling bonds are both contractionary tools.'
+    },
+    {
+      id:'g9e_26',
+      title:'Encourage Growth Toolkit',
+      prompt:'Which pair of actions would most likely encourage economic growth?',
+      options:['Increase spending and lower interest rates','Raise taxes and sell bonds','Cut spending and raise reserve requirements','Sell bonds and raise interest rates'],
+      answerIndex:0,
+      hint:'One fiscal and one monetary tool can both stimulate growth.',
+      explain:'Correct: increasing spending and lowering interest rates are both expansionary tools.'
+    }
   ];
 
-  const QUESTIONS = BANK.map((item, i) => ({
-    id:`g9_${String(i+1).padStart(2,'0')}`,
-    title:'CS 20–21 Review',
-    prompt:item.q,
-    options:[item.a, ...item.d],
-    answerIndex:0,
-    hint:item.hint,
-    explain:`Correct: ${item.a}.`
-  }));
+  const STORAGE_KEY = 'BTB_GOV_CS20_21_ECON_REBUILT_V1';
 
-  const STORAGE_KEY='BTB_GOV_CS20_21_V2';
-  const errbox=document.getElementById('errbox'), errtext=document.getElementById('errtext');
-  window.addEventListener('error', e=>{ errbox.style.display='block'; errtext.textContent=`Error: ${e.message}\nSource: ${e.filename}:${e.lineno}:${e.colno}`; });
+  const errbox = document.getElementById('errbox');
+  const errtext = document.getElementById('errtext');
+  window.addEventListener('error', e => { errbox.style.display='block'; errtext.textContent=`Error: ${e.message}\nSource: ${e.filename}:${e.lineno}:${e.colno}`; });
+  window.addEventListener('unhandledrejection', e => { errbox.style.display='block'; errtext.textContent=String(e.reason && e.reason.stack ? e.reason.stack : e.reason); });
 
-  const $=id=>document.getElementById(id);
-  const pad2=n=>String(n).padStart(2,'0');
-  const fmtDate=d=>`${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}`;
-  const fmtTime=d=>{ const hr=d.getHours(), ampm=hr>=12?'PM':'AM', h12=hr%12||12; return `${h12}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())} ${ampm}`; };
-  const msToHMS=ms=>{ const s=Math.max(0,Math.floor(ms/1000)); const hh=Math.floor(s/3600), mm=Math.floor((s%3600)/60), ss=s%60; return `${hh}:${pad2(mm)}:${pad2(ss)}`; };
-  const hash32=str=>{ let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619);} return h>>>0; };
-  const base36=n=>n.toString(36).toUpperCase();
-  function mulberry32(seed){ return function(){ let t=seed+=0x6D2B79F5; t=Math.imul(t^(t>>>15), t|1); t^=t+Math.imul(t^(t>>>7), t|61); return ((t^(t>>>14))>>>0)/4294967296; }; }
+  const $ = id => document.getElementById(id);
+  const pad2 = n => String(n).padStart(2,'0');
+  const fmtDate = d => `${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}`;
+  const fmtTime = d => { const hr=d.getHours(), ampm=hr>=12?'PM':'AM', h12=hr%12||12; return `${h12}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())} ${ampm}`; };
+  const msToHMS = ms => { const s=Math.max(0,Math.floor(ms/1000)); const hh=Math.floor(s/3600), mm=Math.floor((s%3600)/60), ss=s%60; return `${hh}:${pad2(mm)}:${pad2(ss)}`; };
+  const hash32 = str => { let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h,16777619);} return h>>>0; };
+  const base36 = n => n.toString(36).toUpperCase();
+  function mulberry32(seed){ return function(){ let t = seed += 0x6D2B79F5; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
   function shuffledIndices(n, seed){ const idx=Array.from({length:n},(_,i)=>i); const rnd=mulberry32(seed>>>0); for(let i=n-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; } return idx; }
 
-  let state={name:'',startedAtISO:'',startedAtMS:0,idx:0,runSeed:0,qmeta:[]};
-  const freshMeta=()=>QUESTIONS.map(()=>({done:false,missed:false,order:null,correctShown:null}));
+  let state = { name:'', startedAtISO:'', startedAtMS:0, idx:0, runSeed:0, qmeta:[] };
+  const freshMeta = () => QUESTIONS.map(() => ({done:false, missed:false, order:null, correctShown:null}));
+
   function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
   function load(){ try{ const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return false; const parsed=JSON.parse(raw); if(!parsed.name || !parsed.startedAtISO || !Array.isArray(parsed.qmeta)) return false; state=parsed; return true; } catch { return false; } }
   function clearSave(){ localStorage.removeItem(STORAGE_KEY); }
-  function counts(){ const done=state.qmeta.filter(m=>m.done).length, perfect=state.qmeta.filter(m=>m.done && !m.missed).length; return {done,perfect}; }
+
+  function counts(){ const done=state.qmeta.filter(m=>m.done).length; const perfect=state.qmeta.filter(m=>m.done && !m.missed).length; return {done,perfect}; }
   function accuracyPct(){ const {done,perfect}=counts(); return done===0 ? 0 : Math.round((perfect/done)*100); }
-  function updateStats(){ $('qpos').textContent=`${Math.min(state.idx+1, QUESTIONS.length)} / ${QUESTIONS.length}`; $('acc').textContent=`${accuracyPct()}%`; $('runtime').textContent=state.startedAtMS ? msToHMS(Date.now()-state.startedAtMS) : '0:00:00'; }
-  setInterval(updateStats,500);
+
+  function updateStats(){
+    $('qpos').textContent = `${Math.min(state.idx+1, QUESTIONS.length)} / ${QUESTIONS.length}`;
+    $('acc').textContent = `${accuracyPct()}%`;
+    $('runtime').textContent = state.startedAtMS ? msToHMS(Date.now()-state.startedAtMS) : '0:00:00';
+  }
+  setInterval(updateStats, 500);
+
   function setFeedback(kind,title,body){ $('feedback').className=`msg ${kind}`; $('fbTitle').textContent=title; $('fbBody').textContent=body; }
   function clearFeedback(){ $('feedback').className='msg'; $('fbTitle').textContent=''; $('fbBody').textContent=''; }
-  function ensureOrder(i){ const q=QUESTIONS[i], meta=state.qmeta[i]; if(Array.isArray(meta.order)) return; const seed=hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`)^0x555AAA; meta.order=shuffledIndices(q.options.length, seed); meta.correctShown=meta.order.indexOf(q.answerIndex); }
+
+  function ensureOrder(qIndex){
+    const q=QUESTIONS[qIndex], meta=state.qmeta[qIndex];
+    if(Array.isArray(meta.order) && typeof meta.correctShown==='number') return;
+    const seed = hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`) ^ 0x555AAA;
+    meta.order = shuffledIndices(q.options.length, seed);
+    meta.correctShown = meta.order.indexOf(q.answerIndex);
+  }
+
   function disableInputs(disabled){ document.querySelectorAll('.optbtn').forEach(b=>b.disabled=disabled); }
 
   function showQuestion(){
     const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
-    clearFeedback();
-    $('btnNext').disabled=true;
-    $('btnHint').disabled=true;
-    $('qtitle').textContent=q.title;
-    $('qtext').textContent=q.prompt;
-    $('opts').innerHTML='';
+    clearFeedback(); $('btnNext').disabled=true; $('btnHint').disabled=true;
+    $('qtitle').textContent=q.title; $('qtext').textContent=q.prompt; $('opts').innerHTML='';
     ensureOrder(state.idx);
+
     const letters=['A','B','C','D'];
-    meta.order.forEach((origIdx, shownIdx)=>{
+    meta.order.forEach((origIdx, shownIdx) => {
       const b=document.createElement('button');
       b.className='optbtn';
       b.innerHTML=`<span class="ltr">${letters[shownIdx]}.</span>${q.options[origIdx]}`;
-      b.addEventListener('click',()=>answer(shownIdx));
+      b.addEventListener('click', ()=>answerMCQ(shownIdx));
       $('opts').appendChild(b);
     });
+
     if(meta.done){
       disableInputs(true);
       $('btnNext').disabled=false;
@@ -232,40 +510,55 @@
     } else {
       disableInputs(false);
     }
-    save();
+
     updateStats();
+    save();
   }
 
-  function answer(shownIdx){
+  function markMiss(){ state.qmeta[state.idx].missed=true; }
+  function markDone(){ state.qmeta[state.idx].done=true; }
+
+  function answerMCQ(shownIdx){
     const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
     if(meta.done) return;
     if(shownIdx===meta.correctShown){
-      meta.done=true;
+      markDone();
       setFeedback('good','Correct ✅', q.explain);
       disableInputs(true);
       $('btnNext').disabled=false;
+      $('btnHint').disabled=true;
     } else {
-      meta.missed=true;
+      markMiss();
       setFeedback('warn','Hint 💡', q.hint);
+      $('btnHint').disabled=true;
+      $('btnNext').disabled=true;
     }
-    save();
-    updateStats();
+    save(); updateStats();
   }
+
+  $('btnHint').addEventListener('click', ()=> {
+    const q=QUESTIONS[state.idx];
+    setFeedback('warn','Hint 💡', q.hint);
+    $('btnHint').disabled=true;
+  });
 
   $('btnNext').addEventListener('click', ()=>{
     if(!state.qmeta[state.idx].done) return;
     state.idx++;
-    if(state.idx>=QUESTIONS.length) return finish();
+    if(state.idx >= QUESTIONS.length) return showFinish();
     showQuestion();
   });
 
-  function finish(){
+  function showFinish(){
     $('nameBox').style.display='none';
     $('questionBox').style.display='none';
     $('finishBox').style.display='';
-
-    const ended=new Date(), start=new Date(state.startedAtISO), runMS=Date.now()-state.startedAtMS;
-    const total=QUESTIONS.length, {perfect}=counts(), acc=Math.round((perfect/total)*100);
+    const ended=new Date();
+    const start=new Date(state.startedAtISO);
+    const runMS=Date.now()-state.startedAtMS;
+    const total=QUESTIONS.length;
+    const {perfect}=counts();
+    const acc=Math.round((perfect/total)*100);
 
     $('sName').textContent=state.name;
     $('sDate').textContent=fmtDate(ended);
@@ -285,28 +578,33 @@
       $('tRun').textContent=msToHMS(runMS);
       $('tAcc').textContent=`${acc}%`;
       const raw=`${state.name}|${state.startedAtISO}|${ended.toISOString()}|${perfect}|${total}|${state.runSeed}`;
-      $('tCode').textContent=`BTB-CS20-21-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
+      $('tCode').textContent=`BTB-CS20-21-ECON-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
       clearSave();
     } else {
       $('finishTitle').textContent='Mastery NOT achieved ❌';
-      $('finishBody').textContent=`Accuracy: ${acc}%. Mastery requires 100%.`;
+      $('finishBody').textContent=`Accuracy: ${acc}%. Mastery requires 100%. Click Play Again or Restart Game and run it clean.`;
       $('ticket').style.display='none';
     }
   }
 
   function restartGame(){ clearSave(); location.reload(); }
+  window.restartGame = restartGame;
+
+  $('btnCopy').addEventListener('click', async ()=>{ try{ await navigator.clipboard.writeText($('tCode').textContent.trim()); $('btnCopy').textContent='Copied ✅'; setTimeout(()=>$('btnCopy').textContent='Copy Ticket Code',1000);} catch {}});
+  $('btnReset').addEventListener('click', restartGame);
+  $('btnResetAll').addEventListener('click', restartGame);
+  $('btnRestartMid').addEventListener('click', restartGame);
+  $('btnRestartGame').addEventListener('click', restartGame);
+  $('btnBackHome').addEventListener('click', ()=>location.href='../index.html');
 
   $('btnStart').addEventListener('click', ()=>{
     const name=($('studentName').value||'').trim();
-    if(name.length<2){
-      setFeedback('warn','Name required','Enter your name to begin.');
-      return;
-    }
+    if(name.length<2){ setFeedback('bad','Name required','Enter your name to begin.'); return; }
     state.name=name;
     state.startedAtISO=new Date().toISOString();
     state.startedAtMS=Date.now();
     state.idx=0;
-    state.runSeed=(Math.floor(Math.random()*1e9)^hash32(name+'|'+state.startedAtISO))>>>0;
+    state.runSeed=(Math.floor(Math.random()*1e9) ^ hash32(name+'|'+state.startedAtISO))>>>0;
     state.qmeta=freshMeta();
     for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i);
     save();
@@ -315,19 +613,7 @@
     showQuestion();
   });
 
-  $('studentName').addEventListener('keydown', e=>{ if(e.key==='Enter') $('btnStart').click(); });
-  $('btnResetAll').addEventListener('click', restartGame);
-  $('btnRestartMid').addEventListener('click', restartGame);
-  $('btnRestartGame').addEventListener('click', restartGame);
-  $('btnReset').addEventListener('click', restartGame);
-  $('btnBackHome').addEventListener('click', ()=>location.href='../index.html');
-  $('btnCopy').addEventListener('click', async ()=>{
-    try{
-      await navigator.clipboard.writeText($('tCode').textContent.trim());
-      $('btnCopy').textContent='Copied ✅';
-      setTimeout(()=>$('btnCopy').textContent='Copy Ticket Code',1000);
-    } catch {}
-  });
+  $('studentName').addEventListener('keydown', e => { if(e.key==='Enter') $('btnStart').click(); });
 
   if(load()){
     $('studentName').value=state.name||'';
