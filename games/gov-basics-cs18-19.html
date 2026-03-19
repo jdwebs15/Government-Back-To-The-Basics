@@ -6,22 +6,59 @@
   <title>Gov Basics 8 — Public Policy Issues & Inputs (CS 18–19)</title>
   <link rel="stylesheet" href="../styles.css" />
   <style>
-    :root{--bg:#0b1220;--panel:#121a2f;--card:#111a2e;--text:#e7eefc;--muted:#a8b4cf;--line:rgba(255,255,255,.12);--shadow:0 18px 55px rgba(0,0,0,.40);--radius:18px;--good:#2bd576;--bad:#ff5c7a;--warn:#ffd166;--accent:#7aa2ff;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace}
-    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b1220,#070b14);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;min-height:100vh}
-    .wrap{width:min(980px,92vw);margin:22px auto 40px}.topbar{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 14px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;justify-content:space-between}
-    .kicker{letter-spacing:.14em;font-size:12px;color:var(--muted);font-weight:700} h1{margin:6px 0 6px;font-size:24px}.sub{margin:0;color:var(--muted);line-height:1.35}
-    .pillrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.pill{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted);white-space:nowrap}
-    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}@media (max-width:900px){.grid{grid-template-columns:1fr}}
+    :root{
+      --bg:#0b1220;--panel:#121a2f;--card:#111a2e;--text:#e7eefc;--muted:#a8b4cf;
+      --line:rgba(255,255,255,.12);--shadow:0 18px 55px rgba(0,0,0,.40);--radius:18px;
+      --good:#2bd576;--bad:#ff5c7a;--warn:#ffd166;--accent:#7aa2ff;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#0b1220,#070b14);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;min-height:100vh}
+    .wrap{width:min(980px,92vw);margin:22px auto 40px}
+    .topbar{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 14px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;justify-content:space-between}
+    .kicker{letter-spacing:.14em;font-size:12px;color:var(--muted);font-weight:700}
+    h1{margin:6px 0 6px;font-size:24px}
+    .sub{margin:0;color:var(--muted);line-height:1.35}
+    .pillrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .pill{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted);white-space:nowrap}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
     .panel{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
-    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}.label{color:var(--muted);font-size:12px;letter-spacing:.08em;font-weight:800}
-    .statline{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.stat{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:140px}.stat .big{font-size:16px;font-weight:800}.stat .small{font-size:12px;color:var(--muted);margin-top:2px}
-    .qtitle{margin:10px 0 6px;font-size:18px}.qtext{color:var(--text);line-height:1.4;margin:0 0 12px;white-space:pre-wrap}
-    .opts{display:grid;gap:10px;margin-top:10px}.optbtn{text-align:left;width:100%;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);padding:12px;color:var(--text);cursor:pointer;transition:transform .04s ease,border-color .15s ease,background .15s ease}.optbtn:hover{border-color:rgba(122,162,255,.45)}.optbtn:active{transform:scale(.995)}.optbtn[disabled]{opacity:.65;cursor:not-allowed}.optbtn .ltr{font-family:var(--mono);font-weight:900;margin-right:8px;color:var(--accent)}
-    .msg{border-radius:14px;border:1px solid var(--line);padding:12px;margin-top:12px;display:none}.msg.good{display:block;border-color:rgba(43,213,118,.35);background:rgba(43,213,118,.08)}.msg.warn{display:block;border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.08)}.msg .t{font-weight:800;margin-bottom:4px}.msg .b{color:var(--muted);line-height:1.35}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.btn{border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);padding:10px 12px;cursor:pointer;font-weight:800}.btn:hover{border-color:rgba(122,162,255,.45)}.btn.primary{border-color:rgba(122,162,255,.45);background:rgba(122,162,255,.10)}.btn[disabled]{opacity:.6;cursor:not-allowed}
-    .field{display:grid;gap:6px;margin-top:10px} input[type="text"]{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
-    .errbox{display:none;margin-top:14px;border:1px solid rgba(255,92,122,.45);background:rgba(255,92,122,.10);border-radius:14px;padding:12px}.errbox .t{font-weight:900}.errbox pre{margin:8px 0 0;white-space:pre-wrap;color:var(--text);font-family:var(--mono);font-size:12px}
-    .muted{color:var(--muted)} .ticket{margin-top:12px;border:1px solid rgba(43,213,118,.35);background:rgba(43,213,118,.07);border-radius:14px;padding:12px}.ticket .code{font-family:var(--mono);font-weight:900;letter-spacing:.06em;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);margin-top:8px;word-break:break-word}.summary{margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px}
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .label{color:var(--muted);font-size:12px;letter-spacing:.08em;font-weight:800}
+    .statline{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .stat{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:140px}
+    .stat .big{font-size:16px;font-weight:800}
+    .stat .small{font-size:12px;color:var(--muted);margin-top:2px}
+    .qtitle{margin:10px 0 6px;font-size:18px}
+    .qtext{color:var(--text);line-height:1.4;margin:0 0 12px;white-space:pre-wrap}
+    .opts{display:grid;gap:10px;margin-top:10px}
+    .optbtn{text-align:left;width:100%;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);padding:12px;color:var(--text);cursor:pointer;transition:transform .04s ease,border-color .15s ease,background .15s ease}
+    .optbtn:hover{border-color:rgba(122,162,255,.45)}
+    .optbtn:active{transform:scale(.995)}
+    .optbtn[disabled]{opacity:.65;cursor:not-allowed}
+    .optbtn .ltr{font-family:var(--mono);font-weight:900;margin-right:8px;color:var(--accent)}
+    .msg{border-radius:14px;border:1px solid var(--line);padding:12px;margin-top:12px;display:none}
+    .msg.good{display:block;border-color:rgba(43,213,118,.35);background:rgba(43,213,118,.08)}
+    .msg.bad{display:block;border-color:rgba(255,92,122,.35);background:rgba(255,92,122,.08)}
+    .msg.warn{display:block;border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.08)}
+    .msg .t{font-weight:800;margin-bottom:4px}
+    .msg .b{color:var(--muted);line-height:1.35}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);padding:10px 12px;cursor:pointer;font-weight:800}
+    .btn:hover{border-color:rgba(122,162,255,.45)}
+    .btn.primary{border-color:rgba(122,162,255,.45);background:rgba(122,162,255,.10)}
+    .btn[disabled]{opacity:.6;cursor:not-allowed}
+    .field{display:grid;gap:6px;margin-top:10px}
+    input[type="text"]{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
+    input[type="text"]:focus{border-color:rgba(122,162,255,.55)}
+    .errbox{display:none;margin-top:14px;border:1px solid rgba(255,92,122,.45);background:rgba(255,92,122,.10);border-radius:14px;padding:12px}
+    .errbox .t{font-weight:900}
+    .errbox pre{margin:8px 0 0;white-space:pre-wrap;color:var(--text);font-family:var(--mono);font-size:12px}
+    .muted{color:var(--muted)}
+    .ticket{margin-top:12px;border:1px solid rgba(43,213,118,.35);background:rgba(43,213,118,.07);border-radius:14px;padding:12px}
+    .ticket .code{font-family:var(--mono);font-weight:900;letter-spacing:.06em;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);margin-top:8px;word-break:break-word}
+    .summary{margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px}
   </style>
 </head>
 <body>
@@ -30,9 +67,10 @@
       <div>
         <div class="kicker">LEGEND MASTERY SERIES</div>
         <h1>Gov Basics 8 — Public Policy Issues & Inputs (CS 18–19)</h1>
-        <p class="sub">Public policy across federal, state, and local government, plus how individuals and organizations influence policy. Mastery requires <b>100% accuracy</b>.</p>
+        <p class="sub">Public policy issues, levels and branches of government, and citizen or organizational input through short OST-style micro-scenarios. Mastery requires <b>100% accuracy</b>.</p>
       </div>
       <div class="pillrow">
+        <div class="pill">Micro-scenarios ✅</div>
         <div class="pill">Mastery (100%) ✅</div>
         <div class="pill">Name + timestamps ✅</div>
         <div class="pill">Submission ticket ✅</div>
@@ -66,7 +104,12 @@
 
         <div id="questionBox" style="display:none;">
           <div class="opts" id="opts"></div>
-          <div id="feedback" class="msg"><div class="t" id="fbTitle"></div><div class="b" id="fbBody"></div></div>
+
+          <div id="feedback" class="msg" aria-live="polite">
+            <div class="t" id="fbTitle"></div>
+            <div class="b" id="fbBody"></div>
+          </div>
+
           <div class="actions">
             <button class="btn" id="btnHint" disabled>Hint</button>
             <button class="btn primary" id="btnNext" disabled>Next</button>
@@ -77,151 +120,381 @@
         <div id="finishBox" style="display:none;">
           <h2 class="qtitle">Finish</h2>
           <p class="qtext">Finish screen always shows name + date + start/end + runtime. Ticket appears only if you have <b>100% accuracy</b>.</p>
+
           <div class="summary">
             <div><b>Attempt Summary</b></div>
             <div class="muted" style="margin-top:6px;line-height:1.35">
-              Name: <span id="sName"></span><br>Date: <span id="sDate"></span><br>Start: <span id="sStart"></span><br>End: <span id="sEnd"></span><br>Runtime: <span id="sRun"></span><br>Accuracy: <span id="sAcc"></span>
+              Name: <span id="sName"></span><br>
+              Date: <span id="sDate"></span><br>
+              Start: <span id="sStart"></span><br>
+              End: <span id="sEnd"></span><br>
+              Runtime: <span id="sRun"></span><br>
+              Accuracy: <span id="sAcc"></span>
             </div>
           </div>
-          <div id="finishMsg" class="msg warn" style="display:block;"><div class="t" id="finishTitle">Checking mastery…</div><div class="b" id="finishBody">—</div></div>
+
+          <div id="finishMsg" class="msg warn" style="display:block;">
+            <div class="t" id="finishTitle">Checking mastery…</div>
+            <div class="b" id="finishBody">—</div>
+          </div>
+
           <div id="ticket" class="ticket" style="display:none;">
             <div><b>Submission Ticket</b> (screenshot this)</div>
             <div class="muted" style="margin-top:6px;line-height:1.35">
-              Name: <span id="tName"></span><br>Date: <span id="tDate"></span><br>Start: <span id="tStart"></span><br>End: <span id="tEnd"></span><br>Runtime: <span id="tRun"></span><br>Accuracy: <span id="tAcc"></span>
+              Name: <span id="tName"></span><br>
+              Date: <span id="tDate"></span><br>
+              Start: <span id="tStart"></span><br>
+              End: <span id="tEnd"></span><br>
+              Runtime: <span id="tRun"></span><br>
+              Accuracy: <span id="tAcc"></span>
             </div>
             <div class="code" id="tCode">—</div>
-            <div class="actions" style="margin-top:10px;"><button class="btn primary" id="btnCopy">Copy Ticket Code</button><button class="btn" id="btnReset">Play Again</button></div>
+            <div class="actions" style="margin-top:10px;">
+              <button class="btn primary" id="btnCopy">Copy Ticket Code</button>
+              <button class="btn" id="btnReset">Play Again</button>
+            </div>
           </div>
-          <div class="actions" style="margin-top:10px;"><button class="btn" id="btnRestartGame">Restart Game</button><button class="btn" id="btnBackHome">Back to Hub</button></div>
+
+          <div class="actions" style="margin-top:10px;">
+            <button class="btn" id="btnRestartGame">Restart Game</button>
+            <button class="btn" id="btnBackHome">Back to Hub</button>
+          </div>
         </div>
       </section>
 
       <aside class="panel">
         <div class="label">RULES</div>
-        <ul class="muted" style="margin:10px 0 0;line-height:1.45;">
+        <ul class="muted" style="margin:10px 0 0; line-height:1.45;">
           <li><b>Mastery</b> = finish all items with <b>0 misses</b>.</li>
           <li>Wrong answer → hint appears → retry until correct, but accuracy keeps the miss.</li>
-          <li>Ticket includes name + timestamps + runtime.</li>
+          <li>Questions are short and built for fast recognition, not long reading.</li>
         </ul>
+
         <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+
         <div class="label">WHAT THIS GAME PRACTICES</div>
-        <p class="muted" style="margin:10px 0 0;line-height:1.45;">Public policy issues, conflict and collaboration among levels of government, and how individuals and organizations influence public policy through elections, lobbying, testimony, briefs, demonstrations, and communication with officials.</p>
+        <p class="muted" style="margin:10px 0 0;line-height:1.45;">
+          Public policy issues, collaboration and conflict among levels and branches of government, and methods citizens and organizations use to influence policy.
+        </p>
+
         <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+
         <div class="label">SAVED PROGRESS</div>
-        <p class="muted" style="margin:10px 0 0;line-height:1.45;">Progress saves automatically in this browser until you finish or reset this game.</p>
+        <p class="muted" style="margin:10px 0 0;line-height:1.45;">
+          Progress saves automatically in this browser until you finish or reset this game.
+        </p>
       </aside>
     </div>
   </div>
 
 <script>
 (() => {
-  const BANK = [
-    { q:"Public policy issues are best described as", a:"Matters of discussion and debate related to the functions of government", d:["Only court cases","Private family decisions","Political campaign slogans"], hint:"Think government problems and decisions." },
-    { q:"A public policy issue usually involves", a:"A problem government is trying to address", d:["Only private business choices","Only personal hobbies","Only social media trends"], hint:"Government responding to a public problem." },
-    { q:"Public policy can involve", a:"Domestic and foreign affairs", d:["Only foreign wars","Only local school rules","Only Supreme Court cases"], hint:"Both at home and abroad." },
-    { q:"A policy issue may involve collaboration or conflict among", a:"Different branches and levels of government", d:["Only private citizens","Only judges","Only media companies"], hint:"Federal, state, local and branch interaction." },
+  const QUESTIONS = [
+    {
+      id:'g8r_01',
+      title:'Public Policy Issue',
+      prompt:'A city debates how to reduce traffic and improve safety. This is best described as a',
+      options:['Public policy issue','Court precedent','Private hobby','Campaign slogan'],
+      answerIndex:0,
+      hint:'Think a public problem government may address.',
+      explain:'Correct: a public policy issue is a matter of discussion and debate related to government functions.'
+    },
+    {
+      id:'g8r_02',
+      title:'Public Policy Issue',
+      prompt:'A public policy issue usually begins with',
+      options:['A problem government is trying to address','A Supreme Court appointment','A jury verdict only','A family celebration'],
+      answerIndex:0,
+      hint:'Policy is usually a response to some public problem.',
+      explain:'Correct: public policy issues usually involve a problem government is trying to address.'
+    },
+    {
+      id:'g8r_03',
+      title:'Domestic vs. Foreign Policy',
+      prompt:'A debate over military aid to another country is mainly a',
+      options:['Foreign policy issue','Local zoning issue','School dress code issue','County tax issue only'],
+      answerIndex:0,
+      hint:'This involves affairs outside the United States.',
+      explain:'Correct: issues involving other countries are foreign policy issues.'
+    },
+    {
+      id:'g8r_04',
+      title:'Domestic Policy',
+      prompt:'A debate over road repairs inside a city is mainly a',
+      options:['Domestic public policy issue','Foreign policy issue','Treaty issue','Electoral College issue'],
+      answerIndex:0,
+      hint:'This problem is inside the United States and local.',
+      explain:'Correct: a local problem within the United States is a domestic public policy issue.'
+    },
 
-    { q:"The Department of State is part of the", a:"Federal executive branch", d:["Federal legislative branch","State judicial branch","Local legislative branch"], hint:"It advises the president on foreign policy." },
-    { q:"The Department of State mainly deals with", a:"Foreign policy", d:["Writing Supreme Court opinions","Running local elections","Approving state budgets"], hint:"Diplomacy and international relations." },
-    { q:"The Congressional Budget Office is part of the", a:"Federal legislative branch", d:["Federal executive branch","State executive branch","Local judicial branch"], hint:"Congressional support agency." },
-    { q:"The Congressional Budget Office mainly provides", a:"Analyses of economic and budgetary data", d:["Supreme Court rulings","Executive orders","Military commands"], hint:"Budget/economic analysis." },
-    { q:"The Ohio Legislative Service Commission helps", a:"Draft legislation", d:["Command the National Guard","Hear criminal appeals","Run foreign embassies"], hint:"Legislative drafting support." },
-    { q:"The Ohio Courts of Common Pleas are part of the", a:"State judicial branch", d:["Federal executive branch","State legislative branch","Local media"], hint:"They are state courts." },
-    { q:"County commissions are examples of", a:"Local legislative/executive government involvement in policy", d:["Federal judicial review","National treaty making","Supreme Court precedent"], hint:"Local government policy role." },
+    {
+      id:'g8r_05',
+      title:'Levels of Government',
+      prompt:'A local government and a state agency work together on water quality. This best shows',
+      options:['Collaboration among levels of government','Judicial review','Impeachment','Direct democracy'],
+      answerIndex:0,
+      hint:'They are working together across levels.',
+      explain:'Correct: collaboration among levels of government happens when different levels work together on a policy issue.'
+    },
+    {
+      id:'g8r_06',
+      title:'Levels of Government',
+      prompt:'State and federal officials disagree on how to handle an education issue. This best shows',
+      options:['Conflict among levels of government','Consensus building','Judicial restraint','Presidential succession'],
+      answerIndex:0,
+      hint:'They are not working together; they are disagreeing.',
+      explain:'Correct: disagreement between state and federal officials is conflict among levels of government.'
+    },
+    {
+      id:'g8r_07',
+      title:'Government Complexity',
+      prompt:'Public policy issues often become complicated because they may involve',
+      options:['Multiple branches and levels of government','Only one citizen','Only one textbook','Only one court case'],
+      answerIndex:0,
+      hint:'Think overlap among many decision-makers.',
+      explain:'Correct: public policy issues can involve multiple branches and levels of government.'
+    },
 
-    { q:"A county commission granting tax abatements is an example of", a:"Local government addressing public policy", d:["Federal foreign policy","Judicial impeachment","Constitutional ratification"], hint:"Local tax decision." },
-    { q:"A public policy issue can become complex because it may involve", a:"Multiple levels and branches of government", d:["Only one branch","Only one voter","Only one court case"], hint:"Policy often overlaps." },
+    {
+      id:'g8r_08',
+      title:'Local Government Input',
+      prompt:'A citizen wants to change a city zoning rule. Who should the citizen contact first?',
+      options:['Local government officials','The U.S. Supreme Court','The Department of State','The Electoral College'],
+      answerIndex:0,
+      hint:'Zoning is usually a local issue.',
+      explain:'Correct: local zoning issues are most directly handled by local government officials.'
+    },
+    {
+      id:'g8r_09',
+      title:'Federal Government Input',
+      prompt:'A citizen wants to influence U.S. foreign policy. Which officials are the most appropriate target?',
+      options:['Federal officials','Only county commissioners','Only school board members','Only city judges'],
+      answerIndex:0,
+      hint:'Foreign policy is handled nationally.',
+      explain:'Correct: foreign policy is mainly handled by the federal government.'
+    },
+    {
+      id:'g8r_10',
+      title:'Branch Identification',
+      prompt:'A group wants to influence a court decision. Which method is most appropriate?',
+      options:['Submit a legal brief','Lobby a city council on zoning','Buy government bonds','Change reserve requirements'],
+      answerIndex:0,
+      hint:'Courts hear legal arguments in a certain form.',
+      explain:'Correct: a legal brief is an appropriate way to present arguments in a court case.'
+    },
 
-    { q:"Individuals can influence public policy by", a:"Lobbying lawmakers", d:["Declaring laws unconstitutional","Ratifying amendments","Issuing executive orders"], hint:"Direct contact with legislators." },
-    { q:"Individuals and organizations can influence policy by", a:"Providing testimony before legislative committees", d:["Appointing judges","Overriding vetoes","Writing Supreme Court opinions"], hint:"Speaking to lawmakers formally." },
-    { q:"A brief submitted in a court case is used to", a:"Present arguments during judicial proceedings", d:["Collect taxes","Ratify treaties","Write executive orders"], hint:"Legal argument document." },
-    { q:"An organization trying to shape a rule by meeting with executive officials is", a:"Providing input on rules and regulations", d:["Judicial review","Impeachment","Ratification"], hint:"Executive agencies can hear input." },
+    {
+      id:'g8r_11',
+      title:'Lobbying',
+      prompt:'A group meets with lawmakers to persuade them to support a bill. This is called',
+      options:['Lobbying','Judicial review','Ratification','Incorporation'],
+      answerIndex:0,
+      hint:'Direct contact with lawmakers to influence policy.',
+      explain:'Correct: lobbying is the effort to persuade lawmakers or officials to support a policy position.'
+    },
+    {
+      id:'g8r_12',
+      title:'Legislative Input',
+      prompt:'To influence the legislature most directly, a citizen should',
+      options:['Lobby lawmakers','Appeal to the Electoral College','Issue an executive order','File a criminal sentence'],
+      answerIndex:0,
+      hint:'Think direct pressure on legislators.',
+      explain:'Correct: lobbying lawmakers is a direct way to influence the legislature.'
+    },
+    {
+      id:'g8r_13',
+      title:'Committee Testimony',
+      prompt:'A citizen speaks at a legislative committee meeting about a proposed law. This is an example of',
+      options:['Providing testimony','Issuing a veto','Judicial review','Presidential succession'],
+      answerIndex:0,
+      hint:'Formal speaking to lawmakers at a hearing.',
+      explain:'Correct: speaking before a legislative committee is providing testimony.'
+    },
 
-    { q:"Campaigning for candidates who support your views is a way to", a:"Influence public policy through elections", d:["Serve on the Supreme Court","Declare war","Override a veto"], hint:"Electing supportive candidates." },
-    { q:"Writing letters to officials is an example of", a:"Citizen input into public policy", d:["Judicial review","Legislative supremacy","Federalism"], hint:"Direct communication with officials." },
-    { q:"Holding a public demonstration is a form of", a:"Political participation to influence policy", d:["Ratifying an amendment","Commanding troops","Approving appointments"], hint:"Public protest/input." },
-    { q:"Offering comments during a public meeting is an example of", a:"Providing input to government decision-making", d:["Judicial sentencing","Treaty ratification","Impeachment"], hint:"Citizen voice in meetings." },
-    { q:"Proposing a law to a legislator is a way to", a:"Help shape public policy", d:["Appoint a judge","Issue a pardon","Interpret the Constitution"], hint:"Law ideas go through legislators." },
+    {
+      id:'g8r_14',
+      title:'Public Meetings',
+      prompt:'A resident offers comments at a town hall meeting before a vote. This is an example of',
+      options:['Citizen input into decision-making','Treaty ratification','Judicial sentencing','Military command'],
+      answerIndex:0,
+      hint:'The citizen is speaking directly into the process.',
+      explain:'Correct: public comments at meetings are a form of citizen input into decision-making.'
+    },
+    {
+      id:'g8r_15',
+      title:'Letters to Officials',
+      prompt:'A voter writes a letter asking a representative to support a bill. This is an example of',
+      options:['Citizen input into public policy','Judicial review','Ratification','Electoral counting'],
+      answerIndex:0,
+      hint:'This is direct communication with an official.',
+      explain:'Correct: writing to officials is a direct form of citizen input into public policy.'
+    },
+    {
+      id:'g8r_16',
+      title:'Protests and Demonstrations',
+      prompt:'A group gathers peacefully to pressure leaders to change a policy. This is a form of',
+      options:['Political participation to influence policy','Presidential appointment','Judicial review','Reserve management'],
+      answerIndex:0,
+      hint:'Think protest and public pressure.',
+      explain:'Correct: public demonstrations are a form of political participation aimed at influencing policy.'
+    },
 
-    { q:"To influence a court case, the most appropriate tool would be", a:"A legal brief", d:["A veto","A tax abatement","An electoral vote"], hint:"Court input uses briefs/arguments." },
-    { q:"To influence a legislature directly, the most appropriate action would be", a:"Lobbying members of the legislature", d:["Issuing executive orders","Filing criminal charges","Commanding the military"], hint:"Legislators are lobbied." },
-    { q:"To influence an agency rule, the most appropriate target would be", a:"Executive branch officials", d:["The Electoral College","The jury system","Foreign embassies"], hint:"Rules/regulations often come from agencies." },
+    {
+      id:'g8r_17',
+      title:'Elections and Policy',
+      prompt:'A group supports candidates who agree with its views. This is a way to influence policy through',
+      options:['Elections','Court briefs','Jury trials','Impeachment'],
+      answerIndex:0,
+      hint:'Choosing leaders can shape future policy.',
+      explain:'Correct: elections influence policy by putting supportive leaders into office.'
+    },
+    {
+      id:'g8r_18',
+      title:'Interest Groups',
+      prompt:'An organization tries to shape a policy without mainly trying to win office. This is most likely an',
+      options:['Interest group','Political party','Court','Cabinet department'],
+      answerIndex:0,
+      hint:'It focuses on policy influence more than elections.',
+      explain:'Correct: interest groups try to influence policy rather than mainly win office.'
+    },
+    {
+      id:'g8r_19',
+      title:'Decision-Maker Match',
+      prompt:'A citizen wants to affect a new agency rule. Which officials are the best target?',
+      options:['Executive branch officials','The Electoral College','Jury members','Only county sheriffs'],
+      answerIndex:0,
+      hint:'Agency rules and regulations come from one branch.',
+      explain:'Correct: executive branch officials and agencies are the right targets for influencing rules and regulations.'
+    },
 
-    { q:"Knowing the proper level and branch of government matters because", a:"Different officials handle different stages of policy-making", d:["All government offices do the same job","Only federal officials matter","Courts write all policies"], hint:"Match your input to the right decision-maker." },
-    { q:"A citizen wanting to affect local zoning most likely should contact", a:"Local government officials", d:["The U.S. Supreme Court","The Department of State","The Electoral College"], hint:"Local issue = local government." },
-    { q:"A citizen wanting to affect foreign policy most likely should focus on", a:"Federal officials", d:["Only county commissions","Only state judges","Only school boards"], hint:"Foreign policy is national." },
+    {
+      id:'g8r_20',
+      title:'Government Branch Function',
+      prompt:'A budget analysis prepared for Congress is most closely connected to the',
+      options:['Legislative branch','Judicial branch','Military chain of command','Local school district only'],
+      answerIndex:0,
+      hint:'Congress uses budget analysis.',
+      explain:'Correct: budget analysis for Congress is most closely tied to the legislative branch.'
+    },
+    {
+      id:'g8r_21',
+      title:'Executive Branch Policy',
+      prompt:'A policy issue involving embassies and diplomacy is most closely connected to the',
+      options:['Executive branch','Judicial branch','County commission','Local zoning board'],
+      answerIndex:0,
+      hint:'Embassies and foreign relations point to one branch.',
+      explain:'Correct: diplomacy and embassies are mainly part of the executive branch.'
+    },
+    {
+      id:'g8r_22',
+      title:'Judicial Branch Policy',
+      prompt:'A policy issue about sentencing guidelines is most closely connected to the',
+      options:['Judicial branch','Media','Political parties only','Electoral College'],
+      answerIndex:0,
+      hint:'Courts apply sentencing.',
+      explain:'Correct: sentencing issues are most closely tied to the judicial branch.'
+    },
 
-    { q:"Public policy issues are often debated because they involve", a:"Different views about solutions and consequences", d:["Only one correct answer","No government interest","No public effect"], hint:"People disagree on how to solve problems." },
-    { q:"One reason groups hold demonstrations is to", a:"Pressure officials and shape public opinion", d:["Ratify treaties","Write court opinions","Confirm judges"], hint:"Public pressure." },
-    { q:"One reason groups campaign for candidates is to", a:"Elect leaders who support their policy goals", d:["Remove judges automatically","Eliminate public debate","Write constitutional amendments"], hint:"Policy through elections." },
-
-    { q:"A domestic public policy issue would most likely involve", a:"Problems inside the United States", d:["Only foreign ambassadors","Only wars overseas","Only trade with Europe"], hint:"Domestic = internal/home." },
-    { q:"An international public policy issue would most likely involve", a:"Foreign affairs", d:["County tax abatements","Township zoning only","School dress codes only"], hint:"International = foreign." },
-
-    { q:"When state and federal governments disagree over a policy approach, that shows", a:"Conflict among levels of government", d:["Judicial supremacy only","Only private disagreement","No public policy issue"], hint:"Levels = federal/state/local." },
-    { q:"When a local government works with a state agency on a problem, that shows", a:"Collaboration among levels of government", d:["Judicial review","Nullification","Impeachment"], hint:"Working together across levels." },
-
-    { q:"A public hearing where citizens speak on an issue is an example of", a:"Input into public policy", d:["Treaty ratification","Jury deliberation","Presidential succession"], hint:"Citizens speaking to officials." },
-    { q:"An interest group most directly affects policy by", a:"Trying to influence decision-makers", d:["Running the courts","Commanding the military","Collecting taxes"], hint:"Influence, not direct governing." },
-
-    { q:"A policy issue tied to sentencing guidelines would most directly involve", a:"The judicial branch", d:["Only the media","Only political parties","Only private corporations"], hint:"Courts apply sentencing." },
-    { q:"A policy issue tied to writing a budget analysis would most directly involve", a:"The legislative branch", d:["The judicial branch","The military chain of command","The Electoral College"], hint:"Budget analysis helps lawmakers." },
-    { q:"A policy issue tied to embassies abroad would most directly involve", a:"The executive branch", d:["The state judicial branch","County commissions","Local school boards"], hint:"Foreign policy/diplomacy." },
-
-    { q:"The most basic goal of citizen input in public policy is to", a:"Influence government decisions", d:["Eliminate all disagreement","Replace elections","End federalism"], hint:"Input is about influence." },
-    { q:"The best summary of CS18–19 is that public policy", a:"Is addressed by many government entities and shaped by citizen/organizational input", d:["Is decided only by presidents","Belongs only to local governments","Cannot be influenced by citizens"], hint:"Multiple levels + public input." }
+    {
+      id:'g8r_23',
+      title:'Why Input Matters',
+      prompt:'Knowing the correct level and branch of government matters because',
+      options:['Different officials handle different parts of policy-making','All officials do the same job','Only federal officials matter','Courts make all policy alone'],
+      answerIndex:0,
+      hint:'You need to match the issue to the decision-maker.',
+      explain:'Correct: different officials and institutions handle different stages and types of policy-making.'
+    },
+    {
+      id:'g8r_24',
+      title:'Public Debate',
+      prompt:'Public policy issues are often debated because people have',
+      options:['Different views about solutions and consequences','Exactly the same opinion','No interest in outcomes','No connection to government'],
+      answerIndex:0,
+      hint:'People disagree on how to solve public problems.',
+      explain:'Correct: policy issues are debated because people often disagree about the best solutions and their consequences.'
+    },
+    {
+      id:'g8r_25',
+      title:'Best Summary',
+      prompt:'The best summary of CS 18–19 is that public policy',
+      options:['Is addressed by many government entities and shaped by citizen and organizational input','Is decided only by presidents','Belongs only to local governments','Cannot be influenced by citizens'],
+      answerIndex:0,
+      hint:'Think multiple decision-makers plus public input.',
+      explain:'Correct: public policy is addressed by many government entities and influenced by citizens and organizations.'
+    },
+    {
+      id:'g8r_26',
+      title:'Most Effective Action',
+      prompt:'A student wants to change a school district policy. What is the most effective first step?',
+      options:['Contact local school board members','Write to the president','Appeal directly to the Supreme Court','Sell government bonds'],
+      answerIndex:0,
+      hint:'School district issues are handled locally.',
+      explain:'Correct: contacting local school board members is the most appropriate first step for a school district policy issue.'
+    }
   ];
 
-  const QUESTIONS = BANK.map((item, i) => ({
-    id:`g8_${String(i+1).padStart(2,'0')}`,
-    title:'CS 18–19 Review',
-    prompt:item.q,
-    options:[item.a, ...item.d],
-    answerIndex:0,
-    hint:item.hint,
-    explain:`Correct: ${item.a}.`
-  }));
+  const STORAGE_KEY = 'BTB_GOV_CS18_19_REBUILT_V1';
 
-  const STORAGE_KEY='BTB_GOV_CS18_19_V2';
-  const errbox=document.getElementById('errbox'), errtext=document.getElementById('errtext');
-  window.addEventListener('error', e=>{ errbox.style.display='block'; errtext.textContent=`Error: ${e.message}\nSource: ${e.filename}:${e.lineno}:${e.colno}`; });
+  const errbox = document.getElementById('errbox');
+  const errtext = document.getElementById('errtext');
+  window.addEventListener('error', e => { errbox.style.display='block'; errtext.textContent=`Error: ${e.message}\nSource: ${e.filename}:${e.lineno}:${e.colno}`; });
+  window.addEventListener('unhandledrejection', e => { errbox.style.display='block'; errtext.textContent=String(e.reason && e.reason.stack ? e.reason.stack : e.reason); });
 
-  const $=id=>document.getElementById(id);
-  const pad2=n=>String(n).padStart(2,'0');
-  const fmtDate=d=>`${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}`;
-  const fmtTime=d=>{ const hr=d.getHours(), ampm=hr>=12?'PM':'AM', h12=hr%12||12; return `${h12}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())} ${ampm}`; };
-  const msToHMS=ms=>{ const s=Math.max(0,Math.floor(ms/1000)); const hh=Math.floor(s/3600), mm=Math.floor((s%3600)/60), ss=s%60; return `${hh}:${pad2(mm)}:${pad2(ss)}`; };
-  const hash32=str=>{ let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619);} return h>>>0; };
-  const base36=n=>n.toString(36).toUpperCase();
-  function mulberry32(seed){ return function(){ let t=seed+=0x6D2B79F5; t=Math.imul(t^(t>>>15), t|1); t^=t+Math.imul(t^(t>>>7), t|61); return ((t^(t>>>14))>>>0)/4294967296; }; }
+  const $ = id => document.getElementById(id);
+  const pad2 = n => String(n).padStart(2,'0');
+  const fmtDate = d => `${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}`;
+  const fmtTime = d => { const hr=d.getHours(), ampm=hr>=12?'PM':'AM', h12=hr%12||12; return `${h12}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())} ${ampm}`; };
+  const msToHMS = ms => { const s=Math.max(0,Math.floor(ms/1000)); const hh=Math.floor(s/3600), mm=Math.floor((s%3600)/60), ss=s%60; return `${hh}:${pad2(mm)}:${pad2(ss)}`; };
+  const hash32 = str => { let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h,16777619);} return h>>>0; };
+  const base36 = n => n.toString(36).toUpperCase();
+  function mulberry32(seed){ return function(){ let t = seed += 0x6D2B79F5; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
   function shuffledIndices(n, seed){ const idx=Array.from({length:n},(_,i)=>i); const rnd=mulberry32(seed>>>0); for(let i=n-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; } return idx; }
 
-  let state={name:'',startedAtISO:'',startedAtMS:0,idx:0,runSeed:0,qmeta:[]};
-  const freshMeta=()=>QUESTIONS.map(()=>({done:false,missed:false,order:null,correctShown:null}));
+  let state = { name:'', startedAtISO:'', startedAtMS:0, idx:0, runSeed:0, qmeta:[] };
+  const freshMeta = () => QUESTIONS.map(() => ({done:false, missed:false, order:null, correctShown:null}));
+
   function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
   function load(){ try{ const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return false; const parsed=JSON.parse(raw); if(!parsed.name || !parsed.startedAtISO || !Array.isArray(parsed.qmeta)) return false; state=parsed; return true; } catch { return false; } }
   function clearSave(){ localStorage.removeItem(STORAGE_KEY); }
-  function counts(){ const done=state.qmeta.filter(m=>m.done).length, perfect=state.qmeta.filter(m=>m.done && !m.missed).length; return {done,perfect}; }
+
+  function counts(){ const done=state.qmeta.filter(m=>m.done).length; const perfect=state.qmeta.filter(m=>m.done && !m.missed).length; return {done,perfect}; }
   function accuracyPct(){ const {done,perfect}=counts(); return done===0 ? 0 : Math.round((perfect/done)*100); }
-  function updateStats(){ $('qpos').textContent=`${Math.min(state.idx+1, QUESTIONS.length)} / ${QUESTIONS.length}`; $('acc').textContent=`${accuracyPct()}%`; $('runtime').textContent=state.startedAtMS ? msToHMS(Date.now()-state.startedAtMS) : '0:00:00'; }
-  setInterval(updateStats,500);
+
+  function updateStats(){
+    $('qpos').textContent = `${Math.min(state.idx+1, QUESTIONS.length)} / ${QUESTIONS.length}`;
+    $('acc').textContent = `${accuracyPct()}%`;
+    $('runtime').textContent = state.startedAtMS ? msToHMS(Date.now()-state.startedAtMS) : '0:00:00';
+  }
+  setInterval(updateStats, 500);
+
   function setFeedback(kind,title,body){ $('feedback').className=`msg ${kind}`; $('fbTitle').textContent=title; $('fbBody').textContent=body; }
   function clearFeedback(){ $('feedback').className='msg'; $('fbTitle').textContent=''; $('fbBody').textContent=''; }
-  function ensureOrder(i){ const q=QUESTIONS[i], meta=state.qmeta[i]; if(Array.isArray(meta.order)) return; const seed=hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`)^0x555AAA; meta.order=shuffledIndices(q.options.length, seed); meta.correctShown=meta.order.indexOf(q.answerIndex); }
+
+  function ensureOrder(qIndex){
+    const q=QUESTIONS[qIndex], meta=state.qmeta[qIndex];
+    if(Array.isArray(meta.order) && typeof meta.correctShown==='number') return;
+    const seed = hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`) ^ 0x555AAA;
+    meta.order = shuffledIndices(q.options.length, seed);
+    meta.correctShown = meta.order.indexOf(q.answerIndex);
+  }
+
   function disableInputs(disabled){ document.querySelectorAll('.optbtn').forEach(b=>b.disabled=disabled); }
 
   function showQuestion(){
     const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
-    clearFeedback(); $('btnNext').disabled=true; $('btnHint').disabled=true; $('qtitle').textContent=q.title; $('qtext').textContent=q.prompt; $('opts').innerHTML='';
+    clearFeedback(); $('btnNext').disabled=true; $('btnHint').disabled=true;
+    $('qtitle').textContent=q.title; $('qtext').textContent=q.prompt; $('opts').innerHTML='';
     ensureOrder(state.idx);
+
     const letters=['A','B','C','D'];
-    meta.order.forEach((origIdx, shownIdx)=>{
+    meta.order.forEach((origIdx, shownIdx) => {
       const b=document.createElement('button');
       b.className='optbtn';
       b.innerHTML=`<span class="ltr">${letters[shownIdx]}.</span>${q.options[origIdx]}`;
-      b.addEventListener('click',()=>answer(shownIdx));
+      b.addEventListener('click', ()=>answerMCQ(shownIdx));
       $('opts').appendChild(b);
     });
+
     if(meta.done){
       disableInputs(true);
       $('btnNext').disabled=false;
@@ -229,38 +502,55 @@
     } else {
       disableInputs(false);
     }
-    save(); updateStats();
+
+    updateStats();
+    save();
   }
 
-  function answer(shownIdx){
+  function markMiss(){ state.qmeta[state.idx].missed=true; }
+  function markDone(){ state.qmeta[state.idx].done=true; }
+
+  function answerMCQ(shownIdx){
     const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
     if(meta.done) return;
     if(shownIdx===meta.correctShown){
-      meta.done=true;
+      markDone();
       setFeedback('good','Correct ✅', q.explain);
       disableInputs(true);
       $('btnNext').disabled=false;
+      $('btnHint').disabled=true;
     } else {
-      meta.missed=true;
+      markMiss();
       setFeedback('warn','Hint 💡', q.hint);
+      $('btnHint').disabled=true;
+      $('btnNext').disabled=true;
     }
     save(); updateStats();
   }
 
+  $('btnHint').addEventListener('click', ()=> {
+    const q=QUESTIONS[state.idx];
+    setFeedback('warn','Hint 💡', q.hint);
+    $('btnHint').disabled=true;
+  });
+
   $('btnNext').addEventListener('click', ()=>{
     if(!state.qmeta[state.idx].done) return;
     state.idx++;
-    if(state.idx>=QUESTIONS.length) return finish();
+    if(state.idx >= QUESTIONS.length) return showFinish();
     showQuestion();
   });
 
-  function finish(){
+  function showFinish(){
     $('nameBox').style.display='none';
     $('questionBox').style.display='none';
     $('finishBox').style.display='';
-
-    const ended=new Date(), start=new Date(state.startedAtISO), runMS=Date.now()-state.startedAtMS;
-    const total=QUESTIONS.length, {perfect}=counts(), acc=Math.round((perfect/total)*100);
+    const ended=new Date();
+    const start=new Date(state.startedAtISO);
+    const runMS=Date.now()-state.startedAtMS;
+    const total=QUESTIONS.length;
+    const {perfect}=counts();
+    const acc=Math.round((perfect/total)*100);
 
     $('sName').textContent=state.name;
     $('sDate').textContent=fmtDate(ended);
@@ -280,28 +570,33 @@
       $('tRun').textContent=msToHMS(runMS);
       $('tAcc').textContent=`${acc}%`;
       const raw=`${state.name}|${state.startedAtISO}|${ended.toISOString()}|${perfect}|${total}|${state.runSeed}`;
-      $('tCode').textContent=`BTB-CS18-19-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
+      $('tCode').textContent=`BTB-CS18-19-R1-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
       clearSave();
     } else {
       $('finishTitle').textContent='Mastery NOT achieved ❌';
-      $('finishBody').textContent=`Accuracy: ${acc}%. Mastery requires 100%.`;
+      $('finishBody').textContent=`Accuracy: ${acc}%. Mastery requires 100%. Click Play Again or Restart Game and run it clean.`;
       $('ticket').style.display='none';
     }
   }
 
   function restartGame(){ clearSave(); location.reload(); }
+  window.restartGame = restartGame;
+
+  $('btnCopy').addEventListener('click', async ()=>{ try{ await navigator.clipboard.writeText($('tCode').textContent.trim()); $('btnCopy').textContent='Copied ✅'; setTimeout(()=>$('btnCopy').textContent='Copy Ticket Code',1000);} catch {}});
+  $('btnReset').addEventListener('click', restartGame);
+  $('btnResetAll').addEventListener('click', restartGame);
+  $('btnRestartMid').addEventListener('click', restartGame);
+  $('btnRestartGame').addEventListener('click', restartGame);
+  $('btnBackHome').addEventListener('click', ()=>location.href='../index.html');
 
   $('btnStart').addEventListener('click', ()=>{
     const name=($('studentName').value||'').trim();
-    if(name.length<2){
-      setFeedback('warn','Name required','Enter your name to begin.');
-      return;
-    }
+    if(name.length<2){ setFeedback('bad','Name required','Enter your name to begin.'); return; }
     state.name=name;
     state.startedAtISO=new Date().toISOString();
     state.startedAtMS=Date.now();
     state.idx=0;
-    state.runSeed=(Math.floor(Math.random()*1e9)^hash32(name+'|'+state.startedAtISO))>>>0;
+    state.runSeed=(Math.floor(Math.random()*1e9) ^ hash32(name+'|'+state.startedAtISO))>>>0;
     state.qmeta=freshMeta();
     for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i);
     save();
@@ -310,19 +605,7 @@
     showQuestion();
   });
 
-  $('studentName').addEventListener('keydown', e=>{ if(e.key==='Enter') $('btnStart').click(); });
-  $('btnResetAll').addEventListener('click', restartGame);
-  $('btnRestartMid').addEventListener('click', restartGame);
-  $('btnRestartGame').addEventListener('click', restartGame);
-  $('btnReset').addEventListener('click', restartGame);
-  $('btnBackHome').addEventListener('click', ()=>location.href='../index.html');
-  $('btnCopy').addEventListener('click', async ()=>{
-    try{
-      await navigator.clipboard.writeText($('tCode').textContent.trim());
-      $('btnCopy').textContent='Copied ✅';
-      setTimeout(()=>$('btnCopy').textContent='Copy Ticket Code',1000);
-    } catch {}
-  });
+  $('studentName').addEventListener('keydown', e => { if(e.key==='Enter') $('btnStart').click(); });
 
   if(load()){
     $('studentName').value=state.name||'';
@@ -330,6 +613,7 @@
     $('questionBox').style.display='';
     showQuestion();
   }
+
   updateStats();
 })();
 </script>
