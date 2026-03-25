@@ -66,7 +66,7 @@
       <div>
         <div class="kicker">LEGEND MASTERY SERIES</div>
         <h1>Gov Basics 3 — Constitutional Change & Bill of Rights (CS 7–8)</h1>
-        <p class="sub">Bill of Rights, judicial review, constitutional change, and incorporation. Built with short OST-style micro-scenarios. Mastery requires <b>100% accuracy</b>.</p>
+        <p class="sub">Bill of Rights, constitutional change, judicial review, legislation, and informal practices. Built with short OST-style micro-scenarios. Mastery requires <b>100% accuracy</b>.</p>
       </div>
       <div class="pillrow">
         <div class="pill">Micro-scenarios ✅</div>
@@ -150,11 +150,11 @@
         <ul class="muted" style="margin:10px 0 0;line-height:1.45;">
           <li><b>Mastery</b> = finish all items with <b>0 misses</b>.</li>
           <li>Wrong answer → hint appears → retry until correct, but accuracy keeps the miss.</li>
-          <li>Questions are short and scenario-based to match OST recognition patterns.</li>
+          <li>Question order and answer order are both shuffled to prevent pattern-guessing.</li>
         </ul>
         <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
         <div class="label">WHAT THIS GAME PRACTICES</div>
-        <p class="muted" style="margin:10px 0 0;line-height:1.45;">First, Fourth, Fifth, Sixth, and Eighth Amendments, judicial review, due process, and incorporation through the 14th Amendment.</p>
+        <p class="muted" style="margin:10px 0 0;line-height:1.45;">First, Fourth, Fifth, Sixth, Eighth, and Tenth Amendments, judicial review, due process, incorporation, legislation such as the Civil Rights Act and Voting Rights Act, and informal change such as legislative oversight.</p>
         <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
         <div class="label">SAVED PROGRESS</div>
         <p class="muted" style="margin:10px 0 0;line-height:1.45;">Progress saves automatically in this browser until you finish or reset this game.</p>
@@ -164,8 +164,7 @@
 
 <script>
 (() => {
-  const QUESTIONS = [
-    // 1st Amendment (4)
+  const QUESTION_BANK = [
     {
       id:'g3r_01',
       title:'First Amendment',
@@ -203,7 +202,6 @@
       explain:'Correct: the right to petition allows citizens to ask government for change.'
     },
 
-    // 4th Amendment (4)
     {
       id:'g3r_05',
       title:'Fourth Amendment',
@@ -241,7 +239,6 @@
       explain:'Correct: a warrant is generally based on probable cause.'
     },
 
-    // 5th Amendment / due process (4)
     {
       id:'g3r_09',
       title:'Fifth Amendment',
@@ -279,7 +276,6 @@
       explain:'Correct: due process means the government must act fairly and lawfully.'
     },
 
-    // 6th Amendment (3)
     {
       id:'g3r_13',
       title:'Sixth Amendment',
@@ -308,7 +304,6 @@
       explain:'Correct: the Sixth Amendment protects the rights of the accused during criminal prosecutions.'
     },
 
-    // 8th Amendment (3)
     {
       id:'g3r_16',
       title:'Eighth Amendment',
@@ -337,7 +332,6 @@
       explain:'Correct: the Eighth Amendment protects against cruel and unusual punishment.'
     },
 
-    // Judicial review (3)
     {
       id:'g3r_19',
       title:'Judicial Review',
@@ -366,7 +360,6 @@
       explain:'Correct: a court overturning a law as unconstitutional is judicial review.'
     },
 
-    // Incorporation / 14th (3)
     {
       id:'g3r_22',
       title:'Incorporation',
@@ -395,7 +388,6 @@
       explain:'Correct: incorporation is tied primarily to the due process clause of the 14th Amendment.'
     },
 
-    // Constitutional change / reinforcement (2)
     {
       id:'g3r_25',
       title:'Constitutional Change',
@@ -413,10 +405,91 @@
       answerIndex:0,
       hint:'Courts change meaning through interpretation.',
       explain:'Correct: Supreme Court decisions can change constitutional meaning through interpretation and precedent.'
+    },
+
+    {
+      id:'g3r_27',
+      title:'Tenth Amendment',
+      prompt:'A state creates its own education policies without federal direction. Which amendment supports this power?',
+      options:['Tenth Amendment','First Amendment','Fifth Amendment','Eighth Amendment'],
+      answerIndex:0,
+      hint:'Powers not given to the federal government are reserved elsewhere.',
+      explain:'Correct: the Tenth Amendment reserves powers to the states or the people.'
+    },
+    {
+      id:'g3r_28',
+      title:'Tenth Amendment',
+      prompt:'Which situation BEST reflects the Tenth Amendment?',
+      options:[
+        'States control local law enforcement policies',
+        'Congress declares a law unconstitutional',
+        'The president vetoes a bill',
+        'The Supreme Court hears a case'
+      ],
+      answerIndex:0,
+      hint:'Think powers kept at the state level.',
+      explain:'Correct: the Tenth Amendment reserves powers not given to the federal government to the states.'
+    },
+
+    {
+      id:'g3r_29',
+      title:'Constitutional Change — Legislation',
+      prompt:'The Civil Rights Act of 1964 expanded protections against discrimination. This is an example of constitutional change through',
+      options:['Legislation','Amendment','Judicial review','Executive order'],
+      answerIndex:0,
+      hint:'Congress passing laws = ?',
+      explain:'Correct: legislation changes how rights are applied by creating laws that enforce constitutional principles.'
+    },
+    {
+      id:'g3r_30',
+      title:'Constitutional Change — Legislation',
+      prompt:'The Voting Rights Act of 1965 is an example of constitutional change through',
+      options:['Legislation','Informal practice','Judicial review','Treaty approval'],
+      answerIndex:0,
+      hint:'Think congressional law protecting voting rights.',
+      explain:'Correct: the Voting Rights Act shows how legislation can expand and protect constitutional rights in practice.'
+    },
+
+    {
+      id:'g3r_31',
+      title:'Constitutional Change — Informal Practice',
+      prompt:'Congress holds hearings to question executive branch officials about how laws are being carried out. This is an example of',
+      options:['Legislative oversight','Judicial review','Federalism','Popular sovereignty'],
+      answerIndex:0,
+      hint:'This is a check used by Congress to monitor the executive branch.',
+      explain:'Correct: legislative oversight is an informal but important way Congress checks the executive branch.'
+    },
+    {
+      id:'g3r_32',
+      title:'Constitutional Change — Informal Practice',
+      prompt:'Which situation BEST shows an informal way the Constitution changes over time?',
+      options:[
+        'Congress uses oversight hearings to influence executive action',
+        'States ratify a new amendment',
+        'A court rules a law unconstitutional',
+        'Citizens vote for members of Congress'
+      ],
+      answerIndex:0,
+      hint:'Informal changes happen without rewriting the Constitution.',
+      explain:'Correct: oversight is an informal practice that changes how government works without a formal amendment.'
+    },
+    {
+      id:'g3r_33',
+      title:'Constitutional Change — Methods',
+      prompt:'Which choice lists two methods that can change how the Constitution works without formally rewriting its text?',
+      options:[
+        'Supreme Court decisions and informal practices',
+        'Amendments and ratification',
+        'Vetoes and campaign speeches',
+        'Elections and public opinion polls'
+      ],
+      answerIndex:0,
+      hint:'Look for methods that affect meaning or operation without altering the written document itself.',
+      explain:'Correct: court decisions and informal practices can change constitutional meaning and government operation without changing the Constitution’s text.'
     }
   ];
 
-  const STORAGE_KEY = 'BTB_GOV_CS7_8_REBUILT_V1';
+  const STORAGE_KEY = 'BTB_GOV_CS7_8_REBUILT_V2';
 
   const errbox=document.getElementById('errbox'), errtext=document.getElementById('errtext');
   window.addEventListener('error', e=>{ errbox.style.display='block'; errtext.textContent=`Error: ${e.message}\nSource: ${e.filename}:${e.lineno}:${e.colno}`; });
@@ -458,8 +531,15 @@
     return idx;
   }
 
-  let state={name:'',startedAtISO:'',startedAtMS:0,idx:0,runSeed:0,qmeta:[]};
-  const freshMeta=()=>QUESTIONS.map(()=>({done:false,missed:false,order:null,correctShown:null}));
+  let state={name:'',startedAtISO:'',startedAtMS:0,idx:0,runSeed:0,qOrder:[],qmeta:[]};
+
+  function getQuestion(displayIndex){
+    const realIndex = state.qOrder[displayIndex];
+    return QUESTION_BANK[realIndex];
+  }
+  function getMeta(displayIndex){
+    return state.qmeta[displayIndex];
+  }
 
   function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
   function load(){
@@ -467,7 +547,8 @@
       const raw=localStorage.getItem(STORAGE_KEY);
       if(!raw) return false;
       const parsed=JSON.parse(raw);
-      if(!parsed.name || !parsed.startedAtISO || !Array.isArray(parsed.qmeta)) return false;
+      if(!parsed.name || !parsed.startedAtISO || !Array.isArray(parsed.qmeta) || !Array.isArray(parsed.qOrder)) return false;
+      if(parsed.qOrder.length !== QUESTION_BANK.length) return false;
       state=parsed;
       return true;
     } catch { return false; }
@@ -485,7 +566,7 @@
   }
 
   function updateStats(){
-    $('qpos').textContent=`${Math.min(state.idx+1, QUESTIONS.length)} / ${QUESTIONS.length}`;
+    $('qpos').textContent=`${Math.min(state.idx+1, QUESTION_BANK.length)} / ${QUESTION_BANK.length}`;
     $('acc').textContent=`${accuracyPct()}%`;
     $('runtime').textContent=state.startedAtMS ? msToHMS(Date.now()-state.startedAtMS) : '0:00:00';
   }
@@ -502,8 +583,8 @@
     $('fbBody').textContent='';
   }
 
-  function ensureOrder(i){
-    const q=QUESTIONS[i], meta=state.qmeta[i];
+  function ensureOrder(displayIndex){
+    const q=getQuestion(displayIndex), meta=getMeta(displayIndex);
     if(Array.isArray(meta.order)) return;
     const seed=hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`)^0x777888;
     meta.order=shuffledIndices(q.options.length, seed);
@@ -515,7 +596,7 @@
   }
 
   function showQuestion(){
-    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    const q=getQuestion(state.idx), meta=getMeta(state.idx);
     clearFeedback();
     $('btnNext').disabled=true;
     $('btnHint').disabled=true;
@@ -546,7 +627,7 @@
   }
 
   function answer(shownIdx){
-    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    const q=getQuestion(state.idx), meta=getMeta(state.idx);
     if(meta.done) return;
 
     if(shownIdx===meta.correctShown){
@@ -564,9 +645,9 @@
   }
 
   $('btnNext').addEventListener('click', ()=>{
-    if(!state.qmeta[state.idx].done) return;
+    if(!getMeta(state.idx).done) return;
     state.idx++;
-    if(state.idx>=QUESTIONS.length) return finish();
+    if(state.idx>=QUESTION_BANK.length) return finish();
     showQuestion();
   });
 
@@ -576,7 +657,7 @@
     $('finishBox').style.display='';
 
     const ended=new Date(), start=new Date(state.startedAtISO), runMS=Date.now()-state.startedAtMS;
-    const total=QUESTIONS.length, {perfect}=counts(), acc=Math.round((perfect/total)*100);
+    const total=QUESTION_BANK.length, {perfect}=counts(), acc=Math.round((perfect/total)*100);
 
     $('sName').textContent=state.name;
     $('sDate').textContent=fmtDate(ended);
@@ -596,7 +677,7 @@
       $('tRun').textContent=msToHMS(runMS);
       $('tAcc').textContent=`${acc}%`;
       const raw=`${state.name}|${state.startedAtISO}|${ended.toISOString()}|${perfect}|${total}|${state.runSeed}`;
-      $('tCode').textContent=`BTB-CS7-8-R1-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
+      $('tCode').textContent=`BTB-CS7-8-R2-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
       clearSave();
     } else {
       $('finishTitle').textContent='Mastery NOT achieved ❌';
@@ -621,8 +702,9 @@
     state.startedAtMS=Date.now();
     state.idx=0;
     state.runSeed=(Math.floor(Math.random()*1e9)^hash32(name+'|'+state.startedAtISO))>>>0;
-    state.qmeta=freshMeta();
-    for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i);
+    state.qOrder=shuffledIndices(QUESTION_BANK.length, state.runSeed ^ 0xABC123);
+    state.qmeta=QUESTION_BANK.map(()=>({done:false,missed:false,order:null,correctShown:null}));
+    for(let i=0;i<QUESTION_BANK.length;i++) ensureOrder(i);
     save();
     $('nameBox').style.display='none';
     $('questionBox').style.display='';
