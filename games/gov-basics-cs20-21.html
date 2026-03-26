@@ -48,6 +48,9 @@
     .btn{border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);padding:10px 12px;cursor:pointer;font-weight:800}
     .btn:hover{border-color:rgba(122,162,255,.45)}
     .btn.primary{border-color:rgba(122,162,255,.45);background:rgba(122,162,255,.10)}
+    .btn.good{border-color:rgba(43,213,118,.35);background:rgba(43,213,118,.10)}
+    .btn.bad{border-color:rgba(255,92,122,.35);background:rgba(255,92,122,.10)}
+    .btn.active{outline:2px solid rgba(122,162,255,.55)}
     .btn[disabled]{opacity:.6;cursor:not-allowed}
     .field{display:grid;gap:6px;margin-top:10px}
     input[type="text"]{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
@@ -59,6 +62,45 @@
     .ticket{margin-top:12px;border:1px solid rgba(43,213,118,.35);background:rgba(43,213,118,.07);border-radius:14px;padding:12px}
     .ticket .code{font-family:var(--mono);font-weight:900;letter-spacing:.06em;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);margin-top:8px;word-break:break-word}
     .summary{margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px}
+
+    /* slider question */
+    .slider-shell{margin-top:10px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.02);padding:14px}
+    .slider-instructions{font-size:14px;color:var(--muted);line-height:1.4;margin-bottom:14px}
+    .slider-wrap{display:flex;justify-content:center;gap:34px;flex-wrap:wrap;margin:8px 0 12px}
+    .slider-col{min-width:150px;text-align:center}
+    .slider-col .toplab,.slider-col .botlab{font-size:13px;color:var(--muted);line-height:1.25}
+    .slider-col .toplab strong,.slider-col .botlab strong{color:var(--text)}
+    .vslider{
+      writing-mode:bt-lr;
+      -webkit-appearance:slider-vertical;
+      width:12px;height:240px;margin:10px auto;
+      background:transparent;
+    }
+    .valpill{
+      margin:8px auto 0;
+      width:max-content;
+      min-width:66px;
+      text-align:center;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      color:var(--muted);
+      background:rgba(255,255,255,.02);
+    }
+    .econbox{
+      margin:10px auto 8px;
+      width:160px;height:160px;
+      display:flex;align-items:center;justify-content:center;
+      border-radius:16px;
+      background:rgba(122,162,255,.22);
+      border:1px solid rgba(122,162,255,.45);
+      transition:.18s ease;
+      font-weight:900;letter-spacing:.05em;text-align:center;
+      padding:8px;
+    }
+    .policy-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+    .slider-mini-note{font-size:12px;color:var(--muted);margin-top:8px;text-align:center}
   </style>
 </head>
 <body>
@@ -71,8 +113,9 @@
       </div>
       <div class="pillrow">
         <div class="pill">Micro-scenarios ✅</div>
+        <div class="pill">Fiscal sliders ✅</div>
+        <div class="pill">Monetary sliders ✅</div>
         <div class="pill">Mastery (100%) ✅</div>
-        <div class="pill">Name + timestamps ✅</div>
         <div class="pill">Submission ticket ✅</div>
       </div>
     </div>
@@ -167,7 +210,8 @@
         <ul class="muted" style="margin:10px 0 0; line-height:1.45;">
           <li><b>Mastery</b> = finish all items with <b>0 misses</b>.</li>
           <li>Wrong answer → hint appears → retry until correct, but accuracy keeps the miss.</li>
-          <li>Questions are short and built for fast recognition, not long reading.</li>
+          <li>Slider items require <b>moving a relevant tool</b>, selecting a policy, then clicking <b>Apply Policy</b>.</li>
+          <li>Run order is mixed so fiscal and monetary items do not all appear in one clump.</li>
         </ul>
 
         <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
@@ -190,9 +234,8 @@
 <script>
 (() => {
   const QUESTIONS = [
-    // Fiscal policy basics and expansionary policy
     {
-      id:'g9e_01',
+      id:'g9e_01', domain:'fiscal', type:'mcq',
       title:'Fiscal Policy',
       prompt:'Congress cuts taxes to help the economy grow faster. This is an example of',
       options:['Fiscal policy','Judicial review','Federalism','Monetary policy'],
@@ -201,7 +244,7 @@
       explain:'Correct: fiscal policy is government decision-making about taxes and spending.'
     },
     {
-      id:'g9e_02',
+      id:'g9e_02', domain:'fiscal', type:'mcq',
       title:'Fiscal Policy',
       prompt:'The federal government increases spending during a recession. What is the main goal?',
       options:['Encourage economic growth','Slow economic growth','Reduce money in banks','Raise reserve requirements'],
@@ -210,7 +253,7 @@
       explain:'Correct: increased government spending is meant to encourage economic growth.'
     },
     {
-      id:'g9e_03',
+      id:'g9e_03', domain:'fiscal', type:'mcq',
       title:'Expansionary Fiscal Policy',
       prompt:'Which action is most likely meant to speed up a slow economy?',
       options:['Lower taxes','Raise taxes','Cut spending sharply','Sell bonds'],
@@ -219,7 +262,7 @@
       explain:'Correct: lowering taxes is an expansionary fiscal policy tool.'
     },
     {
-      id:'g9e_04',
+      id:'g9e_04', domain:'fiscal', type:'mcq',
       title:'Expansionary Fiscal Policy',
       prompt:'A recession causes job losses. Which federal action best matches expansionary fiscal policy?',
       options:['Increase spending on public projects','Raise interest rates','Increase bank reserve requirements','Sell government bonds'],
@@ -227,10 +270,16 @@
       hint:'Think roads, bridges, and government spending.',
       explain:'Correct: increased government spending on projects is expansionary fiscal policy.'
     },
-
-    // Contractionary fiscal policy
     {
-      id:'g9e_05',
+      id:'sl_f_01', domain:'fiscal', type:'slider',
+      title:'Fiscal Slider Scenario',
+      prompt:'A recession causes layoffs and weak consumer spending. Adjust the fiscal tools and choose the correct policy.',
+      answer:'Expansionary',
+      hint:'To stimulate growth, think more government demand and/or less tax burden.',
+      explain:'Correct: expansionary fiscal policy uses increased spending and/or lower taxes to encourage growth.'
+    },
+    {
+      id:'g9e_05', domain:'fiscal', type:'mcq',
       title:'Contractionary Fiscal Policy',
       prompt:'The economy is growing too fast and inflation is rising. Which fiscal action would most likely slow growth?',
       options:['Raise taxes','Buy bonds','Lower interest rates','Reduce reserve requirements'],
@@ -239,7 +288,7 @@
       explain:'Correct: raising taxes is a contractionary fiscal policy tool.'
     },
     {
-      id:'g9e_06',
+      id:'g9e_06', domain:'fiscal', type:'mcq',
       title:'Contractionary Fiscal Policy',
       prompt:'Which government action is most likely intended to slow economic growth?',
       options:['Decrease government spending','Increase government spending','Cut taxes','Buy bonds'],
@@ -248,7 +297,7 @@
       explain:'Correct: decreasing government spending is used to slow growth.'
     },
     {
-      id:'g9e_07',
+      id:'g9e_07', domain:'fiscal', type:'mcq',
       title:'Fiscal Policy Comparison',
       prompt:'How are increased spending and reduced taxes similar?',
       options:['Both can encourage economic growth','Both slow inflation immediately','Both reduce the money supply','Both raise interest rates'],
@@ -256,10 +305,17 @@
       hint:'They are the two broad expansionary fiscal policy choices.',
       explain:'Correct: both increased spending and reduced taxes can encourage economic growth.'
     },
-
-    // Regulation costs and benefits
     {
-      id:'g9e_08',
+      id:'sl_f_02', domain:'fiscal', type:'slider',
+      title:'Fiscal Slider Scenario',
+      prompt:'Inflation is rising because demand is too strong. Adjust the fiscal tools and choose the correct policy.',
+      answer:'Contractionary',
+      hint:'To cool an overheated economy, think less government demand and/or greater tax burden.',
+      explain:'Correct: contractionary fiscal policy uses lower spending and/or higher taxes to slow growth.'
+    },
+
+    {
+      id:'g9e_08', domain:'regulation', type:'mcq',
       title:'Regulation',
       prompt:'A law bans unfair business practices to protect consumers. This is an example of regulation creating',
       options:['Economic benefits','Only economic harm','Only higher interest rates','Less government involvement'],
@@ -268,7 +324,7 @@
       explain:'Correct: regulation can produce economic benefits such as consumer protections.'
     },
     {
-      id:'g9e_09',
+      id:'g9e_09', domain:'regulation', type:'mcq',
       title:'Regulation',
       prompt:'A new federal rule increases company costs but makes products safer. This best shows that regulation',
       options:['Can bring both costs and benefits','Always increases growth','Has no effect on business','Only helps corporate profits'],
@@ -277,7 +333,7 @@
       explain:'Correct: regulation may carry costs while also creating benefits.'
     },
     {
-      id:'g9e_10',
+      id:'g9e_10', domain:'regulation', type:'mcq',
       title:'Regulation Cost',
       prompt:'One possible economic cost of government regulation is',
       options:['Reduced corporate profits','More consumer protection','Prevention of unfair practices','Safer products'],
@@ -286,7 +342,7 @@
       explain:'Correct: a possible cost of regulation is reduced corporate profits.'
     },
     {
-      id:'g9e_11',
+      id:'g9e_11', domain:'regulation', type:'mcq',
       title:'Regulation Benefit',
       prompt:'One possible economic benefit of government regulation is',
       options:['Protection for consumers','Automatic lower taxes','Unlimited business freedom','Fewer safety rules'],
@@ -295,9 +351,8 @@
       explain:'Correct: regulation can protect consumers and prohibit unfair business practices.'
     },
 
-    // Monetary policy basics
     {
-      id:'g9e_12',
+      id:'g9e_12', domain:'monetary', type:'mcq',
       title:'Monetary Policy',
       prompt:'The Federal Reserve changes the nation’s money supply. This is called',
       options:['Monetary policy','Fiscal policy','Judicial review','Separation of powers'],
@@ -306,7 +361,7 @@
       explain:'Correct: monetary policy involves the Federal Reserve regulating the money supply.'
     },
     {
-      id:'g9e_13',
+      id:'g9e_13', domain:'monetary', type:'mcq',
       title:'Federal Reserve',
       prompt:'Which institution mainly uses monetary tools such as reserve requirements and bond purchases?',
       options:['Federal Reserve System','Supreme Court','House of Representatives','State legislature'],
@@ -314,10 +369,16 @@
       hint:'The central bank system.',
       explain:'Correct: the Federal Reserve System uses monetary tools.'
     },
-
-    // Reserve requirements
     {
-      id:'g9e_14',
+      id:'sl_m_01', domain:'monetary', type:'slider',
+      title:'Monetary Slider Scenario',
+      prompt:'A recession begins and borrowing is weak. Adjust the Fed’s monetary tools and choose the correct policy.',
+      answer:'Expansionary',
+      hint:'Expansionary monetary policy means more money and easier lending.',
+      explain:'Correct: expansionary monetary policy can include buying securities, lowering reserve requirements, and lowering the discount rate.'
+    },
+    {
+      id:'g9e_14', domain:'monetary', type:'mcq',
       title:'Reserve Requirements',
       prompt:'The Federal Reserve lowers reserve requirements for banks. What is the most likely goal?',
       options:['Encourage economic growth','Slow economic growth','Raise taxes','Reduce consumer protections'],
@@ -326,7 +387,7 @@
       explain:'Correct: lower reserve requirements can encourage growth by allowing more lending.'
     },
     {
-      id:'g9e_15',
+      id:'g9e_15', domain:'monetary', type:'mcq',
       title:'Reserve Requirements',
       prompt:'If banks must keep more money on reserve, they usually can',
       options:['Make fewer loans','Make more loans','Lower taxes','Buy more products directly'],
@@ -335,7 +396,7 @@
       explain:'Correct: higher reserve requirements reduce lending.'
     },
     {
-      id:'g9e_16',
+      id:'g9e_16', domain:'monetary', type:'mcq',
       title:'Reserve Requirements',
       prompt:'To slow economic growth, the Federal Reserve is most likely to',
       options:['Increase reserve requirements','Decrease reserve requirements','Buy bonds','Cut taxes'],
@@ -343,10 +404,17 @@
       hint:'Less lending slows spending and growth.',
       explain:'Correct: increasing reserve requirements is a contractionary monetary tool.'
     },
-
-    // Bonds
     {
-      id:'g9e_17',
+      id:'sl_m_02', domain:'monetary', type:'slider',
+      title:'Monetary Slider Scenario',
+      prompt:'Prices are rising too quickly and the Fed wants to reduce lending. Adjust the monetary tools and choose the correct policy.',
+      answer:'Contractionary',
+      hint:'Contractionary monetary policy means less money and tighter lending.',
+      explain:'Correct: contractionary monetary policy can include selling securities, raising reserve requirements, and raising the discount rate.'
+    },
+
+    {
+      id:'g9e_17', domain:'monetary', type:'mcq',
       title:'Bond Purchases',
       prompt:'The Federal Reserve buys bonds during an economic slowdown. Why?',
       options:['To put more money into the economy','To take money out of the economy','To raise taxes','To reduce government spending'],
@@ -355,7 +423,7 @@
       explain:'Correct: buying bonds increases the money supply and can encourage growth.'
     },
     {
-      id:'g9e_18',
+      id:'g9e_18', domain:'monetary', type:'mcq',
       title:'Bond Sales',
       prompt:'What is the most likely effect when the Federal Reserve sells bonds?',
       options:['Money is pulled out of the economy','Banks can lend more money','Taxes go down','Government spending rises automatically'],
@@ -364,7 +432,7 @@
       explain:'Correct: selling bonds takes money out of the economy and slows growth.'
     },
     {
-      id:'g9e_19',
+      id:'g9e_19', domain:'monetary', type:'mcq',
       title:'Bond Tools',
       prompt:'Which Federal Reserve action is most likely meant to encourage economic growth?',
       options:['Buy bonds','Sell bonds','Raise taxes','Cut federal spending'],
@@ -372,10 +440,16 @@
       hint:'This action adds money to the economy.',
       explain:'Correct: buying bonds is an expansionary monetary policy tool.'
     },
-
-    // Interest rates
     {
-      id:'g9e_20',
+      id:'sl_m_03', domain:'monetary', type:'slider',
+      title:'Monetary Slider Scenario',
+      prompt:'Banks are holding back loans and businesses cannot get enough credit. Adjust the monetary tools and choose the correct policy.',
+      answer:'Expansionary',
+      hint:'Think easier credit, not tighter credit.',
+      explain:'Correct: the Fed would use expansionary tools to encourage lending and growth.'
+    },
+    {
+      id:'g9e_20', domain:'monetary', type:'mcq',
       title:'Interest Rates',
       prompt:'The Federal Reserve takes action that lowers interest rates. What is the likely result?',
       options:['Borrowing becomes easier and growth may increase','Borrowing becomes harder and growth may slow','Taxes increase','Reserve requirements always rise'],
@@ -384,7 +458,7 @@
       explain:'Correct: lower interest rates can encourage borrowing and economic growth.'
     },
     {
-      id:'g9e_21',
+      id:'g9e_21', domain:'monetary', type:'mcq',
       title:'Interest Rates',
       prompt:'To slow an overheated economy, the Federal Reserve is most likely to',
       options:['Raise interest rates','Lower interest rates','Buy bonds','Lower reserve requirements'],
@@ -393,7 +467,7 @@
       explain:'Correct: raising interest rates is used to slow economic growth.'
     },
     {
-      id:'g9e_22',
+      id:'g9e_22', domain:'monetary', type:'mcq',
       title:'Interest Rates',
       prompt:'Higher interest rates usually make consumers and businesses',
       options:['Borrow less','Borrow more','Spend government funds','Pay lower taxes'],
@@ -401,10 +475,17 @@
       hint:'Loans cost more when rates go up.',
       explain:'Correct: higher interest rates usually reduce borrowing.'
     },
-
-    // Mixed comparison / application
     {
-      id:'g9e_23',
+      id:'sl_m_04', domain:'monetary', type:'slider',
+      title:'Monetary Slider Scenario',
+      prompt:'Inflation remains high and the Fed wants borrowing and spending to slow. Adjust the monetary tools and choose the correct policy.',
+      answer:'Contractionary',
+      hint:'Think tighter money, not easier money.',
+      explain:'Correct: the Fed would use contractionary tools to reduce borrowing and demand.'
+    },
+
+    {
+      id:'g9e_23', domain:'mixed', type:'mcq',
       title:'Fiscal vs Monetary',
       prompt:'Congress changes tax rates to affect the economy. This is different from the Federal Reserve because Congress is using',
       options:['Fiscal policy','Monetary policy','Judicial policy','Foreign policy'],
@@ -413,7 +494,7 @@
       explain:'Correct: Congress uses fiscal policy, while the Federal Reserve uses monetary policy.'
     },
     {
-      id:'g9e_24',
+      id:'g9e_24', domain:'mixed', type:'mcq',
       title:'Fiscal vs Monetary',
       prompt:'Which action is an example of monetary policy rather than fiscal policy?',
       options:['The Federal Reserve buys bonds','Congress cuts income taxes','Congress increases highway spending','A federal agency adds a safety rule'],
@@ -422,7 +503,7 @@
       explain:'Correct: buying bonds is a monetary policy action used by the Federal Reserve.'
     },
     {
-      id:'g9e_25',
+      id:'g9e_25', domain:'mixed', type:'mcq',
       title:'Slow Growth Toolkit',
       prompt:'Which pair of actions would most likely slow economic growth?',
       options:['Raise taxes and sell bonds','Cut taxes and buy bonds','Increase spending and lower rates','Buy bonds and lower reserve requirements'],
@@ -431,67 +512,233 @@
       explain:'Correct: raising taxes and selling bonds are both contractionary tools.'
     },
     {
-      id:'g9e_26',
+      id:'sl_f_03', domain:'fiscal', type:'slider',
+      title:'Fiscal Slider Scenario',
+      prompt:'Consumer demand surges and inflation is climbing. Adjust the fiscal tools and choose the correct policy.',
+      answer:'Contractionary',
+      hint:'To reduce demand, think pulling money out rather than pushing more in.',
+      explain:'Correct: contractionary fiscal policy slows demand through lower spending and/or higher taxes.'
+    },
+    {
+      id:'g9e_26', domain:'mixed', type:'mcq',
       title:'Encourage Growth Toolkit',
       prompt:'Which pair of actions would most likely encourage economic growth?',
       options:['Increase spending and lower interest rates','Raise taxes and sell bonds','Cut spending and raise reserve requirements','Sell bonds and raise interest rates'],
       answerIndex:0,
       hint:'One fiscal and one monetary tool can both stimulate growth.',
       explain:'Correct: increasing spending and lowering interest rates are both expansionary tools.'
+    },
+    {
+      id:'sl_f_04', domain:'fiscal', type:'slider',
+      title:'Fiscal Slider Scenario',
+      prompt:'Businesses cut hiring and consumers reduce spending. Adjust the fiscal tools and choose the correct policy.',
+      answer:'Expansionary',
+      hint:'Think stimulation through greater demand or lower taxes.',
+      explain:'Correct: expansionary fiscal policy encourages growth through higher spending and/or lower taxes.'
     }
   ];
 
-  const STORAGE_KEY = 'BTB_GOV_CS20_21_ECON_REBUILT_V1';
+  const STORAGE_KEY = 'BTB_GOV_CS20_21_ECON_SLIDERS_V2';
 
   const errbox = document.getElementById('errbox');
   const errtext = document.getElementById('errtext');
-  window.addEventListener('error', e => { errbox.style.display='block'; errtext.textContent=`Error: ${e.message}\nSource: ${e.filename}:${e.lineno}:${e.colno}`; });
-  window.addEventListener('unhandledrejection', e => { errbox.style.display='block'; errtext.textContent=String(e.reason && e.reason.stack ? e.reason.stack : e.reason); });
+  window.addEventListener('error', e => {
+    errbox.style.display='block';
+    errtext.textContent=`Error: ${e.message}\nSource: ${e.filename}:${e.lineno}:${e.colno}`;
+  });
+  window.addEventListener('unhandledrejection', e => {
+    errbox.style.display='block';
+    errtext.textContent=String(e.reason && e.reason.stack ? e.reason.stack : e.reason);
+  });
 
   const $ = id => document.getElementById(id);
   const pad2 = n => String(n).padStart(2,'0');
   const fmtDate = d => `${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}`;
-  const fmtTime = d => { const hr=d.getHours(), ampm=hr>=12?'PM':'AM', h12=hr%12||12; return `${h12}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())} ${ampm}`; };
-  const msToHMS = ms => { const s=Math.max(0,Math.floor(ms/1000)); const hh=Math.floor(s/3600), mm=Math.floor((s%3600)/60), ss=s%60; return `${hh}:${pad2(mm)}:${pad2(ss)}`; };
-  const hash32 = str => { let h=2166136261>>>0; for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h,16777619);} return h>>>0; };
+  const fmtTime = d => {
+    const hr=d.getHours(), ampm=hr>=12?'PM':'AM', h12=hr%12||12;
+    return `${h12}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())} ${ampm}`;
+  };
+  const msToHMS = ms => {
+    const s=Math.max(0,Math.floor(ms/1000));
+    const hh=Math.floor(s/3600), mm=Math.floor((s%3600)/60), ss=s%60;
+    return `${hh}:${pad2(mm)}:${pad2(ss)}`;
+  };
+  const hash32 = str => {
+    let h=2166136261>>>0;
+    for(let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h,16777619); }
+    return h>>>0;
+  };
   const base36 = n => n.toString(36).toUpperCase();
-  function mulberry32(seed){ return function(){ let t = seed += 0x6D2B79F5; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
-  function shuffledIndices(n, seed){ const idx=Array.from({length:n},(_,i)=>i); const rnd=mulberry32(seed>>>0); for(let i=n-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [idx[i],idx[j]]=[idx[j],idx[i]]; } return idx; }
 
-  let state = { name:'', startedAtISO:'', startedAtMS:0, idx:0, runSeed:0, qmeta:[] };
-  const freshMeta = () => QUESTIONS.map(() => ({done:false, missed:false, order:null, correctShown:null}));
+  function mulberry32(seed){
+    return function(){
+      let t = seed += 0x6D2B79F5;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function shuffledIndices(n, seed){
+    const idx=Array.from({length:n},(_,i)=>i);
+    const rnd=mulberry32(seed>>>0);
+    for(let i=n-1;i>0;i--){
+      const j=Math.floor(rnd()*(i+1));
+      [idx[i],idx[j]]=[idx[j],idx[i]];
+    }
+    return idx;
+  }
+  function shuffleWithRnd(arr, rnd){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(rnd()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+
+  function buildRunOrder(seed){
+    const rnd = mulberry32(seed ^ 0xA5A5A5A5);
+    const all = QUESTIONS.map((q, i) => ({i, domain:q.domain, type:q.type || 'mcq'}));
+    let pool = shuffleWithRnd(all, rnd);
+    const out = [];
+
+    function violates(candidate){
+      if(out.length >= 2){
+        const a = QUESTIONS[out[out.length-1]];
+        const b = QUESTIONS[out[out.length-2]];
+        const c = QUESTIONS[candidate.i];
+        if(a.domain === b.domain && b.domain === c.domain) return true;
+      }
+      if(candidate.type === 'slider' && out.length >= 1){
+        const a = QUESTIONS[out[out.length-1]];
+        if((a.type || 'mcq') === 'slider') return true;
+      }
+      return false;
+    }
+
+    while(pool.length){
+      let pickIndex = pool.findIndex(c => !violates(c));
+      if(pickIndex === -1) pickIndex = 0;
+      out.push(pool[pickIndex].i);
+      pool.splice(pickIndex, 1);
+    }
+    return out;
+  }
+
+  let state = {
+    name:'',
+    startedAtISO:'',
+    startedAtMS:0,
+    idx:0,
+    runSeed:0,
+    runOrder:[],
+    qmeta:[]
+  };
+
+  function freshMeta(orderLength){
+    return Array.from({length:orderLength}, () => ({
+      done:false,
+      missed:false,
+      order:null,
+      correctShown:null
+    }));
+  }
 
   function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-  function load(){ try{ const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return false; const parsed=JSON.parse(raw); if(!parsed.name || !parsed.startedAtISO || !Array.isArray(parsed.qmeta)) return false; state=parsed; return true; } catch { return false; } }
+  function load(){
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(!raw) return false;
+      const parsed=JSON.parse(raw);
+      if(!parsed.name || !parsed.startedAtISO || !Array.isArray(parsed.qmeta) || !Array.isArray(parsed.runOrder)) return false;
+      state=parsed;
+      return true;
+    } catch { return false; }
+  }
   function clearSave(){ localStorage.removeItem(STORAGE_KEY); }
 
-  function counts(){ const done=state.qmeta.filter(m=>m.done).length; const perfect=state.qmeta.filter(m=>m.done && !m.missed).length; return {done,perfect}; }
-  function accuracyPct(){ const {done,perfect}=counts(); return done===0 ? 0 : Math.round((perfect/done)*100); }
+  function counts(){
+    const done=state.qmeta.filter(m=>m.done).length;
+    const perfect=state.qmeta.filter(m=>m.done && !m.missed).length;
+    return {done,perfect};
+  }
+  function accuracyPct(){
+    const {done,perfect}=counts();
+    return done===0 ? 0 : Math.round((perfect/done)*100);
+  }
+
+  function getCurrentQuestion(){
+    const qIndex = state.runOrder[state.idx];
+    return QUESTIONS[qIndex];
+  }
 
   function updateStats(){
-    $('qpos').textContent = `${Math.min(state.idx+1, QUESTIONS.length)} / ${QUESTIONS.length}`;
+    $('qpos').textContent = `${Math.min(state.idx+1, state.runOrder.length || QUESTIONS.length)} / ${(state.runOrder.length || QUESTIONS.length)}`;
     $('acc').textContent = `${accuracyPct()}%`;
     $('runtime').textContent = state.startedAtMS ? msToHMS(Date.now()-state.startedAtMS) : '0:00:00';
   }
   setInterval(updateStats, 500);
 
-  function setFeedback(kind,title,body){ $('feedback').className=`msg ${kind}`; $('fbTitle').textContent=title; $('fbBody').textContent=body; }
-  function clearFeedback(){ $('feedback').className='msg'; $('fbTitle').textContent=''; $('fbBody').textContent=''; }
+  function setFeedback(kind,title,body){
+    $('feedback').className=`msg ${kind}`;
+    $('fbTitle').textContent=title;
+    $('fbBody').textContent=body;
+  }
+  function clearFeedback(){
+    $('feedback').className='msg';
+    $('fbTitle').textContent='';
+    $('fbBody').textContent='';
+  }
 
-  function ensureOrder(qIndex){
-    const q=QUESTIONS[qIndex], meta=state.qmeta[qIndex];
+  function ensureOrder(runPos){
+    const q = QUESTIONS[state.runOrder[runPos]];
+    const meta=state.qmeta[runPos];
+    if(q.type === 'slider') return;
     if(Array.isArray(meta.order) && typeof meta.correctShown==='number') return;
     const seed = hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`) ^ 0x555AAA;
     meta.order = shuffledIndices(q.options.length, seed);
     meta.correctShown = meta.order.indexOf(q.answerIndex);
   }
 
-  function disableInputs(disabled){ document.querySelectorAll('.optbtn').forEach(b=>b.disabled=disabled); }
+  function disableInputs(disabled){
+    document.querySelectorAll('.optbtn').forEach(b=>b.disabled=disabled);
+    document.querySelectorAll('.slider-ui input[type="range"]').forEach(el=>el.disabled=disabled);
+    const selExp = $('selExpansionary');
+    const selCon = $('selContractionary');
+    const apply = $('btnApplyPolicy');
+    if(selExp) selExp.disabled = disabled;
+    if(selCon) selCon.disabled = disabled;
+    if(apply) apply.disabled = disabled || !currentSliderSelection;
+  }
+
+  function markMiss(){ state.qmeta[state.idx].missed=true; }
+  function markDone(){ state.qmeta[state.idx].done=true; }
+
+  let currentSliderSelection = '';
+  let currentSliderType = '';
 
   function showQuestion(){
-    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
-    clearFeedback(); $('btnNext').disabled=true; $('btnHint').disabled=true;
-    $('qtitle').textContent=q.title; $('qtext').textContent=q.prompt; $('opts').innerHTML='';
+    const q=getCurrentQuestion();
+    const meta=state.qmeta[state.idx];
+
+    clearFeedback();
+    $('btnNext').disabled=true;
+    $('btnHint').disabled=(q.type === 'slider');
+    $('qtitle').textContent=q.title;
+    $('qtext').textContent=q.prompt;
+    $('opts').innerHTML='';
+
+    if(q.type === 'slider'){
+      renderSliderQuestion(q, meta);
+    } else {
+      renderMCQQuestion(q, meta);
+    }
+
+    updateStats();
+    save();
+  }
+
+  function renderMCQQuestion(q, meta){
     ensureOrder(state.idx);
 
     const letters=['A','B','C','D'];
@@ -510,17 +757,159 @@
     } else {
       disableInputs(false);
     }
-
-    updateStats();
-    save();
   }
 
-  function markMiss(){ state.qmeta[state.idx].missed=true; }
-  function markDone(){ state.qmeta[state.idx].done=true; }
+  function renderSliderQuestion(q, meta){
+    currentSliderSelection = '';
+    currentSliderType = q.domain;
+
+    const shell = document.createElement('div');
+    shell.className = 'slider-shell slider-ui';
+
+    shell.innerHTML = q.domain === 'fiscal'
+      ? `
+        <div class="slider-instructions">
+          <b>Directions:</b> Move at least one relevant fiscal tool, select a policy, then click <b>Apply Policy</b>.<br>
+          Expansionary fiscal policy = <b>increase spending</b> and/or <b>cut taxes</b>.<br>
+          Contractionary fiscal policy = <b>decrease spending</b> and/or <b>raise taxes</b>.
+        </div>
+
+        <div class="slider-wrap">
+          <div class="slider-col">
+            <div class="toplab"><strong>Increase Spending ↑</strong></div>
+            <input class="vslider" type="range" min="-100" max="100" value="0" id="fSpend">
+            <div class="botlab"><strong>Decrease Spending ↓</strong></div>
+            <div class="valpill" id="fSpendVal">0</div>
+          </div>
+
+          <div class="slider-col">
+            <div class="toplab"><strong>Raise Taxes ↑</strong></div>
+            <input class="vslider" type="range" min="-100" max="100" value="0" id="fTax">
+            <div class="botlab"><strong>Cut Taxes ↓</strong></div>
+            <div class="valpill" id="fTaxVal">0</div>
+          </div>
+        </div>
+
+        <div class="econbox" id="econBox">ECONOMY</div>
+
+        <div class="policy-row">
+          <button class="btn good" id="selExpansionary" type="button">Choose Expansionary</button>
+          <button class="btn bad" id="selContractionary" type="button">Choose Contractionary</button>
+          <button class="btn primary" id="btnApplyPolicy" type="button" disabled>Apply Policy</button>
+        </div>
+        <div class="slider-mini-note">At least one relevant tool must be moved in the correct direction. Contradictory mixes do not count.</div>
+      `
+      : `
+        <div class="slider-instructions">
+          <b>Directions:</b> Move at least one relevant Fed tool, select a policy, then click <b>Apply Policy</b>.<br>
+          Expansionary monetary policy = <b>buy securities</b>, <b>lower reserve requirement</b>, and/or <b>lower discount rate</b>.<br>
+          Contractionary monetary policy = <b>sell securities</b>, <b>raise reserve requirement</b>, and/or <b>raise discount rate</b>.
+        </div>
+
+        <div class="slider-wrap">
+          <div class="slider-col">
+            <div class="toplab"><strong>Buy Securities ↑</strong></div>
+            <input class="vslider" type="range" min="-100" max="100" value="0" id="mOMO">
+            <div class="botlab"><strong>Sell Securities ↓</strong></div>
+            <div class="valpill" id="mOMOVal">0</div>
+          </div>
+
+          <div class="slider-col">
+            <div class="toplab"><strong>Raise Reserve ↑</strong></div>
+            <input class="vslider" type="range" min="-100" max="100" value="0" id="mReserve">
+            <div class="botlab"><strong>Lower Reserve ↓</strong></div>
+            <div class="valpill" id="mReserveVal">0</div>
+          </div>
+
+          <div class="slider-col">
+            <div class="toplab"><strong>Raise Discount ↑</strong></div>
+            <input class="vslider" type="range" min="-100" max="100" value="0" id="mDiscount">
+            <div class="botlab"><strong>Lower Discount ↓</strong></div>
+            <div class="valpill" id="mDiscountVal">0</div>
+          </div>
+        </div>
+
+        <div class="econbox" id="econBox">MONEY<br>SUPPLY</div>
+
+        <div class="policy-row">
+          <button class="btn good" id="selExpansionary" type="button">Choose Expansionary</button>
+          <button class="btn bad" id="selContractionary" type="button">Choose Contractionary</button>
+          <button class="btn primary" id="btnApplyPolicy" type="button" disabled>Apply Policy</button>
+        </div>
+        <div class="slider-mini-note">At least one relevant tool must be moved in the correct direction. Contradictory mixes do not count.</div>
+      `;
+
+    $('opts').appendChild(shell);
+
+    const selExp = $('selExpansionary');
+    const selCon = $('selContractionary');
+    const apply = $('btnApplyPolicy');
+
+    function syncApply(){
+      apply.disabled = !currentSliderSelection || meta.done;
+    }
+    function setSelection(val){
+      currentSliderSelection = val;
+      selExp.classList.toggle('active', val === 'Expansionary');
+      selCon.classList.toggle('active', val === 'Contractionary');
+      syncApply();
+    }
+
+    selExp.addEventListener('click', ()=>setSelection('Expansionary'));
+    selCon.addEventListener('click', ()=>setSelection('Contractionary'));
+    apply.addEventListener('click', submitSliderAnswer);
+
+    if(q.domain === 'fiscal'){
+      $('fSpend').addEventListener('input', updateFiscalVisual);
+      $('fTax').addEventListener('input', updateFiscalVisual);
+      updateFiscalVisual();
+    } else {
+      $('mOMO').addEventListener('input', updateMonetaryVisual);
+      $('mReserve').addEventListener('input', updateMonetaryVisual);
+      $('mDiscount').addEventListener('input', updateMonetaryVisual);
+      updateMonetaryVisual();
+    }
+
+    if(meta.done){
+      disableInputs(true);
+      $('btnNext').disabled=false;
+      setFeedback(meta.missed?'warn':'good','Already completed', meta.missed?'This slider item was completed with a miss.':'This slider item was completed with no miss.');
+    }
+  }
+
+  function updateFiscalVisual(){
+    const spend = Number($('fSpend')?.value || 0);
+    const tax = Number($('fTax')?.value || 0);
+    $('fSpendVal').textContent = spend;
+    $('fTaxVal').textContent = tax;
+
+    const net = spend - tax;
+    let size = 160 + net / 3;
+    size = Math.max(95, Math.min(255, size));
+    $('econBox').style.width = size + 'px';
+    $('econBox').style.height = size + 'px';
+  }
+
+  function updateMonetaryVisual(){
+    const omo = Number($('mOMO')?.value || 0);
+    const reserve = Number($('mReserve')?.value || 0);
+    const discount = Number($('mDiscount')?.value || 0);
+    $('mOMOVal').textContent = omo;
+    $('mReserveVal').textContent = reserve;
+    $('mDiscountVal').textContent = discount;
+
+    const net = omo - reserve - discount;
+    let size = 160 + net / 3;
+    size = Math.max(95, Math.min(255, size));
+    $('econBox').style.width = size + 'px';
+    $('econBox').style.height = size + 'px';
+  }
 
   function answerMCQ(shownIdx){
-    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    const q=getCurrentQuestion();
+    const meta=state.qmeta[state.idx];
     if(meta.done) return;
+
     if(shownIdx===meta.correctShown){
       markDone();
       setFeedback('good','Correct ✅', q.explain);
@@ -533,11 +922,112 @@
       $('btnHint').disabled=true;
       $('btnNext').disabled=true;
     }
-    save(); updateStats();
+    save();
+    updateStats();
   }
 
-  $('btnHint').addEventListener('click', ()=> {
-    const q=QUESTIONS[state.idx];
+  function fiscalDirectionOk(value, selection, axis){
+    if(value === 0) return null;
+    if(axis === 'spend'){
+      if(selection === 'Expansionary') return value > 0;
+      if(selection === 'Contractionary') return value < 0;
+    }
+    if(axis === 'tax'){
+      if(selection === 'Expansionary') return value < 0;
+      if(selection === 'Contractionary') return value > 0;
+    }
+    return false;
+  }
+
+  function monetaryDirectionOk(value, selection, axis){
+    if(value === 0) return null;
+    if(axis === 'omo'){
+      if(selection === 'Expansionary') return value > 0;
+      if(selection === 'Contractionary') return value < 0;
+    }
+    if(axis === 'reserve' || axis === 'discount'){
+      if(selection === 'Expansionary') return value < 0;
+      if(selection === 'Contractionary') return value > 0;
+    }
+    return false;
+  }
+
+  function validateSliderSelection(selection, domain){
+    if(!selection) return {ok:false, reason:'Select a policy before clicking Apply Policy.'};
+
+    if(domain === 'fiscal'){
+      const spend = Number($('fSpend').value);
+      const tax = Number($('fTax').value);
+
+      const moved = [spend, tax].some(v => v !== 0);
+      if(!moved) return {ok:false, reason:'Move at least one fiscal slider before applying your policy.'};
+
+      const checks = [
+        fiscalDirectionOk(spend, selection, 'spend'),
+        fiscalDirectionOk(tax, selection, 'tax')
+      ].filter(v => v !== null);
+
+      const hasRelevant = checks.some(Boolean);
+      const hasContradiction = checks.some(v => v === false);
+
+      if(!hasRelevant) return {ok:false, reason:'At least one relevant fiscal tool must move in the correct direction.'};
+      if(hasContradiction) return {ok:false, reason:'One or more fiscal sliders contradict the policy you selected.'};
+
+      return {ok:true};
+    }
+
+    const omo = Number($('mOMO').value);
+    const reserve = Number($('mReserve').value);
+    const discount = Number($('mDiscount').value);
+
+    const moved = [omo, reserve, discount].some(v => v !== 0);
+    if(!moved) return {ok:false, reason:'Move at least one monetary slider before applying your policy.'};
+
+    const checks = [
+      monetaryDirectionOk(omo, selection, 'omo'),
+      monetaryDirectionOk(reserve, selection, 'reserve'),
+      monetaryDirectionOk(discount, selection, 'discount')
+    ].filter(v => v !== null);
+
+    const hasRelevant = checks.some(Boolean);
+    const hasContradiction = checks.some(v => v === false);
+
+    if(!hasRelevant) return {ok:false, reason:'At least one relevant monetary tool must move in the correct direction.'};
+    if(hasContradiction) return {ok:false, reason:'One or more monetary sliders contradict the policy you selected.'};
+
+    return {ok:true};
+  }
+
+  function submitSliderAnswer(){
+    const q = getCurrentQuestion();
+    const meta = state.qmeta[state.idx];
+    if(meta.done) return;
+
+    const check = validateSliderSelection(currentSliderSelection, q.domain);
+    if(!check.ok){
+      setFeedback('warn','Hint 💡', check.reason);
+      return;
+    }
+
+    if(currentSliderSelection === q.answer){
+      markDone();
+      setFeedback('good','Correct ✅', q.explain);
+      disableInputs(true);
+      $('btnNext').disabled = false;
+      $('btnHint').disabled = true;
+    } else {
+      markMiss();
+      setFeedback('warn','Hint 💡', q.hint);
+      $('btnNext').disabled = true;
+      $('btnHint').disabled = true;
+    }
+
+    save();
+    updateStats();
+  }
+
+  $('btnHint').addEventListener('click', ()=>{
+    const q = getCurrentQuestion();
     setFeedback('warn','Hint 💡', q.hint);
     $('btnHint').disabled=true;
   });
@@ -545,7 +1035,7 @@
   $('btnNext').addEventListener('click', ()=>{
     if(!state.qmeta[state.idx].done) return;
     state.idx++;
-    if(state.idx >= QUESTIONS.length) return showFinish();
+    if(state.idx >= state.runOrder.length) return showFinish();
     showQuestion();
   });
 
@@ -553,10 +1043,11 @@
     $('nameBox').style.display='none';
     $('questionBox').style.display='none';
     $('finishBox').style.display='';
+
     const ended=new Date();
     const start=new Date(state.startedAtISO);
     const runMS=Date.now()-state.startedAtMS;
-    const total=QUESTIONS.length;
+    const total=state.runOrder.length;
     const {perfect}=counts();
     const acc=Math.round((perfect/total)*100);
 
@@ -587,10 +1078,20 @@
     }
   }
 
-  function restartGame(){ clearSave(); location.reload(); }
+  function restartGame(){
+    clearSave();
+    location.reload();
+  }
   window.restartGame = restartGame;
 
-  $('btnCopy').addEventListener('click', async ()=>{ try{ await navigator.clipboard.writeText($('tCode').textContent.trim()); $('btnCopy').textContent='Copied ✅'; setTimeout(()=>$('btnCopy').textContent='Copy Ticket Code',1000);} catch {}});
+  $('btnCopy').addEventListener('click', async ()=>{
+    try{
+      await navigator.clipboard.writeText($('tCode').textContent.trim());
+      $('btnCopy').textContent='Copied ✅';
+      setTimeout(()=>$('btnCopy').textContent='Copy Ticket Code',1000);
+    } catch {}
+  });
+
   $('btnReset').addEventListener('click', restartGame);
   $('btnResetAll').addEventListener('click', restartGame);
   $('btnRestartMid').addEventListener('click', restartGame);
@@ -599,21 +1100,32 @@
 
   $('btnStart').addEventListener('click', ()=>{
     const name=($('studentName').value||'').trim();
-    if(name.length<2){ setFeedback('bad','Name required','Enter your name to begin.'); return; }
+    if(name.length<2){
+      setFeedback('bad','Name required','Enter your name to begin.');
+      return;
+    }
+
     state.name=name;
     state.startedAtISO=new Date().toISOString();
     state.startedAtMS=Date.now();
     state.idx=0;
     state.runSeed=(Math.floor(Math.random()*1e9) ^ hash32(name+'|'+state.startedAtISO))>>>0;
-    state.qmeta=freshMeta();
-    for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i);
+    state.runOrder=buildRunOrder(state.runSeed);
+    state.qmeta=freshMeta(state.runOrder.length);
+
+    for(let i=0;i<state.runOrder.length;i++){
+      ensureOrder(i);
+    }
+
     save();
     $('nameBox').style.display='none';
     $('questionBox').style.display='';
     showQuestion();
   });
 
-  $('studentName').addEventListener('keydown', e => { if(e.key==='Enter') $('btnStart').click(); });
+  $('studentName').addEventListener('keydown', e => {
+    if(e.key==='Enter') $('btnStart').click();
+  });
 
   if(load()){
     $('studentName').value=state.name||'';
