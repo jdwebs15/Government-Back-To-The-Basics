@@ -51,7 +51,7 @@
     .btn.good{border-color:rgba(43,213,118,.35);background:rgba(43,213,118,.10)}
     .btn.bad{border-color:rgba(255,92,122,.35);background:rgba(255,92,122,.10)}
     .btn.active{outline:2px solid rgba(122,162,255,.55)}
-    .btn[disabled]{opacity:.6;cursor:not-allowed}
+    .btn[disabled]{opacity:.42;cursor:not-allowed;filter:grayscale(.2)}
     .field{display:grid;gap:6px;margin-top:10px}
     input[type="text"]{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
     input[type="text"]:focus{border-color:rgba(122,162,255,.55)}
@@ -63,9 +63,8 @@
     .ticket .code{font-family:var(--mono);font-weight:900;letter-spacing:.06em;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);margin-top:8px;word-break:break-word}
     .summary{margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px}
 
-    /* slider question */
     .slider-shell{margin-top:10px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.02);padding:14px}
-    .slider-instructions{font-size:14px;color:var(--muted);line-height:1.4;margin-bottom:14px}
+    .slider-instructions{font-size:14px;color:var(--muted);line-height:1.45;margin-bottom:14px}
     .slider-wrap{display:flex;justify-content:center;gap:34px;flex-wrap:wrap;margin:8px 0 12px}
     .slider-col{min-width:150px;text-align:center}
     .slider-col .toplab,.slider-col .botlab{font-size:13px;color:var(--muted);line-height:1.25}
@@ -98,9 +97,26 @@
       transition:.18s ease;
       font-weight:900;letter-spacing:.05em;text-align:center;
       padding:8px;
+      line-height:1.2;
     }
     .policy-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
     .slider-mini-note{font-size:12px;color:var(--muted);margin-top:8px;text-align:center}
+    .unlock-box{
+      margin-top:10px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:rgba(255,255,255,.02);
+      padding:10px 12px;
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+    }
+    .unlock-box.ready{
+      border-color:rgba(43,213,118,.35);
+      background:rgba(43,213,118,.08);
+      color:var(--text);
+    }
   </style>
 </head>
 <body>
@@ -210,7 +226,8 @@
         <ul class="muted" style="margin:10px 0 0; line-height:1.45;">
           <li><b>Mastery</b> = finish all items with <b>0 misses</b>.</li>
           <li>Wrong answer → hint appears → retry until correct, but accuracy keeps the miss.</li>
-          <li>Slider items require <b>moving a relevant tool</b>, selecting a policy, then clicking <b>Apply Policy</b>.</li>
+          <li>On slider items, students must move <b>every tool</b> in the proper direction before policy buttons unlock.</li>
+          <li>The box can <b>expand</b>, <b>contract</b>, or return to <b>no net change</b> if opposing tools cancel each other out.</li>
           <li>Run order is mixed so fiscal and monetary items do not all appear in one clump.</li>
         </ul>
 
@@ -218,7 +235,7 @@
 
         <div class="label">WHAT THIS GAME PRACTICES</div>
         <p class="muted" style="margin:10px 0 0;line-height:1.45;">
-          Fiscal policy, regulation costs and benefits, and Federal Reserve monetary tools including buying and selling bonds, reserve requirements, and interest rates.
+          Fiscal policy, regulation costs and benefits, and Federal Reserve monetary tools including buying and selling securities, reserve requirements, and discount rate changes.
         </p>
 
         <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
@@ -273,10 +290,10 @@
     {
       id:'sl_f_01', domain:'fiscal', type:'slider',
       title:'Fiscal Slider Scenario',
-      prompt:'A recession causes layoffs and weak consumer spending. Adjust the fiscal tools and choose the correct policy.',
+      prompt:'A recession causes layoffs and weak consumer spending. Adjust every fiscal tool in the correct direction, watch the economy box respond, then choose the correct policy.',
       answer:'Expansionary',
-      hint:'To stimulate growth, think more government demand and/or less tax burden.',
-      explain:'Correct: expansionary fiscal policy uses increased spending and/or lower taxes to encourage growth.'
+      hint:'To stimulate growth, every fiscal tool should point toward more demand, not less.',
+      explain:'Correct: expansionary fiscal policy uses increased spending and lower taxes to encourage growth.'
     },
     {
       id:'g9e_05', domain:'fiscal', type:'mcq',
@@ -308,10 +325,10 @@
     {
       id:'sl_f_02', domain:'fiscal', type:'slider',
       title:'Fiscal Slider Scenario',
-      prompt:'Inflation is rising because demand is too strong. Adjust the fiscal tools and choose the correct policy.',
+      prompt:'Inflation is rising because demand is too strong. Adjust every fiscal tool in the correct direction, watch the economy box respond, then choose the correct policy.',
       answer:'Contractionary',
-      hint:'To cool an overheated economy, think less government demand and/or greater tax burden.',
-      explain:'Correct: contractionary fiscal policy uses lower spending and/or higher taxes to slow growth.'
+      hint:'To cool an overheated economy, every fiscal tool should reduce demand.',
+      explain:'Correct: contractionary fiscal policy uses lower spending and higher taxes to slow growth.'
     },
 
     {
@@ -372,9 +389,9 @@
     {
       id:'sl_m_01', domain:'monetary', type:'slider',
       title:'Monetary Slider Scenario',
-      prompt:'A recession begins and borrowing is weak. Adjust the Fed’s monetary tools and choose the correct policy.',
+      prompt:'A recession begins and borrowing is weak. Adjust every Fed tool in the correct direction, watch the money supply box respond, then choose the correct policy.',
       answer:'Expansionary',
-      hint:'Expansionary monetary policy means more money and easier lending.',
+      hint:'Expansionary monetary policy means every tool should point toward easier credit and more money in the economy.',
       explain:'Correct: expansionary monetary policy can include buying securities, lowering reserve requirements, and lowering the discount rate.'
     },
     {
@@ -407,9 +424,9 @@
     {
       id:'sl_m_02', domain:'monetary', type:'slider',
       title:'Monetary Slider Scenario',
-      prompt:'Prices are rising too quickly and the Fed wants to reduce lending. Adjust the monetary tools and choose the correct policy.',
+      prompt:'Prices are rising too quickly and the Fed wants to reduce lending. Adjust every Fed tool in the correct direction, watch the money supply box respond, then choose the correct policy.',
       answer:'Contractionary',
-      hint:'Contractionary monetary policy means less money and tighter lending.',
+      hint:'Contractionary monetary policy means every tool should point toward tighter credit and less money in the economy.',
       explain:'Correct: contractionary monetary policy can include selling securities, raising reserve requirements, and raising the discount rate.'
     },
 
@@ -443,9 +460,9 @@
     {
       id:'sl_m_03', domain:'monetary', type:'slider',
       title:'Monetary Slider Scenario',
-      prompt:'Banks are holding back loans and businesses cannot get enough credit. Adjust the monetary tools and choose the correct policy.',
+      prompt:'Banks are holding back loans and businesses cannot get enough credit. Adjust every Fed tool in the correct direction, watch the money supply box respond, then choose the correct policy.',
       answer:'Expansionary',
-      hint:'Think easier credit, not tighter credit.',
+      hint:'Think easier credit across all of the Fed’s tools, not just one.',
       explain:'Correct: the Fed would use expansionary tools to encourage lending and growth.'
     },
     {
@@ -478,9 +495,9 @@
     {
       id:'sl_m_04', domain:'monetary', type:'slider',
       title:'Monetary Slider Scenario',
-      prompt:'Inflation remains high and the Fed wants borrowing and spending to slow. Adjust the monetary tools and choose the correct policy.',
+      prompt:'Inflation remains high and the Fed wants borrowing and spending to slow. Adjust every Fed tool in the correct direction, watch the money supply box respond, then choose the correct policy.',
       answer:'Contractionary',
-      hint:'Think tighter money, not easier money.',
+      hint:'Think tighter money across all tools, not just one.',
       explain:'Correct: the Fed would use contractionary tools to reduce borrowing and demand.'
     },
 
@@ -514,10 +531,10 @@
     {
       id:'sl_f_03', domain:'fiscal', type:'slider',
       title:'Fiscal Slider Scenario',
-      prompt:'Consumer demand surges and inflation is climbing. Adjust the fiscal tools and choose the correct policy.',
+      prompt:'Consumer demand surges and inflation is climbing. Adjust every fiscal tool in the correct direction, watch the economy box respond, then choose the correct policy.',
       answer:'Contractionary',
-      hint:'To reduce demand, think pulling money out rather than pushing more in.',
-      explain:'Correct: contractionary fiscal policy slows demand through lower spending and/or higher taxes.'
+      hint:'To reduce demand, both fiscal tools must point the same way.',
+      explain:'Correct: contractionary fiscal policy slows demand through lower spending and higher taxes.'
     },
     {
       id:'g9e_26', domain:'mixed', type:'mcq',
@@ -531,14 +548,14 @@
     {
       id:'sl_f_04', domain:'fiscal', type:'slider',
       title:'Fiscal Slider Scenario',
-      prompt:'Businesses cut hiring and consumers reduce spending. Adjust the fiscal tools and choose the correct policy.',
+      prompt:'Businesses cut hiring and consumers reduce spending. Adjust every fiscal tool in the correct direction, watch the economy box respond, then choose the correct policy.',
       answer:'Expansionary',
-      hint:'Think stimulation through greater demand or lower taxes.',
-      explain:'Correct: expansionary fiscal policy encourages growth through higher spending and/or lower taxes.'
+      hint:'Think stimulation through both higher spending and lower taxes.',
+      explain:'Correct: expansionary fiscal policy encourages growth through higher spending and lower taxes.'
     }
   ];
 
-  const STORAGE_KEY = 'BTB_GOV_CS20_21_ECON_SLIDERS_V2';
+  const STORAGE_KEY = 'BTB_GOV_CS20_21_ECON_SLIDERS_V3';
 
   const errbox = document.getElementById('errbox');
   const errtext = document.getElementById('errtext');
@@ -706,16 +723,16 @@
     const selExp = $('selExpansionary');
     const selCon = $('selContractionary');
     const apply = $('btnApplyPolicy');
-    if(selExp) selExp.disabled = disabled;
-    if(selCon) selCon.disabled = disabled;
-    if(apply) apply.disabled = disabled || !currentSliderSelection;
+    if(selExp) selExp.disabled = disabled || !sliderButtonsUnlocked;
+    if(selCon) selCon.disabled = disabled || !sliderButtonsUnlocked;
+    if(apply) apply.disabled = disabled || !sliderButtonsUnlocked || !currentSliderSelection;
   }
 
   function markMiss(){ state.qmeta[state.idx].missed=true; }
   function markDone(){ state.qmeta[state.idx].done=true; }
 
   let currentSliderSelection = '';
-  let currentSliderType = '';
+  let sliderButtonsUnlocked = false;
 
   function showQuestion(){
     const q=getCurrentQuestion();
@@ -761,7 +778,7 @@
 
   function renderSliderQuestion(q, meta){
     currentSliderSelection = '';
-    currentSliderType = q.domain;
+    sliderButtonsUnlocked = false;
 
     const shell = document.createElement('div');
     shell.className = 'slider-shell slider-ui';
@@ -769,9 +786,8 @@
     shell.innerHTML = q.domain === 'fiscal'
       ? `
         <div class="slider-instructions">
-          <b>Directions:</b> Move at least one relevant fiscal tool, select a policy, then click <b>Apply Policy</b>.<br>
-          Expansionary fiscal policy = <b>increase spending</b> and/or <b>cut taxes</b>.<br>
-          Contractionary fiscal policy = <b>decrease spending</b> and/or <b>raise taxes</b>.
+          <b>Directions:</b> Move <b>both</b> fiscal tools first. The policy buttons stay grayed out until <b>every slider</b> has been moved in the correct direction for the scenario.<br>
+          Watch the box: it can <b>expand</b>, <b>contract</b>, or show <b>NO NET CHANGE</b> if one tool cancels out another. After the buttons unlock, choose the correct policy and click <b>Apply Policy</b>.
         </div>
 
         <div class="slider-wrap">
@@ -785,25 +801,26 @@
           <div class="slider-col">
             <div class="toplab"><strong>Raise Taxes ↑</strong></div>
             <input class="vslider" type="range" min="-100" max="100" value="0" id="fTax">
-            <div class="botlab"><strong>Cut Taxes ↓</strong></div>
+            <div class="botlab"><strong>Lower Taxes ↓</strong></div>
             <div class="valpill" id="fTaxVal">0</div>
           </div>
         </div>
 
-        <div class="econbox" id="econBox">ECONOMY</div>
+        <div class="econbox" id="econBox">NO NET<br>CHANGE</div>
+
+        <div class="unlock-box" id="unlockBox">Move every slider in the correct direction to unlock the policy buttons.</div>
 
         <div class="policy-row">
-          <button class="btn good" id="selExpansionary" type="button">Choose Expansionary</button>
-          <button class="btn bad" id="selContractionary" type="button">Choose Contractionary</button>
+          <button class="btn good" id="selExpansionary" type="button" disabled>Choose Expansionary</button>
+          <button class="btn bad" id="selContractionary" type="button" disabled>Choose Contractionary</button>
           <button class="btn primary" id="btnApplyPolicy" type="button" disabled>Apply Policy</button>
         </div>
-        <div class="slider-mini-note">At least one relevant tool must be moved in the correct direction. Contradictory mixes do not count.</div>
+        <div class="slider-mini-note">Every fiscal tool must be moved. Buttons unlock only when all tools point the right way for the scenario.</div>
       `
       : `
         <div class="slider-instructions">
-          <b>Directions:</b> Move at least one relevant Fed tool, select a policy, then click <b>Apply Policy</b>.<br>
-          Expansionary monetary policy = <b>buy securities</b>, <b>lower reserve requirement</b>, and/or <b>lower discount rate</b>.<br>
-          Contractionary monetary policy = <b>sell securities</b>, <b>raise reserve requirement</b>, and/or <b>raise discount rate</b>.
+          <b>Directions:</b> Move <b>all three</b> Fed tools first. The policy buttons stay grayed out until <b>every slider</b> has been moved in the correct direction for the scenario.<br>
+          Watch the box: it can <b>expand</b>, <b>contract</b>, or show <b>NO NET CHANGE</b> if one tool cancels out another. After the buttons unlock, choose the correct policy and click <b>Apply Policy</b>.
         </div>
 
         <div class="slider-wrap">
@@ -815,28 +832,30 @@
           </div>
 
           <div class="slider-col">
-            <div class="toplab"><strong>Raise Reserve ↑</strong></div>
+            <div class="toplab"><strong>Raise Reserve Requirement ↑</strong></div>
             <input class="vslider" type="range" min="-100" max="100" value="0" id="mReserve">
-            <div class="botlab"><strong>Lower Reserve ↓</strong></div>
+            <div class="botlab"><strong>Lower Reserve Requirement ↓</strong></div>
             <div class="valpill" id="mReserveVal">0</div>
           </div>
 
           <div class="slider-col">
-            <div class="toplab"><strong>Raise Discount ↑</strong></div>
+            <div class="toplab"><strong>Raise Discount Rate ↑</strong></div>
             <input class="vslider" type="range" min="-100" max="100" value="0" id="mDiscount">
-            <div class="botlab"><strong>Lower Discount ↓</strong></div>
+            <div class="botlab"><strong>Lower Discount Rate ↓</strong></div>
             <div class="valpill" id="mDiscountVal">0</div>
           </div>
         </div>
 
-        <div class="econbox" id="econBox">MONEY<br>SUPPLY</div>
+        <div class="econbox" id="econBox">NO NET<br>CHANGE</div>
+
+        <div class="unlock-box" id="unlockBox">Move every slider in the correct direction to unlock the policy buttons.</div>
 
         <div class="policy-row">
-          <button class="btn good" id="selExpansionary" type="button">Choose Expansionary</button>
-          <button class="btn bad" id="selContractionary" type="button">Choose Contractionary</button>
+          <button class="btn good" id="selExpansionary" type="button" disabled>Choose Expansionary</button>
+          <button class="btn bad" id="selContractionary" type="button" disabled>Choose Contractionary</button>
           <button class="btn primary" id="btnApplyPolicy" type="button" disabled>Apply Policy</button>
         </div>
-        <div class="slider-mini-note">At least one relevant tool must be moved in the correct direction. Contradictory mixes do not count.</div>
+        <div class="slider-mini-note">Every Fed tool must be moved. Buttons unlock only when all tools point the right way for the scenario.</div>
       `;
 
     $('opts').appendChild(shell);
@@ -846,9 +865,13 @@
     const apply = $('btnApplyPolicy');
 
     function syncApply(){
-      apply.disabled = !currentSliderSelection || meta.done;
+      apply.disabled = !sliderButtonsUnlocked || !currentSliderSelection || meta.done;
+      selExp.disabled = !sliderButtonsUnlocked || meta.done;
+      selCon.disabled = !sliderButtonsUnlocked || meta.done;
     }
+
     function setSelection(val){
+      if(!sliderButtonsUnlocked || meta.done) return;
       currentSliderSelection = val;
       selExp.classList.toggle('active', val === 'Expansionary');
       selCon.classList.toggle('active', val === 'Contractionary');
@@ -860,15 +883,15 @@
     apply.addEventListener('click', submitSliderAnswer);
 
     if(q.domain === 'fiscal'){
-      $('fSpend').addEventListener('input', updateFiscalVisual);
-      $('fTax').addEventListener('input', updateFiscalVisual);
-      updateFiscalVisual();
+      $('fSpend').addEventListener('input', refreshSliderUI);
+      $('fTax').addEventListener('input', refreshSliderUI);
     } else {
-      $('mOMO').addEventListener('input', updateMonetaryVisual);
-      $('mReserve').addEventListener('input', updateMonetaryVisual);
-      $('mDiscount').addEventListener('input', updateMonetaryVisual);
-      updateMonetaryVisual();
+      $('mOMO').addEventListener('input', refreshSliderUI);
+      $('mReserve').addEventListener('input', refreshSliderUI);
+      $('mDiscount').addEventListener('input', refreshSliderUI);
     }
+
+    refreshSliderUI();
 
     if(meta.done){
       disableInputs(true);
@@ -877,32 +900,100 @@
     }
   }
 
-  function updateFiscalVisual(){
-    const spend = Number($('fSpend')?.value || 0);
-    const tax = Number($('fTax')?.value || 0);
-    $('fSpendVal').textContent = spend;
-    $('fTaxVal').textContent = tax;
+  function getSliderNetAndStatus(q){
+    const answer = q.answer;
 
-    const net = spend - tax;
-    let size = 160 + net / 3;
-    size = Math.max(95, Math.min(255, size));
-    $('econBox').style.width = size + 'px';
-    $('econBox').style.height = size + 'px';
-  }
+    if(q.domain === 'fiscal'){
+      const spend = Number($('fSpend')?.value || 0);
+      const tax = Number($('fTax')?.value || 0);
 
-  function updateMonetaryVisual(){
+      const allMoved = spend !== 0 && tax !== 0;
+      const correctDirs = answer === 'Expansionary'
+        ? (spend > 0 && tax < 0)
+        : (spend < 0 && tax > 0);
+
+      const net = spend - tax;
+      return { net, allMoved, correctDirs };
+    }
+
     const omo = Number($('mOMO')?.value || 0);
     const reserve = Number($('mReserve')?.value || 0);
     const discount = Number($('mDiscount')?.value || 0);
-    $('mOMOVal').textContent = omo;
-    $('mReserveVal').textContent = reserve;
-    $('mDiscountVal').textContent = discount;
+
+    const allMoved = omo !== 0 && reserve !== 0 && discount !== 0;
+    const correctDirs = answer === 'Expansionary'
+      ? (omo > 0 && reserve < 0 && discount < 0)
+      : (omo < 0 && reserve > 0 && discount > 0);
 
     const net = omo - reserve - discount;
+    return { net, allMoved, correctDirs };
+  }
+
+  function updateBoxFromNet(net, labelType){
     let size = 160 + net / 3;
     size = Math.max(95, Math.min(255, size));
     $('econBox').style.width = size + 'px';
     $('econBox').style.height = size + 'px';
+
+    if(net > 10){
+      $('econBox').innerHTML = labelType === 'fiscal' ? 'ECONOMY<br>EXPANDING' : 'MONEY SUPPLY<br>EXPANDING';
+    } else if(net < -10){
+      $('econBox').innerHTML = labelType === 'fiscal' ? 'ECONOMY<br>CONTRACTING' : 'MONEY SUPPLY<br>CONTRACTING';
+    } else {
+      $('econBox').innerHTML = 'NO NET<br>CHANGE';
+    }
+  }
+
+  function refreshSliderUI(){
+    const q = getCurrentQuestion();
+    if(q.type !== 'slider') return;
+
+    if(q.domain === 'fiscal'){
+      const spend = Number($('fSpend').value);
+      const tax = Number($('fTax').value);
+      $('fSpendVal').textContent = spend;
+      $('fTaxVal').textContent = tax;
+    } else {
+      const omo = Number($('mOMO').value);
+      const reserve = Number($('mReserve').value);
+      const discount = Number($('mDiscount').value);
+      $('mOMOVal').textContent = omo;
+      $('mReserveVal').textContent = reserve;
+      $('mDiscountVal').textContent = discount;
+    }
+
+    const status = getSliderNetAndStatus(q);
+    updateBoxFromNet(status.net, q.domain);
+
+    const unlockBox = $('unlockBox');
+    const selExp = $('selExpansionary');
+    const selCon = $('selContractionary');
+    const apply = $('btnApplyPolicy');
+
+    sliderButtonsUnlocked = !!(status.allMoved && status.correctDirs);
+
+    if(!status.allMoved){
+      unlockBox.className = 'unlock-box';
+      unlockBox.textContent = q.domain === 'fiscal'
+        ? 'Move both fiscal sliders. Buttons unlock only after every tool is moved in the correct direction.'
+        : 'Move all three Fed sliders. Buttons unlock only after every tool is moved in the correct direction.';
+    } else if(!status.correctDirs){
+      unlockBox.className = 'unlock-box';
+      unlockBox.textContent = 'All sliders have been moved, but one or more tools are pointed the wrong way for this scenario.';
+    } else {
+      unlockBox.className = 'unlock-box ready';
+      unlockBox.textContent = 'All tools are set correctly. Now choose the correct policy and click Apply Policy.';
+    }
+
+    selExp.disabled = !sliderButtonsUnlocked || state.qmeta[state.idx].done;
+    selCon.disabled = !sliderButtonsUnlocked || state.qmeta[state.idx].done;
+    apply.disabled = !sliderButtonsUnlocked || !currentSliderSelection || state.qmeta[state.idx].done;
+
+    if(!sliderButtonsUnlocked){
+      currentSliderSelection = '';
+      selExp.classList.remove('active');
+      selCon.classList.remove('active');
+    }
   }
 
   function answerMCQ(shownIdx){
@@ -926,86 +1017,28 @@
     updateStats();
   }
 
-  function fiscalDirectionOk(value, selection, axis){
-    if(value === 0) return null;
-    if(axis === 'spend'){
-      if(selection === 'Expansionary') return value > 0;
-      if(selection === 'Contractionary') return value < 0;
-    }
-    if(axis === 'tax'){
-      if(selection === 'Expansionary') return value < 0;
-      if(selection === 'Contractionary') return value > 0;
-    }
-    return false;
-  }
-
-  function monetaryDirectionOk(value, selection, axis){
-    if(value === 0) return null;
-    if(axis === 'omo'){
-      if(selection === 'Expansionary') return value > 0;
-      if(selection === 'Contractionary') return value < 0;
-    }
-    if(axis === 'reserve' || axis === 'discount'){
-      if(selection === 'Expansionary') return value < 0;
-      if(selection === 'Contractionary') return value > 0;
-    }
-    return false;
-  }
-
-  function validateSliderSelection(selection, domain){
-    if(!selection) return {ok:false, reason:'Select a policy before clicking Apply Policy.'};
-
-    if(domain === 'fiscal'){
-      const spend = Number($('fSpend').value);
-      const tax = Number($('fTax').value);
-
-      const moved = [spend, tax].some(v => v !== 0);
-      if(!moved) return {ok:false, reason:'Move at least one fiscal slider before applying your policy.'};
-
-      const checks = [
-        fiscalDirectionOk(spend, selection, 'spend'),
-        fiscalDirectionOk(tax, selection, 'tax')
-      ].filter(v => v !== null);
-
-      const hasRelevant = checks.some(Boolean);
-      const hasContradiction = checks.some(v => v === false);
-
-      if(!hasRelevant) return {ok:false, reason:'At least one relevant fiscal tool must move in the correct direction.'};
-      if(hasContradiction) return {ok:false, reason:'One or more fiscal sliders contradict the policy you selected.'};
-
-      return {ok:true};
-    }
-
-    const omo = Number($('mOMO').value);
-    const reserve = Number($('mReserve').value);
-    const discount = Number($('mDiscount').value);
-
-    const moved = [omo, reserve, discount].some(v => v !== 0);
-    if(!moved) return {ok:false, reason:'Move at least one monetary slider before applying your policy.'};
-
-    const checks = [
-      monetaryDirectionOk(omo, selection, 'omo'),
-      monetaryDirectionOk(reserve, selection, 'reserve'),
-      monetaryDirectionOk(discount, selection, 'discount')
-    ].filter(v => v !== null);
-
-    const hasRelevant = checks.some(Boolean);
-    const hasContradiction = checks.some(v => v === false);
-
-    if(!hasRelevant) return {ok:false, reason:'At least one relevant monetary tool must move in the correct direction.'};
-    if(hasContradiction) return {ok:false, reason:'One or more monetary sliders contradict the policy you selected.'};
-
-    return {ok:true};
-  }
-
   function submitSliderAnswer(){
     const q = getCurrentQuestion();
     const meta = state.qmeta[state.idx];
     if(meta.done) return;
 
-    const check = validateSliderSelection(currentSliderSelection, q.domain);
-    if(!check.ok){
-      setFeedback('warn','Hint 💡', check.reason);
+    const status = getSliderNetAndStatus(q);
+
+    if(!status.allMoved){
+      setFeedback('warn','Hint 💡', q.domain === 'fiscal'
+        ? 'Move both fiscal sliders before choosing a policy.'
+        : 'Move all three Fed sliders before choosing a policy.'
+      );
+      return;
+    }
+
+    if(!status.correctDirs){
+      setFeedback('warn','Hint 💡', 'One or more tools are pointed in the wrong direction for this scenario. Fix the sliders first.');
+      return;
+    }
+
+    if(!currentSliderSelection){
+      setFeedback('warn','Hint 💡', 'Now that the tools are set correctly, choose Expansionary or Contractionary.');
       return;
     }
 
