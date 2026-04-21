@@ -1,370 +1,126 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Back to the Basics — American Government Hub</title>
-  <meta name="description" content="Back to the Basics: American Government mastery hub aligned to Ohio Content Statements." />
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    .heroNote{margin-top:10px;color:var(--muted);font-size:13px;line-height:1.35}
-    .grid3{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    @media (max-width:900px){.grid3{grid-template-columns:1fr}}
-    .disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.2);pointer-events:none}
-    .liveGreen{
-      font-size:12px;
-      padding:5px 10px;
-      border-radius:999px;
-      background: rgba(43,213,118,.12);
-      border:1px solid rgba(43,213,118,.35);
-      color: var(--good);
-      font-weight:800;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Government Trouble Areas — Legend Mastery Series</title>
+<link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <div class="wrap">
+<div class="wrap">
 
-    <section class="mini-panel" style="padding:18px">
-      <div class="brand-row">
-        <span class="brand-chip">LEGEND MASTERY SERIES</span>
-        <span class="brand-dot"></span>
-        <span class="brand-sub">Back to the Basics</span>
-      </div>
+<header class="hero">
+  <div class="kicker">Legend Mastery Series • American Government</div>
+  <h1>Government Trouble Areas Hub</h1>
+  <p class="sub">
+    Targeted mastery practice built from real classroom trouble spots. Complete all games, then finish with the cumulative assessment.
+  </p>
 
-      <h1 class="title" style="margin:0">American Government — Back to the Basics Hub</h1>
-
-      <p class="subtitle">
-        Rote memorization mastery games aligned to Ohio Content Statements (CS1–21).
-        Every game requires <b>name entry</b>, tracks <b>start/end timestamps</b> and <b>running time</b>,
-        and only issues a completion ticket at <b>100% accuracy</b>.
-      </p>
-
-      <div class="pill-row">
-        <span class="pill">Name required</span>
-        <span class="pill">Start/End timestamps</span>
-        <span class="pill">Running timer</span>
-        <span class="pill">Auto-submit on click</span>
-        <span class="pill">100% to submit</span>
-      </div>
-
-      <p class="heroNote">
-        All 9 Government Back-to-the-Basics games are now live in the <code>/games</code> folder.
-      </p>
-
-      <div class="hint" id="hubMsg" aria-live="polite"></div>
-    </section>
-
-    <div class="section-head">
-      <h2 class="section-title">Games</h2>
-      <div class="section-actions">
-        <input id="search" class="search" type="search" placeholder="Search games…" autocomplete="off" />
-      </div>
-    </div>
-
-    <main class="grid3" id="cards">
-
-      <!-- CARD 1 -->
-      <article class="card" data-search="cs1 cs2 cs3 cs4 civic foundations political participation sources persuasion compromise consensus negotiation">
-        <div class="card-top">
-          <div class="card-title">Gov Basics 1 — Civic Foundations (Back to Basics)</div>
-          <div class="card-right"><span class="liveGreen">LIVE</span></div>
-        </div>
-
-        <div class="card-meta">
-          <span class="chip chip-accent">CS1–4</span>
-          <span class="chip">Foundations</span>
-          <span class="status good">Built</span>
-        </div>
-
-        <p class="card-desc">
-          Civic engagement, political parties, interest groups, media, source credibility, persuasion, compromise, consensus, and negotiation.
-        </p>
-
-        <div class="card-tags">
-          <span class="chip">Civic engagement</span>
-          <span class="chip">Sources</span>
-          <span class="chip">Democratic skills</span>
-        </div>
-
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="games/gov-basics-cs1-4.html">Open game</a>
-          <button class="btn btn-small" type="button" data-copy="games/gov-basics-cs1-4.html">Copy link</button>
-        </div>
-      </article>
-
-      <!-- CARD 2 -->
-      <article class="card" data-search="cs5 cs6 constitutional foundations federalists anti-federalists basic principles necessary proper supremacy bill of rights">
-        <div class="card-top">
-          <div class="card-title">Gov Basics 2 — Constitutional Foundations (Back to Basics)</div>
-          <div class="card-right"><span class="liveGreen">LIVE</span></div>
-        </div>
-
-        <div class="card-meta">
-          <span class="chip chip-accent">CS5–6</span>
-          <span class="chip">Constitution</span>
-          <span class="status good">Built</span>
-        </div>
-
-        <p class="card-desc">
-          Five basic principles plus Federalists vs. Anti-Federalists, Necessary and Proper, Supremacy, and Bill of Rights framing.
-        </p>
-
-        <div class="card-tags">
-          <span class="chip">Principles</span>
-          <span class="chip">Federalists</span>
-          <span class="chip">Ratification</span>
-        </div>
-
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="games/gov-basics-cs5-6.html">Open game</a>
-          <button class="btn btn-small" type="button" data-copy="games/gov-basics-cs5-6.html">Copy link</button>
-        </div>
-      </article>
-
-      <!-- CARD 3 -->
-      <article class="card" data-search="cs7 cs8 constitutional change bill of rights amendments judicial review legislation informal practices incorporation civil liberties">
-        <div class="card-top">
-          <div class="card-title">Gov Basics 3 — Constitutional Change & Bill of Rights (Back to Basics)</div>
-          <div class="card-right"><span class="liveGreen">LIVE</span></div>
-        </div>
-
-        <div class="card-meta">
-          <span class="chip chip-accent">CS7–8</span>
-          <span class="chip">Bill of Rights</span>
-          <span class="status good">Built</span>
-        </div>
-
-        <p class="card-desc">
-          Constitutional change through amendments, Supreme Court decisions, legislation, informal practices, and Bill of Rights basics.
-        </p>
-
-        <div class="card-tags">
-          <span class="chip">Amendments</span>
-          <span class="chip">Judicial review</span>
-          <span class="chip">Civil liberties</span>
-        </div>
-
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="games/gov-basics-cs7-8.html">Open game</a>
-          <button class="btn btn-small" type="button" data-copy="games/gov-basics-cs7-8.html">Copy link</button>
-        </div>
-      </article>
-
-      <!-- CARD 4 -->
-      <article class="card" data-search="cs9 cs10 cs11 reconstruction suffrage structural amendments electoral college presidency voting rights">
-        <div class="card-top">
-          <div class="card-title">Gov Basics 4 — Reconstruction, Suffrage & Structural Amendments (Back to Basics)</div>
-          <div class="card-right"><span class="liveGreen">LIVE</span></div>
-        </div>
-
-        <div class="card-meta">
-          <span class="chip chip-accent">CS9–11</span>
-          <span class="chip">Amendments</span>
-          <span class="status good">Built</span>
-        </div>
-
-        <p class="card-desc">
-          Reconstruction Amendments, suffrage expansions, and structural amendments involving the Electoral College and presidency.
-        </p>
-
-        <div class="card-tags">
-          <span class="chip">Reconstruction</span>
-          <span class="chip">Suffrage</span>
-          <span class="chip">Structure</span>
-        </div>
-
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="games/gov-basics-cs9-11.html">Open game</a>
-          <button class="btn btn-small" type="button" data-copy="games/gov-basics-cs9-11.html">Copy link</button>
-        </div>
-      </article>
-
-      <!-- CARD 5 -->
-      <article class="card" data-search="cs12 cs13 branches checks balances legislative executive judicial veto override impeachment confirmation judicial review">
-        <div class="card-top">
-          <div class="card-title">Gov Basics 5 — Branch Powers & Checks (Back to Basics)</div>
-          <div class="card-right"><span class="liveGreen">LIVE</span></div>
-        </div>
-
-        <div class="card-meta">
-          <span class="chip chip-accent">CS12–13</span>
-          <span class="chip">Branches</span>
-          <span class="status good">Built</span>
-        </div>
-
-        <p class="card-desc">
-          Legislative, executive, and judicial branch powers plus the major checks and balances among them.
-        </p>
-
-        <div class="card-tags">
-          <span class="chip">Congress</span>
-          <span class="chip">President</span>
-          <span class="chip">Courts</span>
-        </div>
-
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="games/gov-basics-cs12-13.html">Open game</a>
-          <button class="btn btn-small" type="button" data-copy="games/gov-basics-cs12-13.html">Copy link</button>
-        </div>
-      </article>
-
-      <!-- CARD 6 -->
-      <article class="card" data-search="cs14 cs15 rights responsibilities civil rights incorporation majority rule minority rights civil liberties">
-        <div class="card-top">
-          <div class="card-title">Gov Basics 6 — Rights, Responsibilities & Civil Rights (Back to Basics)</div>
-          <div class="card-right"><span class="liveGreen">LIVE</span></div>
-        </div>
-
-        <div class="card-meta">
-          <span class="chip chip-accent">CS14–15</span>
-          <span class="chip">Rights</span>
-          <span class="status good">Built</span>
-        </div>
-
-        <p class="card-desc">
-          Rights vs. responsibilities, majority rule vs. minority rights, incorporation, and the expansion of civil rights.
-        </p>
-
-        <div class="card-tags">
-          <span class="chip">Incorporation</span>
-          <span class="chip">Civil rights</span>
-          <span class="chip">Responsibilities</span>
-        </div>
-
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="games/gov-basics-cs14-15.html">Open game</a>
-          <button class="btn btn-small" type="button" data-copy="games/gov-basics-cs14-15.html">Copy link</button>
-        </div>
-      </article>
-
-      <!-- CARD 7 -->
-      <article class="card" data-search="cs16 cs17 ohio constitution civic responsibility state local government initiative referendum elected judges">
-        <div class="card-top">
-          <div class="card-title">Gov Basics 7 — Ohio Constitution & Civic Responsibility (Back to Basics)</div>
-          <div class="card-right"><span class="liveGreen">LIVE</span></div>
-        </div>
-
-        <div class="card-meta">
-          <span class="chip chip-accent">CS16–17</span>
-          <span class="chip">Ohio</span>
-          <span class="status good">Built</span>
-        </div>
-
-        <p class="card-desc">
-          Ohio Constitution similarities/differences and the responsibilities Ohio citizens have in helping state and local government.
-        </p>
-
-        <div class="card-tags">
-          <span class="chip">Ohio Constitution</span>
-          <span class="chip">State/local</span>
-          <span class="chip">Civic roles</span>
-        </div>
-
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="games/gov-basics-cs16-17.html">Open game</a>
-          <button class="btn btn-small" type="button" data-copy="games/gov-basics-cs16-17.html">Copy link</button>
-        </div>
-      </article>
-
-      <!-- CARD 8 -->
-      <article class="card" data-search="cs18 cs19 public policy lobbying testimony briefs inputs department of state congressional budget office">
-        <div class="card-top">
-          <div class="card-title">Gov Basics 8 — Public Policy Issues & Inputs (Back to Basics)</div>
-          <div class="card-right"><span class="liveGreen">LIVE</span></div>
-        </div>
-
-        <div class="card-meta">
-          <span class="chip chip-accent">CS18–19</span>
-          <span class="chip">Public Policy</span>
-          <span class="status good">Built</span>
-        </div>
-
-        <p class="card-desc">
-          Public policy across levels and branches of government plus how individuals and organizations influence policy.
-        </p>
-
-        <div class="card-tags">
-          <span class="chip">Lobbying</span>
-          <span class="chip">Testimony</span>
-          <span class="chip">Briefs</span>
-        </div>
-
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="games/gov-basics-cs18-19.html">Open game</a>
-          <button class="btn btn-small" type="button" data-copy="games/gov-basics-cs18-19.html">Copy link</button>
-        </div>
-      </article>
-
-      <!-- CARD 9 -->
-      <article class="card" data-search="cs20 cs21 government economy fiscal monetary federal reserve taxes spending regulation bonds reserve requirements interest rates">
-        <div class="card-top">
-          <div class="card-title">Gov Basics 9 — Government & the Economy (Back to Basics)</div>
-          <div class="card-right"><span class="liveGreen">LIVE</span></div>
-        </div>
-
-        <div class="card-meta">
-          <span class="chip chip-accent">CS20–21</span>
-          <span class="chip">Economy</span>
-          <span class="status good">Built</span>
-        </div>
-
-        <p class="card-desc">
-          Fiscal policy, regulation, and Federal Reserve monetary tools including taxes, spending, bonds, reserve requirements, and interest rates.
-        </p>
-
-        <div class="card-tags">
-          <span class="chip">Fiscal</span>
-          <span class="chip">Monetary</span>
-          <span class="chip">Federal Reserve</span>
-        </div>
-
-        <div class="card-actions">
-          <a class="btn btn-ghost" href="games/gov-basics-cs20-21.html">Open game</a>
-          <button class="btn btn-small" type="button" data-copy="games/gov-basics-cs20-21.html">Copy link</button>
-        </div>
-      </article>
-
-    </main>
-
-    <footer class="footer">
-      <div class="footer-left">
-        <span class="muted">Legend Mastery Series • Government Back-to-Basics •</span>
-        <span class="muted" id="year"></span>
-      </div>
-      <div class="footer-right">
-        <span class="muted">All games stored in <code>/games</code></span>
-      </div>
-    </footer>
+  <div class="pills">
+    <span class="pill">7 Games</span>
+    <span class="pill">40-Question Reviews</span>
+    <span class="pill">100% Mastery Required</span>
+    <span class="pill">Tracked Attempts</span>
+    <span class="pill">Heat Map Analytics</span>
+    <span class="pill">OST Predictor</span>
   </div>
+</header>
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+<section class="panel">
+<h2 class="section-title">Mastery Games</h2>
 
-  document.querySelectorAll("button[data-copy]").forEach(btn=>{
-    btn.addEventListener("click", async ()=>{
-      const path = btn.getAttribute("data-copy");
-      const full = new URL(path, window.location.href).href;
-      try{
-        await navigator.clipboard.writeText(full);
-        btn.textContent = "Copied!";
-        setTimeout(()=>btn.textContent="Copy link", 900);
-      }catch(e){
-        alert(full);
-      }
-    });
-  });
+<div class="card-grid">
 
-  const search = document.getElementById("search");
-  const cards = [...document.querySelectorAll("#cards .card")];
-  search.addEventListener("input", ()=>{
-    const q = (search.value || "").trim().toLowerCase();
-    cards.forEach(c=>{
-      const hay = (c.getAttribute("data-search") || "").toLowerCase();
-      c.style.display = (!q || hay.includes(q)) ? "" : "none";
-    });
-  });
-</script>
+<!-- EXISTING GAMES -->
+
+<a class="hub-card" href="games/gov-trouble-areas-game1.html">
+<div class="card-top">
+<h3>Game 1 — Multi-Answer Mastery Lab</h3>
+<span class="status live">LIVE</span>
+</div>
+<p>Core structure and principles practice.</p>
+</a>
+
+<a class="hub-card" href="games/gov-trouble-areas-game2.html">
+<div class="card-top">
+<h3>Game 2 — Federalists vs Anti-Federalists</h3>
+<span class="status live">LIVE</span>
+</div>
+<p>Ratification and Bill of Rights debate.</p>
+</a>
+
+<a class="hub-card" href="games/gov-trouble-areas-game3.html">
+<div class="card-top">
+<h3>Game 3 — Constitutional Change Lab</h3>
+<span class="status live">LIVE</span>
+</div>
+<p>Formal vs informal change.</p>
+</a>
+
+<a class="hub-card" href="games/gov-trouble-areas-game4.html">
+<div class="card-top">
+<h3>Game 4 — Checks & Balances Simulator</h3>
+<span class="status live">LIVE</span>
+</div>
+<p>Branch interaction scenarios.</p>
+</a>
+
+<a class="hub-card" href="games/gov-trouble-areas-game5.html">
+<div class="card-top">
+<h3>Game 5 — Branches & Civic Application</h3>
+<span class="status live">LIVE</span>
+</div>
+<p>Mixed review and policy application.</p>
+</a>
+
+<!-- NEW FINAL GAMES -->
+
+<a class="hub-card accent" href="games/gov-final-recovery.html">
+<div class="card-top">
+<h3>Final Review — Recovery Lab</h3>
+<span class="status live">LIVE</span>
+</div>
+<p>
+Repetition-based mastery for core structure, rights, and foundational concepts. Designed to correct gaps through volume and reinforcement.
+</p>
+<div class="chips">
+<span class="chip">40 Questions</span>
+<span class="chip">High Repetition</span>
+<span class="chip">Foundation Fix</span>
+</div>
+</a>
+
+<a class="hub-card accent" href="games/gov-final-precision.html">
+<div class="card-top">
+<h3>Final Review — Precision Mastery</h3>
+<span class="status live">LIVE</span>
+</div>
+<p>
+Advanced application, scenario reasoning, and test-level traps built from real student miss patterns. Final OST readiness push.
+</p>
+<div class="chips">
+<span class="chip">40 Questions</span>
+<span class="chip">Application Heavy</span>
+<span class="chip">OST Simulation</span>
+</div>
+</a>
+
+<!-- TEST -->
+
+<a class="hub-card accent" href="games/gov-trouble-areas-test.html">
+<div class="card-top">
+<h3>Trouble Areas Test</h3>
+<span class="status test">TEST</span>
+</div>
+<p>
+Cumulative assessment built from the most frequently missed concepts.
+</p>
+</a>
+
+</div>
+</section>
+
+</div>
 </body>
 </html>
