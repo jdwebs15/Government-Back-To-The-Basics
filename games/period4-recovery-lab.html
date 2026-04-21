@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Government Final Review — Recovery Lab (Period 4)</title>
+  <link rel="stylesheet" href="../styles.css" />
+  
+  <style>
+    :root{
+      --bg:#0b1220;--panel:#121a2f;--card:#111a2e;--text:#e7eefc;--muted:#a8b4cf;
+      --line:rgba(255,255,255,.12);--shadow:0 18px 55px rgba(0,0,0,.40);--radius:18px;
+      --good:#2bd576;--bad:#ff5c7a;--warn:#ffd166;--accent:#7aa2ff;--teal:#69d2e7;
+      --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#0b1220,#070b14);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;min-height:100vh}
+    .wrap{width:min(1020px,92vw);margin:22px auto 40px}
+    .topbar{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 14px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;justify-content:space-between}
+    .kicker{letter-spacing:.14em;font-size:12px;color:var(--muted);font-weight:700}
+    h1{margin:6px 0 6px;font-size:24px}
+    .sub{margin:0;color:var(--muted);line-height:1.35}
+    .pillrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .pill{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted);white-space:nowrap}
+    .grid{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:14px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+    .panel{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+    .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .label{color:var(--muted);font-size:12px;letter-spacing:.08em;font-weight:800}
+    .statline{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .stat{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:128px}
+    .stat .big{font-size:16px;font-weight:800}
+    .stat .small{font-size:12px;color:var(--muted);margin-top:2px}
+    .qtitle{margin:10px 0 6px;font-size:18px}
+    .qtext{color:var(--text);line-height:1.45;margin:0 0 12px;white-space:pre-wrap}
+    .passage{border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px;margin:0 0 12px;color:var(--text);line-height:1.45}
+    .opts{display:grid;gap:10px;margin-top:10px}
+    .optbtn{text-align:left;width:100%;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);padding:12px;color:var(--text);cursor:pointer;transition:transform .04s ease,border-color .15s ease,background .15s ease}
+    .optbtn:hover{border-color:rgba(122,162,255,.45)}
+    .optbtn:active{transform:scale(.995)}
+    .optbtn[disabled]{opacity:.65;cursor:not-allowed}
+    .optbtn.selected{border-color:rgba(105,210,231,.55);background:rgba(105,210,231,.08)}
+    .optbtn.correct{border-color:rgba(43,213,118,.55);background:rgba(43,213,118,.10)}
+    .optbtn.incorrect{border-color:rgba(255,92,122,.55);background:rgba(255,92,122,.10)}
+    .optbtn .ltr{font-family:var(--mono);font-weight:900;margin-right:8px;color:var(--accent)}
+    .msg{border-radius:14px;border:1px solid var(--line);padding:12px;margin-top:12px;display:none}
+    .msg.good{display:block;border-color:rgba(43,213,118,.35);background:rgba(43,213,118,.08)}
+    .msg.bad{display:block;border-color:rgba(255,92,122,.35);background:rgba(255,92,122,.08)}
+    .msg.warn{display:block;border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.08)}
+    .msg.info{display:block;border-color:rgba(122,162,255,.35);background:rgba(122,162,255,.08)}
+    .msg .t{font-weight:800;margin-bottom:4px}
+    .msg .b{color:var(--muted);line-height:1.35}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);padding:10px 12px;cursor:pointer;font-weight:800}
+    .btn:hover{border-color:rgba(122,162,255,.45)}
+    .btn.primary{border-color:rgba(122,162,255,.45);background:rgba(122,162,255,.10)}
+    .btn[disabled]{opacity:.6;cursor:not-allowed}
+    .field{display:grid;gap:6px;margin-top:10px}
+    input[type="text"]{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
+    .errbox{display:none;margin-top:14px;border:1px solid rgba(255,92,122,.45);background:rgba(255,92,122,.10);border-radius:14px;padding:12px}
+    .errbox .t{font-weight:900}
+    .errbox pre{margin:8px 0 0;white-space:pre-wrap;color:var(--text);font-family:var(--mono);font-size:12px}
+    .muted{color:var(--muted)}
+    .ticket{margin-top:12px;border:1px solid rgba(43,213,118,.35);background:rgba(43,213,118,.07);border-radius:14px;padding:12px}
+    .ticket .code{font-family:var(--mono);font-weight:900;letter-spacing:.06em;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);margin-top:8px;word-break:break-word}
+    .summary{margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px}
+    .mini-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:10px}
+    .summary-card{border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:12px;padding:10px}
+    .tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 8px;margin:4px 6px 0 0;color:var(--muted);font-size:12px}
+    .help{font-size:12px;color:var(--muted);line-height:1.45}
+  </style>
+
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <div class="kicker">LEGEND MASTERY SERIES • GOVERNMENT FINAL REVIEW</div>
+      <h1>Government Final Review — Recovery Lab (Period 4)</h1>
+      <p class="sub">40-question Period 4 recovery build for Peyton, Scott, and Summer. Repeats their biggest miss areas from the 4/21 Day 2 block: First Amendment freedoms, federalism, Federalist vs. Anti-Federalist arguments, constitutional change, fiscal policy, monetary policy, and public influence on policy.</p>
+    </div>
+    <div class="pillrow"><div class="pill">40 Questions</div><div class="pill">Period 4 Recovery Group</div><div class="pill">0-Miss Mastery</div><div class="pill">Heat Map Logging</div><div class="pill">Period 4</div></div>
+  </div>
+
+  <div id="errbox" class="errbox"><div class="t">On-page error box</div><pre id="errtext"></pre></div>
+
+  <div class="grid">
+    <section class="panel">
+      <div class="row">
+        <div class="label">QUESTION</div>
+        <div class="statline">
+          <div class="stat"><div class="big" id="qpos">—</div><div class="small">Progress</div></div>
+          <div class="stat"><div class="big" id="acc">—</div><div class="small">Accuracy</div></div>
+          <div class="stat"><div class="big" id="firstAcc">—</div><div class="small">First-Try Accuracy</div></div>
+          <div class="stat"><div class="big" id="runtime">—</div><div class="small">Runtime</div></div>
+          <div class="stat"><div class="big" id="attemptNo">—</div><div class="small">Attempt #</div></div>
+        </div>
+      </div>
+
+      <h2 class="qtitle" id="qtitle">Enter your name to begin</h2>
+      <p class="qtext" id="qtext">Use your real name. You only earn a submission ticket by finishing the entire game with <b>0 misses</b>.</p>
+
+      <div id="nameBox" class="field">
+        <label class="muted" for="studentName"><b>Student Name</b></label>
+        <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" />
+        <div class="help">This build tracks retry counts, first-try accuracy, struggle areas, and a teacher-facing OST predictor.</div>
+        <div class="actions">
+          <button class="btn primary" id="btnStart">Start</button>
+          <button class="btn" id="btnResetAll">Reset Game</button>
+        </div>
+      </div>
+
+      <div id="questionBox" style="display:none;">
+        <div id="passageBox" class="passage" style="display:none;"></div>
+        <div class="opts" id="opts"></div>
+        <div id="feedback" class="msg">
+          <div class="t" id="fbTitle"></div>
+          <div class="b" id="fbBody"></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" id="btnSubmitMulti" style="display:none;" disabled>Submit Selection</button>
+          <button class="btn" id="btnHint" disabled>Hint</button>
+          <button class="btn" id="btnRestartMid">Restart Game</button>
+        </div>
+      </div>
+
+      <div id="finishBox" style="display:none;">
+        <h2 class="qtitle">Finish</h2>
+        <p class="qtext">The game saves your real first-try performance. Correcting an answer lets you learn the item, but the miss still counts against mastery for this run.</p>
+        <div class="summary">
+          <div><b>Attempt Summary</b></div>
+          <div class="mini-grid">
+            <div class="summary-card"><div class="label">Name</div><div id="sName"></div></div>
+            <div class="summary-card"><div class="label">Date</div><div id="sDate"></div></div>
+            <div class="summary-card"><div class="label">Start</div><div id="sStart"></div></div>
+            <div class="summary-card"><div class="label">End</div><div id="sEnd"></div></div>
+            <div class="summary-card"><div class="label">Runtime</div><div id="sRun"></div></div>
+            <div class="summary-card"><div class="label">Attempt #</div><div id="sAttempt"></div></div>
+            <div class="summary-card"><div class="label">Final Accuracy</div><div id="sAcc"></div></div>
+            <div class="summary-card"><div class="label">First-Try Accuracy</div><div id="sFirstAcc"></div></div>
+            <div class="summary-card"><div class="label">Total Misses</div><div id="sMisses"></div></div>
+            <div class="summary-card"><div class="label">Runs to Mastery So Far</div><div id="sRunsToMastery"></div></div>
+            <div class="summary-card"><div class="label">Struggle Index</div><div id="sStruggle"></div></div>
+            <div class="summary-card"><div class="label">OST Predictor</div><div id="sPredictor"></div></div>
+          </div>
+        </div>
+
+        <div id="finishMsg" class="msg info" style="display:block;">
+          <div class="t" id="finishTitle">Checking mastery…</div>
+          <div class="b" id="finishBody">—</div>
+        </div>
+
+        <div class="summary">
+          <div><b>Top Struggle Areas This Run</b></div>
+          <div id="struggleCS"></div>
+          <div id="struggleTypes" style="margin-top:8px;"></div>
+          <div id="struggleQs" style="margin-top:8px;"></div>
+        </div>
+
+        <div id="ticket" class="ticket" style="display:none;">
+          <div><b>Submission Ticket</b> (screenshot this)</div>
+          <div class="mini-grid">
+            <div class="summary-card"><div class="label">Name</div><div id="tName"></div></div>
+            <div class="summary-card"><div class="label">Date</div><div id="tDate"></div></div>
+            <div class="summary-card"><div class="label">Start</div><div id="tStart"></div></div>
+            <div class="summary-card"><div class="label">End</div><div id="tEnd"></div></div>
+            <div class="summary-card"><div class="label">Runtime</div><div id="tRun"></div></div>
+            <div class="summary-card"><div class="label">Attempt #</div><div id="tAttempt"></div></div>
+            <div class="summary-card"><div class="label">Accuracy</div><div id="tAcc"></div></div>
+          </div>
+          <div class="code" id="tCode">—</div>
+          <div class="actions" style="margin-top:10px;">
+            <button class="btn primary" id="btnCopy">Copy Ticket Code</button>
+            <button class="btn" id="btnReset">Play Again</button>
+          </div>
+        </div>
+
+        <div class="actions" style="margin-top:10px;">
+          <button class="btn" id="btnRestartGame">Restart Game</button>
+          <button class="btn" id="btnBackHome">Back to Hub</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <div class="label">RULES</div>
+      <ul class="muted" style="margin:10px 0 0;line-height:1.45;">
+<li><b>Mastery</b> = finish the full game with <b>0 misses</b>.</li>
+<li>Wrong answer → hint appears → you retry the same concept until correct.</li>
+<li>The repeated questions are intentional. This build is designed to drill weak spots until they feel automatic.</li>
+</ul>
+      <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+      <div class="label">WHAT THIS GAME PRACTICES</div>
+      <p class="muted" style="margin:10px 0 0;line-height:1.45;">This game is built from Period 4’s actual misses. It drills First Amendment freedoms, federalism, Anti-Federalist versus Federalist arguments, formal versus informal constitutional change, fiscal versus monetary policy, and CS 18 influence questions until the core ideas become automatic.</p>
+      <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+      <div class="label">ANALYTICS BUILT IN</div>
+      <ul class="muted" style="margin:10px 0 0;line-height:1.45;">
+        <li>Full-run retry count until mastery</li>
+        <li>First-try accuracy preserved even after correction</li>
+        <li>Question, CS, and type heat map data</li>
+        <li>Teacher-facing OST readiness prediction</li>
+      </ul>
+      <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+      <div class="label">SETUP NOTE</div>
+      <p class="muted" style="margin:10px 0 0;line-height:1.45;">Paste your deployed Apps Script Web App URL into <code>APPS_SCRIPT_URL</code> near the top of this file before publishing.</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+(() => {
+  const GAME_ID = "gov-final-recovery-p4";
+  const GROUP_TYPE = "period4-recovery";
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9yra80i7347B43T0lzKbeuildSqFnzwOyjDYZNR5EH1CD2Ju4_yI-tShFJvs_nJArLg/exec";
+  const QUESTION_BANK = [{"id": "P4R01", "cs": "CS 7", "type": "single", "title": "Assembly", "prompt": "Citizens gather peacefully on the courthouse lawn to protest a city policy. Which First Amendment freedom is most directly involved?", "options": ["Assembly", "Press", "Due process", "Reserved powers"], "answer": [0], "hint": "Think peaceful gathering.", "explain": "Correct. Peaceful public protest is protected as assembly.", "difficulty": 1}, {"id": "P4R02", "cs": "CS 21", "type": "single", "title": "Federal Reserve", "prompt": "Which institution most directly manages monetary policy in the United States?", "options": ["Congress", "Federal Reserve", "Supreme Court", "State legislature"], "answer": [1], "hint": "Think central bank.", "explain": "Correct. The Federal Reserve manages monetary policy.", "difficulty": 1}, {"id": "P4R03", "cs": "CS 11", "type": "single", "title": "Bill of Rights Debate", "prompt": "Which group argued that the Constitution needed a Bill of Rights?", "options": ["Federalists", "Cabinet members", "Anti-Federalists", "State judges"], "answer": [2], "hint": "They worried the new national government was too strong.", "explain": "Correct. Anti-Federalists wanted explicit protections for liberty.", "difficulty": 1}, {"id": "P4R04", "cs": "CS 6", "type": "single", "title": "Supreme Law", "prompt": "A state law conflicts with the U.S. Constitution. Which document must prevail?", "options": ["The state law", "A governor's order", "A party platform", "The U.S. Constitution"], "answer": [3], "hint": "Think Supremacy Clause.", "explain": "Correct. The Constitution is the supreme law of the land.", "difficulty": 1}, {"id": "P4R05", "cs": "CS 20", "type": "single", "title": "Fiscal Policy", "prompt": "Which branch combination shapes fiscal policy through taxes and spending?", "options": ["Congress and the president", "The Federal Reserve only", "The Supreme Court only", "State school boards"], "answer": [0], "hint": "Fiscal policy uses taxes and spending.", "explain": "Correct. Fiscal policy is made through government taxing and spending decisions.", "difficulty": 1}, {"id": "P4R06", "cs": "CS 2", "type": "single", "title": "Federalism", "prompt": "Federalism means", "options": ["only the president has power", "power is shared between national and state governments", "only states have power", "courts make all policy"], "answer": [1], "hint": "Think shared power.", "explain": "Correct. Federalism divides power between national and state governments.", "difficulty": 1}, {"id": "P4R07", "cs": "CS 18", "type": "single", "title": "Media Influence", "prompt": "A local news station runs a weeklong series exposing unsafe water, and officials suddenly debate new regulations. This best shows the media can", "options": ["ratify amendments", "issue executive orders", "shape what issues the public and government focus on", "declare laws unconstitutional"], "answer": [2], "hint": "Think agenda setting.", "explain": "Correct. Media attention can shape public opinion and policy attention.", "difficulty": 2}, {"id": "P4R08", "cs": "CS 7", "type": "single", "title": "Petition", "prompt": "Residents collect signatures and ask lawmakers to repeal a tax. Which freedom are they using?", "options": ["Quartering", "Self-incrimination", "Double jeopardy", "Petition"], "answer": [3], "hint": "They are asking government to act.", "explain": "Correct. Petition is the right to ask government to address grievances.", "difficulty": 1}, {"id": "P4R09", "cs": "CS 21", "type": "single", "title": "Interest Rates", "prompt": "When the Federal Reserve lowers interest rates, it is usually trying to", "options": ["encourage borrowing and spending", "declare war", "appoint judges", "reduce jury size"], "answer": [0], "hint": "Lower rates make loans easier.", "explain": "Correct. Lower rates are used to encourage economic activity.", "difficulty": 1}, {"id": "P4R10", "cs": "CS 11", "type": "single", "title": "Federalist View", "prompt": "Federalists generally supported", "options": ["keeping the Articles exactly as they were", "ratifying the Constitution because the national government under the Articles was too weak", "eliminating all federal courts", "adding no national taxing power ever"], "answer": [1], "hint": "They wanted a stronger national government.", "explain": "Correct. Federalists argued the Articles were too weak.", "difficulty": 1}, {"id": "P4R11", "cs": "CS 6", "type": "single", "title": "Formal Change", "prompt": "What is the formal way to change the Constitution?", "options": ["Executive order", "Court press release", "Amendment", "Cabinet meeting"], "answer": [2], "hint": "This actually changes the written document.", "explain": "Correct. Amendments formally change the Constitution.", "difficulty": 1}, {"id": "P4R12", "cs": "CS 20", "type": "single", "title": "Expansionary Fiscal Policy", "prompt": "During a recession, which action is an example of expansionary fiscal policy?", "options": ["Raise the discount rate", "Sell securities through the Fed", "Reduce jury size", "Increase government spending"], "answer": [3], "hint": "Fiscal means taxes and spending.", "explain": "Correct. Increasing spending is an expansionary fiscal policy action.", "difficulty": 2}, {"id": "P4R13", "cs": "CS 2", "type": "single", "title": "Reserved Powers", "prompt": "Which power is most clearly reserved to the states?", "options": ["Running public schools", "Coining money", "Making treaties", "Declaring war"], "answer": [0], "hint": "Education is usually state and local.", "explain": "Correct. Running public schools is a classic reserved state power.", "difficulty": 1}, {"id": "P4R14", "cs": "CS 18", "type": "single", "title": "Interest Groups", "prompt": "An environmental organization meets with lawmakers, runs ads, and pushes for stricter pollution laws. This group is acting as", "options": ["a court writing precedent", "an interest group trying to influence public policy", "the Federal Reserve", "a constitutional convention"], "answer": [1], "hint": "Think organized advocacy.", "explain": "Correct. Interest groups try to influence public policy.", "difficulty": 2}, {"id": "P4R15", "cs": "CS 7", "type": "single", "title": "Press", "prompt": "Government officials try to stop a newspaper from publishing a critical story. Which freedom is most directly involved?", "options": ["Right to counsel", "Reserved powers", "Freedom of the press", "Equal protection"], "answer": [2], "hint": "Think newspapers.", "explain": "Correct. The First Amendment protects freedom of the press.", "difficulty": 1}, {"id": "P4R16", "cs": "CS 21", "type": "single", "title": "Monetary vs Fiscal", "prompt": "Which tool belongs to monetary policy rather than fiscal policy?", "options": ["Cutting income taxes", "Increasing highway spending", "Changing jury rules", "Changing reserve requirements"], "answer": [3], "hint": "Think Fed tools.", "explain": "Correct. Reserve requirements are a Federal Reserve monetary policy tool.", "difficulty": 2}, {"id": "P4R17", "cs": "CS 11", "type": "single", "title": "Anti-Federalist Fear", "prompt": "Anti-Federalists were most worried that the Constitution would", "options": ["create a national government that was too strong", "make states too strong", "eliminate courts completely", "ban all taxes"], "answer": [0], "hint": "Their concern centered on centralized power.", "explain": "Correct. Anti-Federalists feared concentrated national power.", "difficulty": 1}, {"id": "P4R18", "cs": "CS 6", "type": "single", "title": "Informal Change", "prompt": "Congress regularly uses oversight hearings to pressure agencies even though the Constitution’s text did not change. This is constitutional change through", "options": ["formal amendment", "informal practice", "state nullification", "a treaty"], "answer": [1], "hint": "No words in the Constitution were rewritten.", "explain": "Correct. Informal practices can change how government works.", "difficulty": 2}, {"id": "P4R19", "cs": "CS 20", "type": "single", "title": "Contractionary Fiscal Policy", "prompt": "Which action is most likely contractionary fiscal policy?", "options": ["Lower the discount rate", "Buy securities through the Fed", "Raise taxes and cut spending", "Increase public works spending"], "answer": [2], "hint": "The goal is to cool demand using taxes and spending.", "explain": "Correct. Raising taxes and cutting spending are contractionary fiscal policy.", "difficulty": 2}, {"id": "P4R20", "cs": "CS 2", "type": "single", "title": "Concurrent Powers", "prompt": "Both the national and state governments can collect taxes. This is an example of", "options": ["judicial review", "impeachment", "civil disobedience", "shared powers in a federal system"], "answer": [3], "hint": "Both levels of government have this power.", "explain": "Correct. Some powers are shared concurrently in federalism.", "difficulty": 2}, {"id": "P4R21", "cs": "CS 7", "type": "single", "title": "Speech", "prompt": "A student criticizes a school board decision in a public comment period. Which freedom is most directly involved?", "options": ["Freedom of speech", "Double jeopardy", "Reserved powers", "Cruel and unusual punishment"], "answer": [0], "hint": "Think expression.", "explain": "Correct. Speaking publicly about government action is speech.", "difficulty": 1}, {"id": "P4R22", "cs": "CS 21", "type": "single", "title": "Contractionary Monetary Policy", "prompt": "If the Federal Reserve wants to slow inflation, which action is it most likely to take?", "options": ["Cut taxes", "Raise interest rates", "Increase federal spending", "Add another state"], "answer": [1], "hint": "Higher borrowing costs slow activity.", "explain": "Correct. Raising rates is a contractionary monetary policy move.", "difficulty": 2}, {"id": "P4R23", "cs": "CS 11", "type": "single", "title": "Need for Stronger National Government", "prompt": "Which weakness of the Articles of Confederation most strengthened the Federalist argument for the Constitution?", "options": ["States had no local governments", "The courts were too independent", "The national government had too little power to solve collective problems", "The president was too strong"], "answer": [2], "hint": "Federalists thought the Articles were too weak.", "explain": "Correct. Federalists argued a stronger national government was needed.", "difficulty": 2}, {"id": "P4R24", "cs": "CS 6", "type": "single", "title": "Judicial Review", "prompt": "If the Supreme Court rules that a law violates the Constitution, the law becomes", "options": ["a treaty", "a state law", "stronger", "invalid"], "answer": [3], "hint": "Unconstitutional laws cannot remain in force.", "explain": "Correct. Judicial review lets courts strike down unconstitutional laws.", "difficulty": 1}, {"id": "P4R25", "cs": "CS 20", "type": "single", "title": "Recognizing Fiscal Policy", "prompt": "Which situation is most clearly fiscal policy?", "options": ["Congress passes a budget that cuts taxes and raises spending", "The Fed changes reserve requirements", "The Supreme Court hears a case", "A governor gives a speech"], "answer": [0], "hint": "Look for taxes and spending.", "explain": "Correct. A budget using taxes and spending is fiscal policy.", "difficulty": 2}, {"id": "P4R26", "cs": "CS 2", "type": "single", "title": "Layered Federalism", "prompt": "Ohio sets teacher licensing rules while the national government sets naturalization rules. This best shows", "options": ["double jeopardy", "federalism", "prior restraint", "judicial activism"], "answer": [1], "hint": "Different levels of government act in different areas.", "explain": "Correct. Federalism allows power to be divided by level of government.", "difficulty": 2}, {"id": "P4R27", "cs": "CS 18", "type": "single", "title": "Political Parties", "prompt": "Political parties most directly influence government by", "options": ["issuing arrest warrants", "setting interest rates", "recruiting candidates and organizing around policy positions", "declaring laws unconstitutional"], "answer": [2], "hint": "Think elections and platforms.", "explain": "Correct. Parties organize elections, candidates, and policy agendas.", "difficulty": 2}, {"id": "P4R28", "cs": "CS 7", "type": "single", "title": "Religion", "prompt": "Government cannot force people to follow an official religion. Which First Amendment freedom is most directly involved?", "options": ["Right to bear arms", "Right to a speedy trial", "Reserved powers", "Freedom of religion"], "answer": [3], "hint": "Think establishment and free exercise.", "explain": "Correct. The First Amendment protects religious liberty.", "difficulty": 1}, {"id": "P4R29", "cs": "CS 21", "type": "single", "title": "Buying Securities", "prompt": "When the Federal Reserve buys government securities, it is usually trying to", "options": ["increase the money supply", "ratify an amendment", "reduce free speech", "weaken federalism"], "answer": [0], "hint": "Buying securities is a Fed tool.", "explain": "Correct. Buying securities is an expansionary monetary policy action.", "difficulty": 2}, {"id": "P4R30", "cs": "CS 11", "type": "single", "title": "Bill of Rights Purpose", "prompt": "The Bill of Rights was added mainly to", "options": ["increase the president’s term", "protect individual liberties from government abuse", "eliminate state governments", "weaken the courts"], "answer": [1], "hint": "Think liberty protections.", "explain": "Correct. The Bill of Rights was added to protect individual rights.", "difficulty": 1}, {"id": "P4R31", "cs": "CS 6", "type": "single", "title": "Legislation as Change", "prompt": "The Civil Rights Act changed how constitutional rights were enforced in daily life. This is change through", "options": ["formal amendment only", "state secession", "legislation", "military rule"], "answer": [2], "hint": "Congress passed a law.", "explain": "Correct. Legislation can change how constitutional principles operate in practice.", "difficulty": 2}, {"id": "P4R32", "cs": "CS 20", "type": "single", "title": "Expansionary vs Contractionary", "prompt": "Cutting taxes during a slowdown is generally meant to", "options": ["slow inflation by reducing demand", "expand judicial review", "transfer reserved powers to states", "increase consumer spending and economic activity"], "answer": [3], "hint": "Think stimulus.", "explain": "Correct. Cutting taxes can stimulate demand.", "difficulty": 2}, {"id": "P4R33", "cs": "CS 2", "type": "single", "title": "National Powers", "prompt": "Which power belongs to the national government rather than the states?", "options": ["Coining money", "Licensing drivers", "Running local elections", "Setting city zoning"], "answer": [0], "hint": "Think Article I national powers.", "explain": "Correct. Coining money is a federal power.", "difficulty": 1}, {"id": "P4R34", "cs": "CS 7", "type": "single", "title": "Identifying First Amendment Issues", "prompt": "Which action most clearly raises a First Amendment issue?", "options": ["A jury reaches a verdict", "A city fines residents for handing out political leaflets in a public park", "Congress approves a treaty", "Police execute a valid warrant"], "answer": [1], "hint": "Think expression in a public place.", "explain": "Correct. Political leafleting in public involves First Amendment freedoms.", "difficulty": 2}, {"id": "P4R35", "cs": "CS 21", "type": "single", "title": "Discount Rate", "prompt": "Lowering the discount rate is meant to", "options": ["cut federal spending", "expand reserved powers", "make borrowing easier for banks and encourage lending", "increase jury sizes"], "answer": [2], "hint": "This is a Federal Reserve tool.", "explain": "Correct. A lower discount rate encourages lending.", "difficulty": 2}, {"id": "P4R36", "cs": "CS 11", "type": "single", "title": "Comparing the Two Sides", "prompt": "Which statement best fits the Anti-Federalists rather than the Federalists?", "options": ["The Articles were too weak and need replacement", "The national government should have more power to tax", "A stronger central government is necessary for stability", "Liberty needs explicit written protections in a Bill of Rights"], "answer": [3], "hint": "One side demanded written protections.", "explain": "Correct. Anti-Federalists insisted on explicit protections in a Bill of Rights.", "difficulty": 2}, {"id": "P4R37", "cs": "CS 7", "type": "multi", "title": "First Amendment Set", "prompt": "Select the TWO actions most clearly protected by the First Amendment.", "options": ["Publishing an editorial criticizing Congress", "Marching peacefully in a protest", "Searching a backpack without a warrant", "Refusing to serve on a jury"], "answer": [0, 1], "hint": "Look for expression and peaceful public action.", "explain": "Correct. Publishing criticism and peaceful protest are First Amendment activities.", "difficulty": 3}, {"id": "P4R38", "cs": "CS 21", "type": "multi", "title": "Monetary Policy Tools", "prompt": "Select the TWO actions that are examples of monetary policy.", "options": ["Increase highway spending", "Lower reserve requirements", "Cut income taxes", "Lower the discount rate"], "answer": [1, 3], "hint": "These tools belong to the Federal Reserve.", "explain": "Correct. Reserve requirements and the discount rate are monetary policy tools.", "difficulty": 3}, {"id": "P4R39", "cs": "CS 20", "type": "multi", "title": "Fiscal Policy Tools", "prompt": "Select the TWO actions that are examples of fiscal policy.", "options": ["Raise reserve requirements", "Buy securities through the Fed", "Increase government spending", "Cut income taxes"], "answer": [2, 3], "hint": "Fiscal policy uses taxes and spending.", "explain": "Correct. Government spending and tax changes are fiscal policy tools.", "difficulty": 3}, {"id": "P4R40", "cs": "CS 2", "type": "multi", "title": "Federalism Examples", "prompt": "Select the TWO examples that best show reserved state powers.", "options": ["Licensing drivers", "Coining money", "Running elections within the state", "Declaring war"], "answer": [0, 2], "hint": "Look for common state responsibilities.", "explain": "Correct. Driver licensing and state-run elections are reserved state powers.", "difficulty": 3}];
+  const STORAGE_KEY = "GOV_FINAL_RECOVERY_V1";
+  const ATTEMPT_KEY = STORAGE_KEY + "_ATTEMPTS";
+
+  const errbox=document.getElementById('errbox'), errtext=document.getElementById('errtext');
+  window.addEventListener('error', e=>{ errbox.style.display='block'; errtext.textContent=`Error: ${e.message}\nSource: ${e.filename}:${e.lineno}:${e.colno}`; });
+  window.addEventListener('unhandledrejection', e=>{ errbox.style.display='block'; errtext.textContent=String(e.reason && e.reason.stack ? e.reason.stack : e.reason); });
+
+  const $ = id => document.getElementById(id);
+  const pad2 = n => String(n).padStart(2,'0');
+  const fmtDate = d => `${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}`;
+  const fmtTime = d => {
+    const hr=d.getHours(), ampm=hr>=12?'PM':'AM', h12=hr%12||12;
+    return `${h12}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())} ${ampm}`;
+  };
+  const msToHMS = ms => {
+    const s=Math.max(0,Math.floor(ms/1000));
+    const hh=Math.floor(s/3600), mm=Math.floor((s%3600)/60), ss=s%60;
+    return `${hh}:${pad2(mm)}:${pad2(ss)}`;
+  };
+  const hash32 = str => {
+    let h=2166136261>>>0;
+    for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619); }
+    return h>>>0;
+  };
+  const base36 = n => n.toString(36).toUpperCase();
+  function mulberry32(seed){
+    return function(){
+      let t = seed += 0x6D2B79F5;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function shuffledIndices(n, seed){
+    const idx=Array.from({length:n},(_,i)=>i);
+    const rnd=mulberry32(seed>>>0);
+    for(let i=n-1;i>0;i--){
+      const j=Math.floor(rnd()*(i+1));
+      [idx[i],idx[j]]=[idx[j],idx[i]];
+    }
+    return idx;
+  }
+
+  let state = {
+    name:'',
+    startedAtISO:'',
+    startedAtMS:0,
+    idx:0,
+    runSeed:0,
+    qOrder:[],
+    attemptNumber:1,
+    questionStates:[],
+    eventLog:[]
+  };
+
+  function normalizeName(name) {
+    return (name || '').trim().toLowerCase().replace(/\s+/g,' ');
+  }
+
+  function getAttemptCount(name){
+    const raw = localStorage.getItem(ATTEMPT_KEY);
+    const map = raw ? JSON.parse(raw) : {};
+    return map[normalizeName(name)] || 0;
+  }
+  function bumpAttemptCount(name){
+    const raw = localStorage.getItem(ATTEMPT_KEY);
+    const map = raw ? JSON.parse(raw) : {};
+    const key = normalizeName(name);
+    map[key] = (map[key] || 0) + 1;
+    localStorage.setItem(ATTEMPT_KEY, JSON.stringify(map));
+    return map[key];
+  }
+
+  function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  function load(){
+    try {
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(!raw) return false;
+      const parsed=JSON.parse(raw);
+      if(!parsed.name || !Array.isArray(parsed.qOrder) || !Array.isArray(parsed.questionStates)) return false;
+      state=parsed;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  function clearSave(){ localStorage.removeItem(STORAGE_KEY); }
+
+  function q(displayIndex){ return QUESTION_BANK[state.qOrder[displayIndex]]; }
+  function qState(displayIndex){ return state.questionStates[displayIndex]; }
+
+  function firstTryCorrectCount() {
+    return state.questionStates.filter(s => s.firstTryCorrect).length;
+  }
+  function doneCount() {
+    return state.questionStates.filter(s => s.done).length;
+  }
+  function perfectCount() {
+    return state.questionStates.filter(s => s.done && !s.missed).length;
+  }
+  function totalMisses() {
+    return state.questionStates.reduce((sum,s) => sum + (s.missCount || 0), 0);
+  }
+  function finalAccuracyPct() {
+    const done = doneCount();
+    return done === 0 ? 0 : Math.round((perfectCount()/done)*100);
+  }
+  function firstTryAccuracyPct() {
+    return Math.round((firstTryCorrectCount()/QUESTION_BANK.length)*100);
+  }
+  function struggleIndex() {
+    return totalMisses() + state.questionStates.filter(s => (s.missCount || 0) > 1).length;
+  }
+  function predictorLabel() {
+    const first = firstTryAccuracyPct();
+    const misses = totalMisses();
+    const hardMisses = state.questionStates.filter(s => !s.firstTryCorrect && (s.difficulty || 1) >= 3).length;
+    const score = first - Math.min(misses, 20) - hardMisses * 2 + (state.attemptNumber === 1 && first === 100 ? 8 : 0);
+    if (score >= 92) return "Likely Accomplished (725+)";
+    if (score >= 80) return "Likely Proficient (700–724)";
+    if (score >= 68) return "Borderline Proficient";
+    return "Below Proficient Risk";
+  }
+
+  function updateStats(){
+    $('qpos').textContent=`${Math.min(state.idx+1, QUESTION_BANK.length)} / ${QUESTION_BANK.length}`;
+    $('acc').textContent=`${finalAccuracyPct()}%`;
+    $('firstAcc').textContent=`${firstTryAccuracyPct()}%`;
+    $('runtime').textContent=state.startedAtMS ? msToHMS(Date.now()-state.startedAtMS) : '0:00:00';
+    $('attemptNo').textContent=state.attemptNumber || '—';
+  }
+  setInterval(updateStats, 500);
+
+  function setFeedback(kind,title,body){
+    $('feedback').className=`msg ${kind}`;
+    $('fbTitle').textContent=title;
+    $('fbBody').textContent=body;
+  }
+  function clearFeedback(){
+    $('feedback').className='msg';
+    $('fbTitle').textContent='';
+    $('fbBody').textContent='';
+  }
+
+  function ensureOptionOrder(displayIndex){
+    const meta=qState(displayIndex), item=q(displayIndex);
+    if(Array.isArray(meta.optionOrder)) return;
+    const seed=hash32(`${item.id}|${state.runSeed}|${state.startedAtISO}`)^0x777888;
+    meta.optionOrder=shuffledIndices(item.options.length, seed);
+  }
+
+  function renderQuestion(){
+    const item=q(state.idx), meta=qState(state.idx);
+    clearFeedback();
+    $('qtitle').textContent=item.title;
+    $('qtext').textContent=item.prompt;
+    if(item.passage){
+      $('passageBox').style.display='';
+      $('passageBox').textContent=item.passage;
+    } else {
+      $('passageBox').style.display='none';
+      $('passageBox').textContent='';
+    }
+    $('opts').innerHTML='';
+    $('btnHint').disabled=true;
+    $('btnSubmitMulti').style.display = item.type.includes('multi') ? '' : 'none';
+    $('btnSubmitMulti').disabled = true;
+    ensureOptionOrder(state.idx);
+
+    const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    meta.optionOrder.forEach((origIdx, shownIdx) => {
+      const b=document.createElement('button');
+      b.className='optbtn';
+      b.innerHTML=`<span class="ltr">${letters[shownIdx]}.</span>${item.options[origIdx]}`;
+      if(meta.selectedShown?.includes(shownIdx)) b.classList.add('selected');
+      b.disabled = meta.done;
+      b.addEventListener('click', () => handleSelection(shownIdx));
+      $('opts').appendChild(b);
+    });
+
+    if(meta.done){
+      markCorrectView();
+      setFeedback(meta.missed ? 'warn' : 'good', meta.missed ? 'Already completed with a miss' : 'Already completed with no miss', meta.missed ? 'This item counts as a miss for this run.' : 'This item stayed clean on first try.');
+    }
+    updateStats();
+    save();
+  }
+
+  function markCorrectView(){
+    const item=q(state.idx), meta=qState(state.idx);
+    const buttons=[...document.querySelectorAll('.optbtn')];
+    buttons.forEach((btn, shownIdx) => {
+      btn.disabled=true;
+      if(item.answer.map(a=>meta.optionOrder.indexOf(a)).includes(shownIdx)) btn.classList.add('correct');
+    });
+  }
+
+  function clearSelections(){
+    qState(state.idx).selectedShown = [];
+    renderQuestion();
+  }
+
+  function handleSelection(shownIdx){
+    const item=q(state.idx), meta=qState(state.idx);
+    if(meta.done) return;
+
+    if(item.type.includes('multi')){
+      meta.selectedShown = meta.selectedShown || [];
+      if(meta.selectedShown.includes(shownIdx)){
+        meta.selectedShown = meta.selectedShown.filter(x => x !== shownIdx);
+      } else {
+        if(meta.selectedShown.length < item.answer.length) meta.selectedShown.push(shownIdx);
+      }
+      renderQuestion();
+      $('btnSubmitMulti').disabled = (meta.selectedShown || []).length !== item.answer.length;
+      return;
+    }
+
+    meta.selectedShown = [shownIdx];
+    renderQuestion();
+    checkAnswer([shownIdx]);
+  }
+
+  $('btnSubmitMulti').addEventListener('click', ()=> {
+    const meta=qState(state.idx);
+    checkAnswer(meta.selectedShown || []);
+  });
+
+  function arraysEqual(a,b){
+    if(a.length !== b.length) return false;
+    const aa=[...a].sort((x,y)=>x-y), bb=[...b].sort((x,y)=>x-y);
+    return aa.every((v,i)=>v===bb[i]);
+  }
+
+  function checkAnswer(selectedShown){
+    const item=q(state.idx), meta=qState(state.idx);
+    if(meta.done) return;
+
+    const correctShown = item.answer.map(a => meta.optionOrder.indexOf(a));
+    const isCorrect = arraysEqual(selectedShown, correctShown);
+    const buttons=[...document.querySelectorAll('.optbtn')];
+    buttons.forEach((btn, shownIdx)=> {
+      if(selectedShown.includes(shownIdx)) btn.classList.add('selected');
+    });
+
+    if(isCorrect){
+      meta.done = true;
+      if(meta.attempts === 0){
+        meta.firstTryCorrect = true;
+      }
+      markCorrectView();
+      setFeedback('good','Correct ✅', item.explain);
+      state.eventLog.push({
+        event:'question_completed',
+        ts:new Date().toISOString(),
+        questionId:item.id,
+        cs:item.cs,
+        qType:item.type,
+        attemptsBeforeCorrect:meta.attempts,
+        missCount:meta.missCount,
+        firstTryCorrect:meta.firstTryCorrect
+      });
+      save();
+      updateStats();
+      setTimeout(() => {
+        state.idx++;
+        if(state.idx >= QUESTION_BANK.length) finishRun();
+        else renderQuestion();
+      }, 5000);
+    } else {
+      meta.missed = true;
+      meta.attempts += 1;
+      meta.missCount += 1;
+      if(meta.firstTryCorrect === null) meta.firstTryCorrect = false;
+      $('btnHint').disabled = false;
+      setFeedback('warn','Hint 💡', item.hint);
+      buttons.forEach((btn, shownIdx)=> {
+        if(selectedShown.includes(shownIdx)) btn.classList.add('incorrect');
+      });
+      state.eventLog.push({
+        event:'question_miss',
+        ts:new Date().toISOString(),
+        questionId:item.id,
+        cs:item.cs,
+        qType:item.type,
+        selectedShown,
+        missCount:meta.missCount
+      });
+      save();
+      updateStats();
+      setTimeout(() => {
+        meta.selectedShown = [];
+        renderQuestion();
+      }, 1500);
+    }
+  }
+
+  $('btnHint').addEventListener('click', ()=> {
+    const item=q(state.idx);
+    setFeedback('warn','Hint 💡', item.hint);
+  });
+
+  function summarizeStruggles(){
+    const missed = state.questionStates
+      .map((s,displayIndex)=>({...s, item:q(displayIndex), displayIndex}))
+      .filter(x => x.missCount > 0);
+    const byCS={}, byType={};
+    missed.forEach(x => {
+      byCS[x.item.cs]=(byCS[x.item.cs]||0)+x.missCount;
+      byType[x.item.type]=(byType[x.item.type]||0)+x.missCount;
+    });
+    const topCS = Object.entries(byCS).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    const topTypes = Object.entries(byType).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    const topQs = missed.sort((a,b)=>b.missCount-a.missCount).slice(0,5);
+    return {topCS, topTypes, topQs};
+  }
+
+  async function postAnalytics(payload){
+    if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'PASTE_WEB_APP_URL_HERE') return {ok:false, skipped:true};
+    try {
+      const res = await fetch(APPS_SCRIPT_URL, {
+        method:'POST',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body: JSON.stringify(payload)
+      });
+      const txt = await res.text();
+      try { return JSON.parse(txt); } catch { return {ok:true, raw:txt}; }
+    } catch (err) {
+      console.error(err);
+      return {ok:false, error:String(err)};
+    }
+  }
+
+  async function finishRun(){
+    $('nameBox').style.display='none';
+    $('questionBox').style.display='none';
+    $('finishBox').style.display='';
+
+    const ended=new Date(), start=new Date(state.startedAtISO), runMS=Date.now()-state.startedAtMS;
+    const firstAcc = firstTryAccuracyPct();
+    const finalAcc = finalAccuracyPct();
+    const misses = totalMisses();
+    const summary = summarizeStruggles();
+    const masteryAchieved = finalAcc === 100;
+    const payload = {
+      eventType:'review_run_complete',
+      gameId: GAME_ID,
+      groupType: GROUP_TYPE,
+      studentName: state.name,
+      startedAt: state.startedAtISO,
+      endedAt: ended.toISOString(),
+      date: fmtDate(ended),
+      startTime: fmtTime(start),
+      endTime: fmtTime(ended),
+      elapsedSeconds: Math.floor(runMS/1000),
+      attemptNumber: state.attemptNumber,
+      totalQuestions: QUESTION_BANK.length,
+      firstPassCorrect: firstTryCorrectCount(),
+      firstPassPercent: firstAcc,
+      finalAccuracy: finalAcc,
+      finalMasteryAchieved: masteryAchieved,
+      totalMissesThisRun: misses,
+      uniqueQuestionsMissed: state.questionStates.filter(s => s.missCount > 0).length,
+      missedQuestionIds: state.questionStates.map((s,i)=>s.missCount>0?q(i).id:null).filter(Boolean),
+      missedCS: summary.topCS.map(x=>x[0]),
+      missedTypes: summary.topTypes.map(x=>x[0]),
+      struggleIndex: struggleIndex(),
+      predictor: predictorLabel(),
+      questionResults: state.questionStates.map((s,displayIndex)=> {
+        const item=q(displayIndex);
+        return {
+          questionId:item.id,
+          cs:item.cs,
+          qType:item.type,
+          difficulty:item.difficulty || 1,
+          firstTryCorrect: !!s.firstTryCorrect,
+          missCount: s.missCount || 0,
+          completedEventually: !!s.done
+        };
+      })
+    };
+
+    const apiResult = await postAnalytics(payload);
+
+    $('sName').textContent=state.name;
+    $('sDate').textContent=fmtDate(ended);
+    $('sStart').textContent=fmtTime(start);
+    $('sEnd').textContent=fmtTime(ended);
+    $('sRun').textContent=msToHMS(runMS);
+    $('sAttempt').textContent=state.attemptNumber;
+    $('sAcc').textContent=`${finalAcc}%`;
+    $('sFirstAcc').textContent=`${firstAcc}%`;
+    $('sMisses').textContent=String(misses);
+    $('sRunsToMastery').textContent=masteryAchieved ? `${state.attemptNumber} run(s)` : `Not yet — currently ${state.attemptNumber} run(s)`;
+    $('sStruggle').textContent=String(struggleIndex());
+    $('sPredictor').textContent=predictorLabel();
+
+    $('struggleCS').innerHTML = '<div class="label">Top CS</div>' + (summary.topCS.length
+      ? summary.topCS.map(x => `<span class="tag">${x[0]} — ${x[1]} miss(es)</span>`).join('')
+      : '<div class="muted">No CS misses this run.</div>');
+    $('struggleTypes').innerHTML = '<div class="label">Top Question Types</div>' + (summary.topTypes.length
+      ? summary.topTypes.map(x => `<span class="tag">${x[0]} — ${x[1]} miss(es)</span>`).join('')
+      : '<div class="muted">No type misses this run.</div>');
+    $('struggleQs').innerHTML = '<div class="label">Most Missed Questions</div>' + (summary.topQs.length
+      ? summary.topQs.map(x => `<span class="tag">${x.item.id} — ${x.missCount} miss(es)</span>`).join('')
+      : '<div class="muted">No question misses this run.</div>');
+
+    if(masteryAchieved){
+      $('finishTitle').textContent='Mastery achieved ✅';
+      $('finishBody').textContent = apiResult && apiResult.ok
+        ? 'You finished with 0 misses, and your ticket plus analytics were saved.'
+        : 'You finished with 0 misses. Ticket is shown below. If the Web App URL is not installed yet, logging may still be pending.';
+      $('ticket').style.display='';
+      $('tName').textContent=state.name;
+      $('tDate').textContent=fmtDate(ended);
+      $('tStart').textContent=fmtTime(start);
+      $('tEnd').textContent=fmtTime(ended);
+      $('tRun').textContent=msToHMS(runMS);
+      $('tAttempt').textContent=state.attemptNumber;
+      $('tAcc').textContent=`${finalAcc}%`;
+      const raw=`${GAME_ID}|${state.name}|${state.startedAtISO}|${ended.toISOString()}|${state.attemptNumber}|${firstAcc}|${finalAcc}`;
+      $('tCode').textContent=`${GAME_ID}-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
+      clearSave();
+    } else {
+      $('finishTitle').textContent='Mastery not achieved on this run ❌';
+      $('finishBody').textContent = apiResult && apiResult.ok
+        ? `This run was saved. Final accuracy: ${finalAcc}%. First-try accuracy: ${firstAcc}%. Restart and try again for a 100% mastery ticket.`
+        : `Final accuracy: ${finalAcc}%. First-try accuracy: ${firstAcc}%. Restart and try again for a 100% mastery ticket.`;
+      $('ticket').style.display='none';
+      clearSave();
+    }
+  }
+
+  function restartGame(){
+    clearSave();
+    location.reload();
+  }
+
+  $('btnStart').addEventListener('click', ()=> {
+    const name=($('studentName').value||'').trim();
+    if(name.length < 2){
+      setFeedback('bad','Name required','Enter your name to begin.');
+      return;
+    }
+    state.name = name;
+    state.startedAtISO = new Date().toISOString();
+    state.startedAtMS = Date.now();
+    state.idx = 0;
+    state.runSeed = (Math.floor(Math.random()*1e9) ^ hash32(name + '|' + state.startedAtISO)) >>> 0;
+    state.qOrder = shuffledIndices(QUESTION_BANK.length, state.runSeed ^ 0xABC123);
+    state.attemptNumber = bumpAttemptCount(name);
+    state.questionStates = QUESTION_BANK.map(()=>({
+      done:false,
+      missed:false,
+      attempts:0,
+      missCount:0,
+      firstTryCorrect:null,
+      selectedShown:[],
+      optionOrder:null
+    }));
+    state.eventLog = [{
+      event:'run_started',
+      ts:new Date().toISOString(),
+      attemptNumber:state.attemptNumber
+    }];
+    $('nameBox').style.display='none';
+    $('questionBox').style.display='';
+    save();
+    renderQuestion();
+  });
+
+  $('studentName').addEventListener('keydown', e=>{ if(e.key==='Enter') $('btnStart').click(); });
+  $('btnResetAll').addEventListener('click', restartGame);
+  $('btnRestartMid').addEventListener('click', restartGame);
+  $('btnRestartGame').addEventListener('click', restartGame);
+  $('btnReset').addEventListener('click', restartGame);
+  $('btnBackHome').addEventListener('click', ()=>location.href="../index.html");
+  $('btnCopy').addEventListener('click', async ()=> {
+    try {
+      await navigator.clipboard.writeText($('tCode').textContent.trim());
+      $('btnCopy').textContent='Copied ✅';
+      setTimeout(()=>$('btnCopy').textContent='Copy Ticket Code',1200);
+    } catch {}
+  });
+
+  if(load()) {
+    $('studentName').value=state.name || '';
+    $('nameBox').style.display='none';
+    $('questionBox').style.display='';
+    renderQuestion();
+  }
+  updateStats();
+})();
+</script>
+</body>
+</html>
