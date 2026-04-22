@@ -531,7 +531,7 @@
   }
 
   async function postAnalytics(payload){
-    if(!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'PASTE_WEB_APP_URL_HERE') return {ok:false, skipped:true};
+    if(!APPS_SCRIPT_URL) return {ok:false, skipped:true};
     try {
       const res = await fetch(APPS_SCRIPT_URL, {
         method:'POST',
