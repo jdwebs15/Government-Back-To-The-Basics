@@ -19,10 +19,22 @@
     .opts{display:grid;gap:10px;margin-top:10px}.optbtn{text-align:left;width:100%;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);padding:12px;color:var(--text);cursor:pointer;transition:transform .04s ease,border-color .15s ease,background .15s ease}.optbtn:hover{border-color:rgba(122,162,255,.45)}.optbtn:active{transform:scale(.995)}.optbtn[disabled]{opacity:.65;cursor:not-allowed}.optbtn .ltr{font-family:var(--mono);font-weight:900;margin-right:8px;color:var(--accent)}
     .msg{border-radius:14px;border:1px solid var(--line);padding:12px;margin-top:12px;display:none}.msg.good{display:block;border-color:rgba(43,213,118,.35);background:rgba(43,213,118,.08)}.msg.warn{display:block;border-color:rgba(255,209,102,.35);background:rgba(255,209,102,.08)}.msg .t{font-weight:800;margin-bottom:4px}.msg .b{color:var(--muted);line-height:1.35}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.btn{border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);padding:10px 12px;cursor:pointer;font-weight:800}.btn:hover{border-color:rgba(122,162,255,.45)}.btn.primary{border-color:rgba(122,162,255,.45);background:rgba(122,162,255,.10)}.btn[disabled]{opacity:.6;cursor:not-allowed}
-    .field{display:grid;gap:6px;margin-top:10px} input[type="text"]{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
+    .field{display:grid;gap:6px;margin-top:10px} #studentName, #sheetPeriod, #sheetEmail{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.02);color:var(--text);outline:none}
     .errbox{display:none;margin-top:14px;border:1px solid rgba(255,92,122,.45);background:rgba(255,92,122,.10);border-radius:14px;padding:12px}.errbox .t{font-weight:900}.errbox pre{margin:8px 0 0;white-space:pre-wrap;color:var(--text);font-family:var(--mono);font-size:12px}
     .muted{color:var(--muted)} .ticket{margin-top:12px;border:1px solid rgba(43,213,118,.35);background:rgba(43,213,118,.07);border-radius:14px;padding:12px}.ticket .code{font-family:var(--mono);font-weight:900;letter-spacing:.06em;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);margin-top:8px;word-break:break-word}.summary{margin-top:12px;border:1px solid var(--line);background:rgba(255,255,255,.02);border-radius:14px;padding:12px}
-  </style>
+  
+    #studentName, #sheetPeriod, #sheetEmail {
+      box-sizing:border-box;
+      font:inherit;
+      line-height:1.25;
+    }
+    #sheetPeriod { color-scheme:dark; }
+    #sheetPeriod option { background:var(--panel, #151824); color:var(--text); }
+    #studentName:focus-visible, #sheetPeriod:focus-visible, #sheetEmail:focus-visible {
+      outline:2px solid #7aa2ff;
+      outline-offset:2px;
+    }
+</style>
 </head>
 <body>
   <div class="wrap">
@@ -57,7 +69,9 @@
 
         <div id="nameBox" class="field">
           <label class="muted" for="studentName"><b>Student Name</b></label>
-          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" /><label for="sheetPeriod">Class period</label> <select id="sheetPeriod"><option value="">Choose period</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select> <label for="sheetEmail">School email</label> <input id="sheetEmail" type="email" autocomplete="email" required>
+          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" />
+          <label class="muted" for="sheetPeriod"><b>Class Period</b></label> <select id="sheetPeriod"><option value="">Choose period</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select>
+          <label class="muted" for="sheetEmail"><b>School Email</b></label> <input id="sheetEmail" type="email" autocomplete="email" required>
           <div class="actions">
             <button class="btn primary" id="btnStart">Start</button>
             <button class="btn" id="btnResetAll">Reset Game</button>
