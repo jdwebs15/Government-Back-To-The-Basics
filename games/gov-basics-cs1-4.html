@@ -153,6 +153,7 @@
           </div>
 
           <div id="ticket" class="ticket" style="display:none;">
+          <h3 id="tGame"></h3>
             <div><b>Submission Ticket</b> (screenshot this)</div>
             <div class="muted" style="margin-top:6px;line-height:1.35">
               Name: <span id="tName"></span><br>
@@ -160,7 +161,7 @@
               Start: <span id="tStart"></span><br>
               End: <span id="tEnd"></span><br>
               Runtime: <span id="tRun"></span><br>
-              Accuracy: <span id="tAcc"></span>
+              <span id="tAcc"></span>
             </div>
             <div class="code" id="tCode">—</div>
             <div class="actions" style="margin-top:10px;">
@@ -708,7 +709,7 @@
       void BasicsAudit.send(state,{totalQuestions:total,firstPassCorrect:perfect,
         endedAt:ended.toISOString(),elapsedSeconds:Math.floor(runMS/1000),
         totalMissesThisRun:state.runMisses ?? total-perfect,totalAttempts:total+(state.runMisses ?? total-perfect),
-        finalMasteryAchieved:perfect===total}).then(result=>{
+        finalMasteryAchieved:perfect===total && total>0 && !state.runMisses}).then(result=>{
         sheetStatus.textContent=result.ok?'Completion record saved.':'Spreadsheet receipt could not be confirmed.';
       });
     }
@@ -720,16 +721,17 @@
     $('sRun').textContent=msToHMS(runMS);
     $('sAcc').textContent=`${acc}%`;
 
-    if(perfect===total){
+    if(perfect===total && total>0 && !state.runMisses){
       $('finishTitle').textContent='Mastery achieved ✅';
       $('finishBody').textContent='You finished with 100% accuracy (0 misses). Screenshot the ticket.';
       $('ticket').style.display='';
       $('tName').textContent=state.name;
+      $('tGame').textContent=document.title;
       $('tDate').textContent=fmtDate(ended);
       $('tStart').textContent=fmtTime(start);
       $('tEnd').textContent=fmtTime(ended);
       $('tRun').textContent=msToHMS(runMS);
-      $('tAcc').textContent=`${acc}%`;
+      $('tAcc').textContent='100% Perfect Run';
       const raw=`${state.name}|${state.startedAtISO}|${ended.toISOString()}|${perfect}|${total}|${state.runSeed}`;
       $('tCode').textContent=`BTB-CS1-4-R1-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
       clearSave();

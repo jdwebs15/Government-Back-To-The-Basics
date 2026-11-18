@@ -173,6 +173,7 @@
         </div>
 
         <div id="ticket" class="ticket" style="display:none;">
+          <h3 id="tGame"></h3>
           <div><b>Submission Ticket</b> (screenshot this)</div>
           <div class="mini-grid">
             <div class="summary-card"><div class="label">Name</div><div id="tName"></div></div>
@@ -181,7 +182,7 @@
             <div class="summary-card"><div class="label">End</div><div id="tEnd"></div></div>
             <div class="summary-card"><div class="label">Runtime</div><div id="tRun"></div></div>
             <div class="summary-card"><div class="label">Attempt #</div><div id="tAttempt"></div></div>
-            <div class="summary-card"><div class="label">Accuracy</div><div id="tAcc"></div></div>
+            <div class="summary-card"><div id="tAcc"></div></div>
           </div>
           <div class="code" id="tCode">—</div>
           <div class="actions" style="margin-top:10px;">
@@ -1348,7 +1349,7 @@
     const finalAcc = finalAccuracyPct();
     const misses = totalMisses();
     const summary = summarizeStruggles();
-    const masteryAchieved = finalAcc === 100;
+    const masteryAchieved = doneCount() === QUESTION_BANK.length && firstTryCorrectCount() === QUESTION_BANK.length && misses === 0;
     const payload = {
       eventType:'review_run_complete',
       gameId: GAME_ID,
@@ -1420,12 +1421,13 @@
         : 'You finished with 0 misses. Ticket is shown below. If the Web App URL is not installed yet, logging may still be pending.';
       $('ticket').style.display='';
       $('tName').textContent=state.name;
+      $('tGame').textContent=document.title;
       $('tDate').textContent=fmtDate(ended);
       $('tStart').textContent=fmtTime(start);
       $('tEnd').textContent=fmtTime(ended);
       $('tRun').textContent=msToHMS(runMS);
       $('tAttempt').textContent=state.attemptNumber;
-      $('tAcc').textContent=`${finalAcc}%`;
+      $('tAcc').textContent='100% Perfect Run';
       const raw=`${GAME_ID}|${state.name}|${state.startedAtISO}|${ended.toISOString()}|${state.attemptNumber}|${firstAcc}|${finalAcc}`;
       $('tCode').textContent=`${GAME_ID}-${base36(hash32(raw))}-${base36(hash32(raw+'X')).slice(0,4)}`;
       clearSave();
