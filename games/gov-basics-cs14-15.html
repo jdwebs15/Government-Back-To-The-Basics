@@ -74,11 +74,12 @@
           <label class="muted" for="sheetEmail"><b>School Email</b></label> <input id="sheetEmail" type="email" autocomplete="email" required>
           <div class="actions">
             <button class="btn primary" id="btnStart">Start</button>
+            <button class="btn" id="btnRestoreCloud" type="button">Load Saved Work</button><span class="muted" id="btbRestoreStatus" role="status"></span>
             <button class="btn" id="btnResetAll">Reset Game</button>
           </div>
         </div>
 
-        <div id="questionBox" style="display:none;">
+        <div id="questionBox" style="display:none;"><p class="muted" id="btbCloudStatus" role="status"></p>
           <div class="opts" id="opts"></div>
           <div id="feedback" class="msg"><div class="t" id="fbTitle"></div><div class="b" id="fbBody"></div></div>
           <div class="actions">
@@ -578,8 +579,11 @@
 
   let state={name:'',startedAtISO:'',startedAtMS:0,idx:0,runSeed:0,qmeta:[]};
   const freshMeta=()=>QUESTIONS.map(()=>({done:false,missed:false,order:null,correctShown:null}));
-  function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-  function load(){ try{ const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return false; const parsed=JSON.parse(raw); if(!parsed.name || !parsed.startedAtISO || !Array.isArray(parsed.qmeta)) return false; state=parsed; return true; } catch { return false; } }
+  function save(){
+    if(state.idx<QUESTIONS.length&&!state.btbCompletedAt) BasicsAudit.draft(state,QUESTIONS);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+  function load(){ try{ const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return false; const parsed=JSON.parse(raw); if(parsed.idx>= QUESTIONS.length || !parsed.name || !parsed.startedAtISO || !Array.isArray(parsed.qmeta)) return false; state=parsed; return true; } catch { return false; } }
   function clearSave(){ localStorage.removeItem(STORAGE_KEY); }
   function counts(){ const done=state.qmeta.filter(m=>m.done).length, perfect=state.qmeta.filter(m=>m.done && !m.missed).length; return {done,perfect}; }
   function accuracyPct(){ const {done,perfect}=counts(); return done===0 ? 0 : Math.round((perfect/done)*100); }
@@ -694,12 +698,15 @@
     state.qOrder=layout.order;
     state.auditOptions=layout.options;
     state.sheetCompletionSent=false;
+    delete state.btbCompletedAt;
     state.runMisses=0;
   }
 
   function restartGame(){ clearTimeout(advanceTimer); clearSave(); location.reload(); }
 
   $('btnStart').addEventListener('click', ()=>{
+    if($('btnRestoreCloud').disabled) return;
+    
     const name=($('studentName').value||'').trim();
     if(name.length<2){
       setFeedback('warn','Name required','Enter your name to begin.');
@@ -736,6 +743,47 @@
       $('btnCopy').textContent='Copied ✅';
       setTimeout(()=>$('btnCopy').textContent='Copy Ticket Code',1000);
     } catch {}
+  });
+
+  $('btnRestoreCloud').addEventListener('click', async ()=>{
+    const email=$('sheetEmail').value.trim().toLowerCase();
+    const status=$('btbRestoreStatus');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      status.textContent='Enter your school email to find your saved work.';
+      return;
+    }
+    $('btnRestoreCloud').disabled=true;
+    $('btnStart').disabled=true;
+    status.textContent='Looking for saved work…';
+    try{
+      const result=await BasicsAudit.retrieve(email);
+      if(!result.ok){ status.textContent='Could not retrieve work from the spreadsheet.'; return; }
+      const draft=result.progress;
+      if(!draft||draft.btbCompletedAt||draft.sheetCompletionSent){
+        status.textContent='No unfinished spreadsheet save was found.';
+        return;
+      }
+      const order=draft.runOrder||draft.qOrder;
+      const meta=draft.questionStates||draft.qmeta;
+      if(!Array.isArray(order)||order.length!==QUESTIONS.length||
+        new Set(order).size!==order.length||order.some(i=>!Number.isInteger(i)||i<0||i>=order.length)||
+        !Array.isArray(meta)||meta.length!==order.length||meta.some(item=>!item||typeof item!=='object')||
+        !Number.isInteger(draft.idx)||draft.idx<0||draft.idx>=order.length||!draft.startedAtISO){
+        status.textContent='This spreadsheet save could not be opened by this version of the game.';
+        return;
+      }
+      state=draft;
+      $('studentName').value=state.name;
+      $('sheetEmail').value=state.email;
+      $('sheetPeriod').value=state.period;
+      $('nameBox').style.display='none';
+      $('questionBox').style.display='';
+      showQuestion();
+      save();
+    } finally {
+      $('btnRestoreCloud').disabled=false;
+      $('btnStart').disabled=false;
+    }
   });
 
   if(load()){

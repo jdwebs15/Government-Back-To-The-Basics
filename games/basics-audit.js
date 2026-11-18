@@ -69,25 +69,96 @@ function start(storageKey,bank,order,reorder){
   try{localStorage.setItem(name,JSON.stringify(next));}catch{}
   return next;
 }
-async function send(state,record){
+let pending=Promise.resolve();
+let draftTimer, latestDraft, draftInFlight=false, lastDraftSent=0;
+const syncInterval=20000;
+function assignmentKey(){return location.pathname.split('/').pop().replace(/\.html$/,'');}
+function enqueue(state,record,complete){
+  // Serialize snapshots so a draft cannot overwrite a completion in this browser.
+  const snapshot=JSON.stringify(state);
+  pending=pending.then(()=>post(JSON.parse(snapshot),record,complete));
+  return pending;
+}
+function draft(state,bank){
+  if(!state.name||!state.email||state.btbCompletedAt)return;
+  const order=state.runOrder||state.qOrder||bank.map((_,index)=>index);
+  const meta=state.questionStates||state.qmeta;
+  const accepted={};
+  let first=0, wrong=0, answered=0;
+  meta.forEach((item,index)=>{
+    const missCount=item.missCount??Number(Boolean(item.missed));
+    wrong+=missCount;
+    answered+=Number(Boolean(item.done||missCount));
+    if(item.done){
+      accepted[bank[order[index]].id]=true;
+      if(item.firstTryCorrect??!item.missed)first++;
+    }
+  });
+  wrong=state.runMisses??wrong;
+  state.btbSavedAt=new Date().toISOString();
+  latestDraft={state:JSON.stringify(state),record:{
+    accepted,answerCount:answered,totalQuestions:bank.length,firstPassCorrect:first,
+    totalAttempts:Object.keys(accepted).length+wrong,wrongAttempts:wrong,
+    elapsedSeconds:Math.max(0,Math.floor((Date.now()-state.startedAtMS)/1000))
+  }};
+  scheduleDraft();
+}
+function scheduleDraft(){
+  if(!latestDraft||draftInFlight||draftTimer!==undefined)return;
+  const delay=Math.max(0,lastDraftSent+syncInterval-Date.now());
+  draftTimer=setTimeout(()=>{
+    draftTimer=undefined;
+    lastDraftSent=Date.now();
+    const work=latestDraft;
+    latestDraft=undefined;
+    if(work){
+      draftInFlight=true;
+      enqueue(JSON.parse(work.state),work.record,false).then(result=>{
+        const label=document.getElementById('btbCloudStatus');
+        if(label)label.textContent=result.ok?'Progress saved to spreadsheet.':'Progress saved on this device. Spreadsheet sync has not been confirmed.';
+      }).finally(()=>{draftInFlight=false; scheduleDraft();});
+    }
+  },delay);
+}
+function send(state,record){
+  clearTimeout(draftTimer);
+  draftTimer=undefined;
+  latestDraft=undefined;
+  state.btbCompletedAt=record.endedAt;
+  return enqueue(state,record,true);
+}
+async function retrieve(email){
+  const url=new URL(endpoint);
+  url.search=new URLSearchParams({action:'load',course:'Government',assignmentKey:assignmentKey(),email});
+  try{
+    const response=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(45000)});
+    if(!response.ok)return {ok:false};
+    const data=await response.json();
+    if(data.ok&&!data.found)return {ok:true};
+    const progress=data.payload?.basicsProgress;
+    if(data.ok&&data.payload?.assignmentKey===assignmentKey()&&progress?.email===email)return {ok:true,progress};
+  }catch{}
+  return {ok:false};
+}
+async function post(state,record,complete){
   const name=state.name, period=state.period||'', email=state.email||'';
   if(!name||!email)return {ok:false};
-  const id=record.gameId||location.pathname.split('/').pop().replace('.html','');
+  const id=record.gameId||assignmentKey();
   const total=record.totalQuestions,score=record.firstPassCorrect;
-  const payload={...record,gameId:id,eventType:'review_run_complete',course:'Government',
-    assignmentKey:id,assignmentTitle:document.title,action:'submit',status:'submitted',
+  const payload={...record,gameId:id,eventType:complete?'review_run_complete':'review_run_progress',course:'Government',
+    assignmentKey:id,assignmentTitle:document.title,action:complete?'submit':'save',status:complete?'submitted':'in_progress',basicsProgress:state,
     student:{name,period,email},name,studentName:name,period,email,total,score,
     firstAttemptScore:score,percent:Math.round(100*score/total),
-    startedAt:state.startedAtISO,completedAt:record.endedAt,
+    startedAt:state.startedAtISO,completedAt:complete?record.endedAt:undefined,
     runId:id+'|'+state.startedAtISO,totalAttempts:record.totalAttempts,
     updatedAt:new Date().toISOString()};
   try{
     const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body:JSON.stringify(payload),signal:AbortSignal.timeout(8000)});
+      body:JSON.stringify(payload),signal:AbortSignal.timeout(45000)});
     if(!response.ok)return {ok:false};
     const data=await response.json();
     return {ok:data.ok===true||data.success===true};
   }catch{return {ok:false};}
 }
-root.BasicsAudit={shuffle,plan,patterned,start,send,endpoint};
+root.BasicsAudit={shuffle,plan,patterned,start,send,draft,retrieve,endpoint};
 })(typeof window==='undefined'?globalThis:window);
