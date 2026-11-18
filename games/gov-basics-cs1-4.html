@@ -95,7 +95,7 @@
 
         <div id="nameBox" class="field">
           <label class="muted" for="studentName"><b>Student Name</b></label>
-          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" />
+          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" /><label for="sheetPeriod">Class period</label> <select id="sheetPeriod"><option value="">Choose period</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select> <label for="sheetEmail">School email</label> <input id="sheetEmail" type="email" autocomplete="email" required>
           <div class="actions">
             <button class="btn primary" id="btnStart">Start</button>
             <button class="btn" id="btnResetAll">Reset Game</button>
@@ -187,257 +187,375 @@
     </div>
   </div>
 
+<script src="basics-audit.js"></script>
 <script>
 (() => {
   const QUESTIONS = [
-    // Civic engagement / public policy process
-    {
-      id:'g1r_01',
-      title:'Civic Engagement',
-      prompt:'Students identify a community problem, research it, and propose solutions. This process is called',
-      options:['Civic engagement','Judicial review','Federalism','Campaign finance'],
-      answerIndex:0,
-      hint:'Citizens working to address public issues.',
-      explain:'Correct: civic engagement involves identifying issues, researching them, and proposing solutions.'
-    },
-    {
-      id:'g1r_02',
-      title:'Civic Engagement',
-      prompt:'A class compares the costs and benefits of two plans to reduce traffic. This is part of',
-      options:['Civic engagement','Judicial review','Direct democracy','Separation of powers'],
-      answerIndex:0,
-      hint:'Weighing consequences is part of solving public problems.',
-      explain:'Correct: civic engagement includes weighing the costs and benefits of different approaches.'
-    },
-    {
-      id:'g1r_03',
-      title:'Action Plan',
-      prompt:'Students create a step-by-step plan to fix a school issue. This is most directly part of',
-      options:['Civic engagement','Judicial restraint','Monetary policy','Federal supremacy'],
-      answerIndex:0,
-      hint:'Making a plan to solve a public problem.',
-      explain:'Correct: civic engagement includes devising an action plan.'
-    },
-    {
-      id:'g1r_04',
-      title:'Public Policy Process',
-      prompt:'Government officials decide how to carry out a law and solve a public problem. This is part of the',
-      options:['Public policy process','Electoral College','Bill of Rights','Judicial branch only'],
-      answerIndex:0,
-      hint:'Think how government actually does its work.',
-      explain:'Correct: public policy processes involve government actions and procedures used to carry out its functions.'
-    },
-
-    // Political parties
-    {
-      id:'g1r_05',
-      title:'Political Parties',
-      prompt:'A group works to elect candidates who share its views on taxes and schools. This group is most likely a',
-      options:['Political party','Court','Media company','Interest-free bank'],
-      answerIndex:0,
-      hint:'This group tries to win office through elections.',
-      explain:'Correct: political parties seek to win elections and hold office.'
-    },
-    {
-      id:'g1r_06',
-      title:'Political Parties',
-      prompt:'Political parties mainly try to influence public policy by',
-      options:['Winning elections and holding office','Writing Supreme Court opinions','Enforcing court rulings','Printing ballots only'],
-      answerIndex:0,
-      hint:'Think about how parties gain power.',
-      explain:'Correct: political parties seek to influence policy by winning elections and holding office.'
-    },
-    {
-      id:'g1r_07',
-      title:'Political Parties',
-      prompt:'Members of a political party usually share',
-      options:['Similar views on public issues','The same job in government','The same court appointment','The same state residency only'],
-      answerIndex:0,
-      hint:'Think beliefs and issues.',
-      explain:'Correct: political parties are made up of people with similar views on public issues.'
-    },
-
-    // Interest groups
-    {
-      id:'g1r_08',
-      title:'Interest Groups',
-      prompt:'A group does not run candidates but tries to influence lawmakers on one issue. This group is most likely an',
-      options:['Interest group','Political party','Court','Cabinet department'],
-      answerIndex:0,
-      hint:'It influences policy without mainly trying to win office.',
-      explain:'Correct: interest groups seek to influence public policy rather than win office.'
-    },
-    {
-      id:'g1r_09',
-      title:'Interest Groups',
-      prompt:'An interest group is most likely to',
-      options:['Advocate for a specific policy position','Conduct judicial review','Ratify an amendment','Command the military'],
-      answerIndex:0,
-      hint:'Think focused policy goals.',
-      explain:'Correct: interest groups usually advocate for specific policy positions.'
-    },
-    {
-      id:'g1r_10',
-      title:'Parties vs. Groups',
-      prompt:'A major difference between political parties and interest groups is that political parties',
-      options:['Try to win elections','Never use media','Cannot influence policy','Only operate locally'],
-      answerIndex:0,
-      hint:'One group runs candidates.',
-      explain:'Correct: political parties try to win elections, while interest groups usually do not.'
-    },
-
-    // Media
-    {
-      id:'g1r_11',
-      title:'Media',
-      prompt:'News websites, television, podcasts, and newspapers are all examples of',
-      options:['Media','Interest groups','Judicial agencies','Political conventions'],
-      answerIndex:0,
-      hint:'Means of mass communication.',
-      explain:'Correct: media refers to means of mass communication aimed at different audiences.'
-    },
-    {
-      id:'g1r_12',
-      title:'Media Influence',
-      prompt:'A news story makes many voters pay attention to a public issue. This shows the media can',
-      options:['Shape public attention and opinion','Ratify laws','Impeach presidents','Issue executive orders'],
-      answerIndex:0,
-      hint:'Media affect what people focus on.',
-      explain:'Correct: media can influence public attention and public policy processes.'
-    },
-    {
-      id:'g1r_13',
-      title:'Media Use',
-      prompt:'Political parties and interest groups often use media to',
-      options:['Influence people and public policy','Declare laws unconstitutional','Collect taxes','Choose electors'],
-      answerIndex:0,
-      hint:'Think persuasion and public attention.',
-      explain:'Correct: parties and interest groups use media to influence political and public-policy processes.'
-    },
-
-    // Source credibility
-    {
-      id:'g1r_14',
-      title:'Source Credibility',
-      prompt:'A source lists the author’s credentials and uses evidence that can be checked. This source is more likely to be',
-      options:['Credible','Biased only','Irrelevant','A political party'],
-      answerIndex:0,
-      hint:'Look for qualifications and verifiable evidence.',
-      explain:'Correct: credibility increases when a source has qualified authors and verifiable evidence.'
-    },
-    {
-      id:'g1r_15',
-      title:'Source Credibility',
-      prompt:'A website gives no author, no evidence, and only opinions. The best evaluation is that the source is',
-      options:['Less credible','More credible','Required for research','Automatically neutral'],
-      answerIndex:0,
-      hint:'No author and no evidence are warning signs.',
-      explain:'Correct: a source without authorship or evidence is less credible.'
-    },
-    {
-      id:'g1r_16',
-      title:'Source Credibility',
-      prompt:'Two independent reliable sources report the same facts. This usually',
-      options:['Increases confidence in the information','Eliminates the need for evidence','Shows both are biased','Makes the issue unimportant'],
-      answerIndex:0,
-      hint:'Agreement across credible sources helps.',
-      explain:'Correct: corroboration from credible sources increases confidence in information.'
-    },
-    {
-      id:'g1r_17',
-      title:'Source Credibility',
-      prompt:'When a student checks whether a source’s reasoning is logical and supported by facts, the student is judging',
-      options:['Credibility','Federalism','Judicial review','Term limits'],
-      answerIndex:0,
-      hint:'Evidence and logic matter when evaluating sources.',
-      explain:'Correct: evidence and logical conclusions are key parts of source credibility.'
-    },
-    {
-      id:'g1r_18',
-      title:'Bias and Perspective',
-      prompt:'A student asks, “What viewpoint is this author trying to promote?” The student is checking for',
-      options:['Bias or perspective','A veto override','A treaty power','A reserve requirement'],
-      answerIndex:0,
-      hint:'Point of view can reveal slant.',
-      explain:'Correct: identifying a source’s perspective helps reveal bias or unstated assumptions.'
-    },
-
-    // Democratic skills
-    {
-      id:'g1r_19',
-      title:'Persuasion',
-      prompt:'A student uses evidence and logic to convince classmates to support a plan. This is',
-      options:['Persuasion','Consensus building','Judicial review','Impeachment'],
-      answerIndex:0,
-      hint:'Convincing others with reasons.',
-      explain:'Correct: persuasion means convincing others through argument and evidence.'
-    },
-    {
-      id:'g1r_20',
-      title:'Compromise',
-      prompt:'Two groups each give up part of what they want so they can reach agreement. This is',
-      options:['Compromise','Judicial activism','Filibustering','Federalism'],
-      answerIndex:0,
-      hint:'Give-and-take to reach agreement.',
-      explain:'Correct: compromise happens when both sides give up something to reach agreement.'
-    },
-    {
-      id:'g1r_21',
-      title:'Consensus Building',
-      prompt:'After discussion, most members of a group support the same plan. This is an example of',
-      options:['Consensus building','Self-incrimination','Lobbying only','Judicial restraint'],
-      answerIndex:0,
-      hint:'General agreement in a group.',
-      explain:'Correct: consensus building means reaching broad agreement among a group.'
-    },
-    {
-      id:'g1r_22',
-      title:'Negotiation',
-      prompt:'Two sides discuss their differences to work toward a solution. This is called',
-      options:['Negotiation','Ratification','Incorporation','Oversight'],
-      answerIndex:0,
-      hint:'Talking through differences to reach a deal.',
-      explain:'Correct: negotiation is discussion aimed at reaching agreement.'
-    },
-    {
-      id:'g1r_23',
-      title:'Democratic Skills',
-      prompt:'Persuasion, compromise, consensus building, and negotiation are important because they help people',
-      options:['Settle differences and govern effectively','End elections','Ignore opposing views','Avoid public debate'],
-      answerIndex:0,
-      hint:'These skills make democratic decision-making work.',
-      explain:'Correct: these democratic skills help settle differences and achieve agreement in governing.'
-    },
-
-    // Mixed application / reinforcement
-    {
-      id:'g1r_24',
-      title:'Researching Issues',
-      prompt:'A student decides which websites and articles are relevant before writing about a public issue. This is part of',
-      options:['Researching a civic issue','Impeachment','Monetary policy','Judicial review'],
-      answerIndex:0,
-      hint:'Choosing useful sources is a research step.',
-      explain:'Correct: researching a civic issue includes determining which sources are relevant.'
-    },
-    {
-      id:'g1r_25',
-      title:'Comparing Organizations',
-      prompt:'Which group is most likely to focus on one issue without trying to elect its own candidates?',
-      options:['Interest group','Political party','State court','Executive department'],
-      answerIndex:0,
-      hint:'One group pushes policy more than elections.',
-      explain:'Correct: an interest group usually focuses on influencing policy on specific issues.'
-    },
-    {
-      id:'g1r_26',
-      title:'Civic Decision-Making',
-      prompt:'Students predict the possible results of a proposed solution before supporting it. They are analyzing',
-      options:['Consequences of proposed solutions','Electoral votes','Presidential succession','Bank reserve levels'],
-      answerIndex:0,
-      hint:'Think outcomes and tradeoffs.',
-      explain:'Correct: considering possible consequences is part of civic engagement and sound decision-making.'
-    }
-  ];
+  {
+    "id": "g1r_01",
+    "title": "Civic Engagement",
+    "prompt": "Students identify a community problem, research it, and propose solutions. This process is called",
+    "options": [
+      "Civic engagement",
+      "Judicial review",
+      "Federalism",
+      "Campaign finance"
+    ],
+    "answerIndex": 0,
+    "hint": "Citizens working to address public issues.",
+    "explain": "Correct: civic engagement involves identifying issues, researching them, and proposing solutions."
+  },
+  {
+    "id": "g1r_02",
+    "title": "Civic Engagement",
+    "prompt": "A class compares the costs and benefits of two plans to reduce traffic. This is part of",
+    "options": [
+      "Civic engagement",
+      "Judicial review",
+      "Direct democracy",
+      "Separation of powers"
+    ],
+    "answerIndex": 0,
+    "hint": "Weighing consequences is part of solving public problems.",
+    "explain": "Correct: civic engagement includes weighing the costs and benefits of different approaches."
+  },
+  {
+    "id": "g1r_03",
+    "title": "Action Plan",
+    "prompt": "Students create a step-by-step plan to fix a school issue. This is most directly part of",
+    "options": [
+      "Civic engagement",
+      "Judicial restraint",
+      "Monetary policy",
+      "Federal supremacy"
+    ],
+    "answerIndex": 0,
+    "hint": "Making a plan to solve a public problem.",
+    "explain": "Correct: civic engagement includes devising an action plan."
+  },
+  {
+    "id": "g1r_04",
+    "title": "Public Policy Process",
+    "prompt": "Government officials decide how to carry out a law and solve a public problem. This is part of the",
+    "options": [
+      "Public policy process",
+      "Electoral College",
+      "Bill of Rights",
+      "Judicial branch only"
+    ],
+    "answerIndex": 0,
+    "hint": "Think how government actually does its work.",
+    "explain": "Correct: public policy processes involve government actions and procedures used to carry out its functions."
+  },
+  {
+    "id": "g1r_05",
+    "title": "Political Parties",
+    "prompt": "A group works to elect candidates who share its views on taxes and schools. This group is most likely a",
+    "options": [
+      "Political party",
+      "Court",
+      "Media company",
+      "Interest-free bank"
+    ],
+    "answerIndex": 0,
+    "hint": "This group tries to win office through elections.",
+    "explain": "Correct: political parties seek to win elections and hold office."
+  },
+  {
+    "id": "g1r_06",
+    "title": "Political Parties",
+    "prompt": "Political parties mainly try to influence public policy by",
+    "options": [
+      "Winning elections and holding office",
+      "Writing Supreme Court opinions",
+      "Enforcing court rulings",
+      "Printing ballots only"
+    ],
+    "answerIndex": 0,
+    "hint": "Think about how parties gain power.",
+    "explain": "Correct: political parties seek to influence policy by winning elections and holding office."
+  },
+  {
+    "id": "g1r_07",
+    "title": "Political Parties",
+    "prompt": "Members of a political party usually share",
+    "options": [
+      "Similar views on public issues",
+      "The same job in government",
+      "The same court appointment",
+      "The same state residency only"
+    ],
+    "answerIndex": 0,
+    "hint": "Think beliefs and issues.",
+    "explain": "Correct: political parties are made up of people with similar views on public issues."
+  },
+  {
+    "id": "g1r_08",
+    "title": "Interest Groups",
+    "prompt": "A group does not run candidates but tries to influence lawmakers on one issue. This group is most likely an",
+    "options": [
+      "Interest group",
+      "Political party",
+      "Court",
+      "Cabinet department"
+    ],
+    "answerIndex": 0,
+    "hint": "It influences policy without mainly trying to win office.",
+    "explain": "Correct: interest groups seek to influence public policy rather than win office."
+  },
+  {
+    "id": "g1r_09",
+    "title": "Interest Groups",
+    "prompt": "An interest group is most likely to",
+    "options": [
+      "Influence policy",
+      "Conduct judicial review",
+      "Ratify an amendment",
+      "Command the military"
+    ],
+    "answerIndex": 0,
+    "hint": "Think focused policy goals.",
+    "explain": "Correct: interest groups usually advocate for specific policy positions."
+  },
+  {
+    "id": "g1r_10",
+    "title": "Parties vs. Groups",
+    "prompt": "A major difference between political parties and interest groups is that political parties",
+    "options": [
+      "Try to win elections",
+      "Never use media",
+      "Cannot influence policy",
+      "Only operate locally"
+    ],
+    "answerIndex": 0,
+    "hint": "One group runs candidates.",
+    "explain": "Correct: political parties try to win elections, while interest groups usually do not."
+  },
+  {
+    "id": "g1r_11",
+    "title": "Media",
+    "prompt": "News websites, television, podcasts, and newspapers are all examples of",
+    "options": [
+      "Media",
+      "Interest groups",
+      "Judicial agencies",
+      "Political conventions"
+    ],
+    "answerIndex": 0,
+    "hint": "Means of mass communication.",
+    "explain": "Correct: media refers to means of mass communication aimed at different audiences."
+  },
+  {
+    "id": "g1r_12",
+    "title": "Media Influence",
+    "prompt": "A news story makes many voters pay attention to a public issue. This shows the media can",
+    "options": [
+      "Shape public attention and opinion",
+      "Ratify laws",
+      "Impeach presidents",
+      "Issue executive orders"
+    ],
+    "answerIndex": 0,
+    "hint": "Media affect what people focus on.",
+    "explain": "Correct: media can influence public attention and public policy processes."
+  },
+  {
+    "id": "g1r_13",
+    "title": "Media Use",
+    "prompt": "Political parties and interest groups often use media to",
+    "options": [
+      "Influence people and public policy",
+      "Declare laws unconstitutional",
+      "Collect taxes",
+      "Choose electors"
+    ],
+    "answerIndex": 0,
+    "hint": "Think persuasion and public attention.",
+    "explain": "Correct: parties and interest groups use media to influence political and public-policy processes."
+  },
+  {
+    "id": "g1r_14",
+    "title": "Source Credibility",
+    "prompt": "A source lists the author’s credentials and uses evidence that can be checked. This source is more likely to be",
+    "options": [
+      "Credible",
+      "Biased only",
+      "Irrelevant",
+      "A political party"
+    ],
+    "answerIndex": 0,
+    "hint": "Look for qualifications and verifiable evidence.",
+    "explain": "Correct: credibility increases when a source has qualified authors and verifiable evidence."
+  },
+  {
+    "id": "g1r_15",
+    "title": "Source Credibility",
+    "prompt": "A website gives no author, no evidence, and only opinions. The best evaluation is that the source is",
+    "options": [
+      "Less credible",
+      "More credible",
+      "Required for research",
+      "Automatically neutral"
+    ],
+    "answerIndex": 0,
+    "hint": "No author and no evidence are warning signs.",
+    "explain": "Correct: a source without authorship or evidence is less credible."
+  },
+  {
+    "id": "g1r_16",
+    "title": "Source Credibility",
+    "prompt": "Two independent reliable sources report the same facts. This usually",
+    "options": [
+      "Increases confidence in the information",
+      "Eliminates the need for evidence",
+      "Shows both are biased",
+      "Makes the issue unimportant"
+    ],
+    "answerIndex": 0,
+    "hint": "Agreement across credible sources helps.",
+    "explain": "Correct: corroboration from credible sources increases confidence in information."
+  },
+  {
+    "id": "g1r_17",
+    "title": "Source Credibility",
+    "prompt": "When a student checks whether a source’s reasoning is logical and supported by facts, the student is judging",
+    "options": [
+      "Credibility",
+      "Federalism",
+      "Judicial review",
+      "Term limits"
+    ],
+    "answerIndex": 0,
+    "hint": "Evidence and logic matter when evaluating sources.",
+    "explain": "Correct: evidence and logical conclusions are key parts of source credibility."
+  },
+  {
+    "id": "g1r_18",
+    "title": "Bias and Perspective",
+    "prompt": "A student asks, “What viewpoint is this author trying to promote?” The student is checking for",
+    "options": [
+      "Bias or perspective",
+      "A veto override",
+      "A treaty power",
+      "A reserve requirement"
+    ],
+    "answerIndex": 0,
+    "hint": "Point of view can reveal slant.",
+    "explain": "Correct: identifying a source’s perspective helps reveal bias or unstated assumptions."
+  },
+  {
+    "id": "g1r_19",
+    "title": "Persuasion",
+    "prompt": "A student uses evidence and logic to convince classmates to support a plan. This is",
+    "options": [
+      "Persuasion",
+      "Consensus building",
+      "Judicial review",
+      "Impeachment"
+    ],
+    "answerIndex": 0,
+    "hint": "Convincing others with reasons.",
+    "explain": "Correct: persuasion means convincing others through argument and evidence."
+  },
+  {
+    "id": "g1r_20",
+    "title": "Compromise",
+    "prompt": "Two groups each give up part of what they want so they can reach agreement. This is",
+    "options": [
+      "Compromise",
+      "Judicial activism",
+      "Filibustering",
+      "Federalism"
+    ],
+    "answerIndex": 0,
+    "hint": "Give-and-take to reach agreement.",
+    "explain": "Correct: compromise happens when both sides give up something to reach agreement."
+  },
+  {
+    "id": "g1r_21",
+    "title": "Consensus Building",
+    "prompt": "After discussion, most members of a group support the same plan. This is an example of",
+    "options": [
+      "Consensus building",
+      "Self-incrimination",
+      "Lobbying only",
+      "Judicial restraint"
+    ],
+    "answerIndex": 0,
+    "hint": "General agreement in a group.",
+    "explain": "Correct: consensus building means reaching broad agreement among a group."
+  },
+  {
+    "id": "g1r_22",
+    "title": "Negotiation",
+    "prompt": "Two sides discuss their differences to work toward a solution. This is called",
+    "options": [
+      "Negotiation",
+      "Ratification",
+      "Incorporation",
+      "Oversight"
+    ],
+    "answerIndex": 0,
+    "hint": "Talking through differences to reach a deal.",
+    "explain": "Correct: negotiation is discussion aimed at reaching agreement."
+  },
+  {
+    "id": "g1r_23",
+    "title": "Democratic Skills",
+    "prompt": "Persuasion, compromise, consensus building, and negotiation are important because they help people",
+    "options": [
+      "Resolve differences",
+      "End elections",
+      "Ignore opposing views",
+      "Avoid public debate"
+    ],
+    "answerIndex": 0,
+    "hint": "These skills make democratic decision-making work.",
+    "explain": "Correct: these democratic skills help settle differences and achieve agreement in governing."
+  },
+  {
+    "id": "g1r_24",
+    "title": "Researching Issues",
+    "prompt": "A student decides which websites and articles are relevant before writing about a public issue. This is part of",
+    "options": [
+      "Researching a civic issue",
+      "Impeachment",
+      "Monetary policy",
+      "Judicial review"
+    ],
+    "answerIndex": 0,
+    "hint": "Choosing useful sources is a research step.",
+    "explain": "Correct: researching a civic issue includes determining which sources are relevant."
+  },
+  {
+    "id": "g1r_25",
+    "title": "Comparing Organizations",
+    "prompt": "Which group is most likely to focus on one issue without trying to elect its own candidates?",
+    "options": [
+      "Interest group",
+      "Political party",
+      "State court",
+      "Executive department"
+    ],
+    "answerIndex": 0,
+    "hint": "One group pushes policy more than elections.",
+    "explain": "Correct: an interest group usually focuses on influencing policy on specific issues."
+  },
+  {
+    "id": "g1r_26",
+    "title": "Civic Decision-Making",
+    "prompt": "Students predict the possible results of a proposed solution before supporting it. They are analyzing",
+    "options": [
+      "Consequences of proposed solutions",
+      "Electoral votes",
+      "Presidential succession",
+      "Bank reserve levels"
+    ],
+    "answerIndex": 0,
+    "hint": "Think outcomes and tradeoffs.",
+    "explain": "Correct: considering possible consequences is part of civic engagement and sound decision-making."
+  }
+];
 
   const STORAGE_KEY = 'BTB_GOV_CS1_4_REBUILT_V1';
 
@@ -477,17 +595,17 @@
   function clearFeedback(){ $('feedback').className='msg'; $('fbTitle').textContent=''; $('fbBody').textContent=''; }
 
   function ensureOrder(qIndex){
-    const q=QUESTIONS[qIndex], meta=state.qmeta[qIndex];
+    const q=QUESTIONS[state.qOrder?.[qIndex] ?? qIndex], meta=state.qmeta[qIndex];
     if(Array.isArray(meta.order) && typeof meta.correctShown==='number') return;
     const seed = hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`) ^ 0xABC123;
-    meta.order = shuffledIndices(q.options.length, seed);
+    meta.order = state.auditOptions?.[state.qOrder?.[qIndex]] || shuffledIndices(q.options.length, seed);
     meta.correctShown = meta.order.indexOf(q.answerIndex);
   }
 
   function disableInputs(disabled){ document.querySelectorAll('.optbtn').forEach(b=>b.disabled=disabled); }
 
   function showQuestion(){
-    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    const q=QUESTIONS[state.qOrder?.[state.idx] ?? state.idx], meta=state.qmeta[state.idx];
     clearFeedback(); $('btnNext').disabled=true; $('btnHint').disabled=true;
     $('qtitle').textContent=q.title; $('qtext').textContent=q.prompt; $('opts').innerHTML='';
     ensureOrder(state.idx);
@@ -513,11 +631,11 @@
     save();
   }
 
-  function markMiss(){ state.qmeta[state.idx].missed=true; }
+  function markMiss(){ state.qmeta[state.idx].missed=true; state.runMisses=(state.runMisses||0)+1; }
   function markDone(){ state.qmeta[state.idx].done=true; }
 
   function answerMCQ(shownIdx){
-    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    const q=QUESTIONS[state.qOrder?.[state.idx] ?? state.idx], meta=state.qmeta[state.idx];
     if(meta.done) return;
     if(shownIdx===meta.correctShown){
       markDone();
@@ -535,7 +653,7 @@
   }
 
   $('btnHint').addEventListener('click', ()=> {
-    const q=QUESTIONS[state.idx];
+    const q=QUESTIONS[state.qOrder?.[state.idx] ?? state.idx];
     setFeedback('warn','Hint 💡', q.hint);
     $('btnHint').disabled=true;
   });
@@ -557,6 +675,20 @@
     const total=QUESTIONS.length;
     const {perfect}=counts();
     const acc=Math.round((perfect/total)*100);
+    if(!state.sheetCompletionSent){
+      state.sheetCompletionSent=true;
+      save();
+      const sheetStatus=document.createElement('p');
+      sheetStatus.setAttribute('role','status');
+      sheetStatus.textContent='Sending completion record…';
+      $('finishBox').appendChild(sheetStatus);
+      void BasicsAudit.send(state,{totalQuestions:total,firstPassCorrect:perfect,
+        endedAt:ended.toISOString(),elapsedSeconds:Math.floor(runMS/1000),
+        totalMissesThisRun:state.runMisses ?? total-perfect,totalAttempts:total+(state.runMisses ?? total-perfect),
+        finalMasteryAchieved:perfect===total}).then(result=>{
+        sheetStatus.textContent=result.ok?'Completion record saved.':'Spreadsheet receipt could not be confirmed.';
+      });
+    }
 
     $('sName').textContent=state.name;
     $('sDate').textContent=fmtDate(ended);
@@ -585,6 +717,14 @@
     }
   }
 
+  function initializeLayout(){
+    const layout=BasicsAudit.start(STORAGE_KEY,QUESTIONS,BasicsAudit.shuffle(QUESTIONS.map((_,i)=>i)),()=>BasicsAudit.shuffle(QUESTIONS.map((_,i)=>i)));
+    state.qOrder=layout.order;
+    state.auditOptions=layout.options;
+    state.sheetCompletionSent=false;
+    state.runMisses=0;
+  }
+
   function restartGame(){ clearSave(); location.reload(); }
   window.restartGame = restartGame;
 
@@ -598,12 +738,18 @@
   $('btnStart').addEventListener('click', ()=>{
     const name=($('studentName').value||'').trim();
     if(name.length<2){ setFeedback('bad','Name required','Enter your name to begin.'); return; }
+    const sheetEmail=$('sheetEmail').value.trim().toLowerCase(), sheetPeriod=$('sheetPeriod').value;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sheetEmail)||!sheetPeriod){
+      window.alert('Enter your school email and class period to start.');
+      return;
+    }
+    state.email=sheetEmail; state.period=sheetPeriod;
     state.name=name;
     state.startedAtISO=new Date().toISOString();
     state.startedAtMS=Date.now();
     state.idx=0;
     state.runSeed=(Math.floor(Math.random()*1e9) ^ hash32(name+'|'+state.startedAtISO))>>>0;
-    state.qmeta=freshMeta();
+    state.qmeta=freshMeta(); initializeLayout();
     for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i);
     save();
     $('nameBox').style.display='none';

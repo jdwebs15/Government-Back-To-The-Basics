@@ -57,7 +57,7 @@
 
         <div id="nameBox" class="field">
           <label class="muted" for="studentName"><b>Student Name</b></label>
-          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" />
+          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" /><label for="sheetPeriod">Class period</label> <select id="sheetPeriod"><option value="">Choose period</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select> <label for="sheetEmail">School email</label> <input id="sheetEmail" type="email" autocomplete="email" required>
           <div class="actions">
             <button class="btn primary" id="btnStart">Start</button>
             <button class="btn" id="btnResetAll">Reset Game</button>
@@ -113,36 +113,375 @@
     </div>
   </div>
 
+<script src="basics-audit.js"></script>
 <script>
 (() => {
   const QUESTIONS = [
-    {id:'g2_01', title:'Popular sovereignty', prompt:'Popular sovereignty means', options:['Government authority comes from the people','The president has unlimited power','States are superior to the national government','Judges make all laws'], answerIndex:0, hint:'Think consent of the governed.', explain:'Correct: popular sovereignty means the people are the source of governmental authority.'},
-    {id:'g2_02', title:'Limited government', prompt:'Limited government means', options:['Government power is restricted by law','Government can do anything it wants','Only the president is limited','Citizens have no rights'], answerIndex:0, hint:'Power is limited by law.', explain:'Correct: government can exercise only powers granted to it and must follow the rule of law.'},
-    {id:'g2_03', title:'Federalism', prompt:'Federalism is', options:['A system that divides power between national and state governments','One central government controls everything','States control foreign policy','Courts control taxation'], answerIndex:0, hint:'Shared power between levels.', explain:'Correct: federalism divides authority between the national government and the states.'},
-    {id:'g2_04', title:'Separation of powers', prompt:'Separation of powers means', options:['Power is divided among legislative, executive, and judicial branches','States have no power','The president writes laws','Courts enforce laws'], answerIndex:0, hint:'Three branches, different jobs.', explain:'Correct: separation of powers distributes powers among branches.'},
-    {id:'g2_05', title:'Checks and balances', prompt:'Checks and balances means', options:['Each branch can limit the power of the other branches','Congress controls elections','States can veto federal laws','Courts write legislation'], answerIndex:0, hint:'Branches check one another.', explain:'Correct: checks and balances allow each branch to restrain others.'},
-    {id:'g2_06', title:'Elections', prompt:'Which principle is MOST directly connected to regular elections?', options:['Popular sovereignty','Judicial review','Reserved powers','Federal supremacy'], answerIndex:0, hint:'People choose leaders.', explain:'Correct: elections reflect the idea that government derives authority from the people.'},
-    {id:'g2_07', title:'Shared authority', prompt:'Which principle best explains state and national shared authority?', options:['Federalism','Due process','Judicial activism','Bicameralism'], answerIndex:0, hint:'Shared power across levels.', explain:'Correct: federalism divides authority between state and national governments.'},
-    {id:'g2_08', title:'Branch roles', prompt:'Which principle best explains why Congress makes laws but the president enforces them?', options:['Separation of powers','Popular sovereignty','Reserved powers','Judicial precedent'], answerIndex:0, hint:'Different branches, different functions.', explain:'Correct: separation of powers assigns distinct responsibilities to each branch.'},
-    {id:'g2_09', title:'Veto', prompt:'A presidential veto is an example of', options:['Checks and balances','Federalism','Limited government','Popular sovereignty'], answerIndex:0, hint:'One branch checking another.', explain:'Correct: a veto is an executive check on the legislative branch.'},
-    {id:'g2_10', title:'Federalists', prompt:'Federalists supported ratification because they wanted', options:['A stronger national government','A weaker national government','No written constitution','State governments to control foreign policy'], answerIndex:0, hint:'They feared weakness under the Articles.', explain:'Correct: Federalists wanted a stronger national government.'},
-    {id:'g2_11', title:'Anti-Federalists', prompt:'Anti-Federalists opposed ratification mainly because they feared', options:['A strong national government would threaten liberties','States were too powerful','The president was too weak','Congress would have no power'], answerIndex:0, hint:'They worried about tyranny.', explain:'Correct: Anti-Federalists feared centralized power would threaten freedom.'},
-    {id:'g2_12', title:'Bill of Rights demand', prompt:'A major Anti-Federalist demand was', options:['A Bill of Rights','A stronger executive','A national bank','Removing elections'], answerIndex:0, hint:'Written protections for individuals.', explain:'Correct: Anti-Federalists wanted a Bill of Rights to protect liberties.'},
-    {id:'g2_13', title:'Federalist Papers', prompt:'The Federalist Papers were written primarily to', options:['Persuade states to ratify the Constitution','Replace the Constitution','Oppose a Bill of Rights','End state governments'], answerIndex:0, hint:'Arguments supporting ratification.', explain:'Correct: the Federalist Papers defended the Constitution and encouraged ratification.'},
-    {id:'g2_14', title:'Brutus', prompt:'“Brutus” is associated most with', options:['Anti-Federalist writings criticizing the Constitution','Federalist defenses of judicial review','The Articles of Confederation','The Supremacy Clause'], answerIndex:0, hint:'Anti-Federalist pseudonym.', explain:'Correct: Brutus was an Anti-Federalist voice.'},
-    {id:'g2_15', title:'Faction argument', prompt:'Federalists believed a large republic could', options:['Reduce the power of factions by spreading them out','Guarantee unanimous agreement','Eliminate political parties','Make states irrelevant'], answerIndex:0, hint:'Madison’s faction argument.', explain:'Correct: in a large republic, factions are less likely to dominate.'},
-    {id:'g2_16', title:'Representation concern', prompt:'Anti-Federalists warned a large republic could', options:['Make representation too distant from the people','Eliminate local government','Prevent taxation entirely','End elections'], answerIndex:0, hint:'Too big = less responsive.', explain:'Correct: Anti-Federalists feared distant government would be less responsive.'},
-    {id:'g2_17', title:'Supremacy Clause', prompt:'The Supremacy Clause establishes that', options:['Federal law is the supreme law of the land','State law always overrides federal law','The president is above the law','Courts cannot review federal laws'], answerIndex:0, hint:'Federal law outranks state law when valid.', explain:'Correct: the Supremacy Clause makes valid federal law supreme.'},
-    {id:'g2_18', title:'Elastic clause', prompt:'The “elastic clause” is another name for', options:['The Necessary and Proper Clause','The Commerce Clause','The Due Process Clause','The Establishment Clause'], answerIndex:0, hint:'Implied powers clause.', explain:'Correct: the Necessary and Proper Clause is often called the elastic clause.'},
-    {id:'g2_19', title:'Implied powers', prompt:'Which clause was most often cited as enabling broad implied powers?', options:['Necessary and Proper Clause','Full Faith and Credit Clause','Ex Post Facto Clause','Double Jeopardy Clause'], answerIndex:0, hint:'Implied powers.', explain:'Correct: the Necessary and Proper Clause supports implied powers.'},
-    {id:'g2_20', title:'Anti-Federalist concern', prompt:'Anti-Federalists worried the Supremacy Clause could', options:['Allow the national government to overpower states','Prevent federal laws from being enforced','Eliminate Congress','Stop elections'], answerIndex:0, hint:'Federal over state.', explain:'Correct: Anti-Federalists feared national power would dominate the states.'},
-    {id:'g2_21', title:'Standing army', prompt:'Anti-Federalists commonly feared a standing army because it could', options:['Be used to enforce tyranny','Make states stronger','End federal taxes','Prevent foreign invasion'], answerIndex:0, hint:'Army as tool of oppression.', explain:'Correct: Anti-Federalists feared a standing army could threaten liberty.'},
-    {id:'g2_22', title:'Taxation power', prompt:'Federalists argued national taxation power was necessary to', options:['Fund national responsibilities like defense and debt','End state taxes forever','Stop Congress from acting','Make courts supreme'], answerIndex:0, hint:'National government needs revenue.', explain:'Correct: Federalists believed the national government needed revenue to function.'},
-    {id:'g2_23', title:'Structural protections', prompt:'Federalists argued the separation of powers and elections would', options:['Limit abuses by any one branch','Make the president a king','Guarantee no conflict','Remove citizen influence'], answerIndex:0, hint:'Structural protections.', explain:'Correct: Federalists argued the Constitution’s structure would limit abuse.'},
-    {id:'g2_24', title:'Bill of Rights purpose', prompt:'The main purpose of a Bill of Rights is to', options:['Protect individual liberties from government abuse','Increase executive power','Give Congress unlimited authority','Eliminate state courts'], answerIndex:0, hint:'Written protections.', explain:'Correct: a Bill of Rights protects civil liberties.'},
-    {id:'g2_25', title:'Ratification compromise', prompt:'The Constitution was ratified largely after a promise to', options:['Add a Bill of Rights','Eliminate the presidency','End federal courts','Remove elections'], answerIndex:0, hint:'Ratification compromise.', explain:'Correct: the promise of a Bill of Rights helped secure ratification.'},
-    {id:'g2_26', title:'Federalist view of Bill of Rights', prompt:'Which statement best reflects Federalist reasoning about the Bill of Rights at the time?', options:['It might be unnecessary because powers were already limited','It was required by the Articles of Confederation','It would replace the Constitution','It would eliminate federal courts'], answerIndex:0, hint:'Limited powers argument.', explain:'Correct: some Federalists argued a Bill of Rights was unnecessary because the federal government had only delegated powers.'}
-  ];
+  {
+    "id": "g2_01",
+    "title": "Popular sovereignty",
+    "prompt": "Popular sovereignty means",
+    "options": [
+      "Government authority comes from the people",
+      "The president has unlimited power",
+      "States are superior to the national government",
+      "Judges make all laws"
+    ],
+    "answerIndex": 0,
+    "hint": "Think consent of the governed.",
+    "explain": "Correct: popular sovereignty means the people are the source of governmental authority."
+  },
+  {
+    "id": "g2_02",
+    "title": "Limited government",
+    "prompt": "Limited government means",
+    "options": [
+      "Government power is restricted by law",
+      "Government can do anything it wants",
+      "Only the president is limited",
+      "Citizens have no rights"
+    ],
+    "answerIndex": 0,
+    "hint": "Power is limited by law.",
+    "explain": "Correct: government can exercise only powers granted to it and must follow the rule of law."
+  },
+  {
+    "id": "g2_03",
+    "title": "Federalism",
+    "prompt": "Federalism is",
+    "options": [
+      "National and state power sharing",
+      "One central government controls everything",
+      "States control foreign policy",
+      "Courts control taxation"
+    ],
+    "answerIndex": 0,
+    "hint": "Shared power between levels.",
+    "explain": "Correct: federalism divides authority between the national government and the states."
+  },
+  {
+    "id": "g2_04",
+    "title": "Separation of powers",
+    "prompt": "Separation of powers means",
+    "options": [
+      "Power divided among three branches",
+      "States have no power",
+      "The president writes laws",
+      "Courts enforce laws"
+    ],
+    "answerIndex": 0,
+    "hint": "Three branches, different jobs.",
+    "explain": "Correct: separation of powers distributes powers among branches."
+  },
+  {
+    "id": "g2_05",
+    "title": "Checks and balances",
+    "prompt": "Checks and balances means",
+    "options": [
+      "Branches limit one another",
+      "Congress controls elections",
+      "States can veto federal laws",
+      "Courts write legislation"
+    ],
+    "answerIndex": 0,
+    "hint": "Branches check one another.",
+    "explain": "Correct: checks and balances allow each branch to restrain others."
+  },
+  {
+    "id": "g2_06",
+    "title": "Elections",
+    "prompt": "Which principle is MOST directly connected to regular elections?",
+    "options": [
+      "Popular sovereignty",
+      "Judicial review",
+      "Reserved powers",
+      "Federal supremacy"
+    ],
+    "answerIndex": 0,
+    "hint": "People choose leaders.",
+    "explain": "Correct: elections reflect the idea that government derives authority from the people."
+  },
+  {
+    "id": "g2_07",
+    "title": "Shared authority",
+    "prompt": "Which principle best explains state and national shared authority?",
+    "options": [
+      "Federalism",
+      "Due process",
+      "Judicial activism",
+      "Bicameralism"
+    ],
+    "answerIndex": 0,
+    "hint": "Shared power across levels.",
+    "explain": "Correct: federalism divides authority between state and national governments."
+  },
+  {
+    "id": "g2_08",
+    "title": "Branch roles",
+    "prompt": "Which principle best explains why Congress makes laws but the president enforces them?",
+    "options": [
+      "Separation of powers",
+      "Popular sovereignty",
+      "Reserved powers",
+      "Judicial precedent"
+    ],
+    "answerIndex": 0,
+    "hint": "Different branches, different functions.",
+    "explain": "Correct: separation of powers assigns distinct responsibilities to each branch."
+  },
+  {
+    "id": "g2_09",
+    "title": "Veto",
+    "prompt": "A presidential veto is an example of",
+    "options": [
+      "Checks and balances",
+      "Federalism",
+      "Limited government",
+      "Popular sovereignty"
+    ],
+    "answerIndex": 0,
+    "hint": "One branch checking another.",
+    "explain": "Correct: a veto is an executive check on the legislative branch."
+  },
+  {
+    "id": "g2_10",
+    "title": "Federalists",
+    "prompt": "Federalists supported ratification because they wanted",
+    "options": [
+      "A stronger national government",
+      "A weaker national government",
+      "No written constitution",
+      "State governments to control foreign policy"
+    ],
+    "answerIndex": 0,
+    "hint": "They feared weakness under the Articles.",
+    "explain": "Correct: Federalists wanted a stronger national government."
+  },
+  {
+    "id": "g2_11",
+    "title": "Anti-Federalists",
+    "prompt": "Anti-Federalists opposed ratification mainly because they feared",
+    "options": [
+      "National power could threaten liberty",
+      "States were too powerful",
+      "The president was too weak",
+      "Congress would have no power"
+    ],
+    "answerIndex": 0,
+    "hint": "They worried about tyranny.",
+    "explain": "Correct: Anti-Federalists feared centralized power would threaten freedom."
+  },
+  {
+    "id": "g2_12",
+    "title": "Bill of Rights demand",
+    "prompt": "A major Anti-Federalist demand was",
+    "options": [
+      "A Bill of Rights",
+      "A stronger executive",
+      "A national bank",
+      "Removing elections"
+    ],
+    "answerIndex": 0,
+    "hint": "Written protections for individuals.",
+    "explain": "Correct: Anti-Federalists wanted a Bill of Rights to protect liberties."
+  },
+  {
+    "id": "g2_13",
+    "title": "Federalist Papers",
+    "prompt": "The Federalist Papers were written primarily to",
+    "options": [
+      "Win support for ratification",
+      "Replace the Constitution",
+      "Oppose a Bill of Rights",
+      "End state governments"
+    ],
+    "answerIndex": 0,
+    "hint": "Arguments supporting ratification.",
+    "explain": "Correct: the Federalist Papers defended the Constitution and encouraged ratification."
+  },
+  {
+    "id": "g2_14",
+    "title": "Brutus",
+    "prompt": "“Brutus” is associated most with",
+    "options": [
+      "Anti-Federalist essays",
+      "Federalist defenses of judicial review",
+      "The Articles of Confederation",
+      "The Supremacy Clause"
+    ],
+    "answerIndex": 0,
+    "hint": "Anti-Federalist pseudonym.",
+    "explain": "Correct: Brutus was an Anti-Federalist voice."
+  },
+  {
+    "id": "g2_15",
+    "title": "Faction argument",
+    "prompt": "Federalists believed a large republic could",
+    "options": [
+      "Dilute factions in a larger republic",
+      "Guarantee unanimous agreement",
+      "Eliminate political parties",
+      "Make states irrelevant"
+    ],
+    "answerIndex": 0,
+    "hint": "Madison’s faction argument.",
+    "explain": "Correct: in a large republic, factions are less likely to dominate."
+  },
+  {
+    "id": "g2_16",
+    "title": "Representation concern",
+    "prompt": "Anti-Federalists warned a large republic could",
+    "options": [
+      "Make representatives too remote",
+      "Eliminate local government",
+      "Prevent taxation entirely",
+      "End elections"
+    ],
+    "answerIndex": 0,
+    "hint": "Too big = less responsive.",
+    "explain": "Correct: Anti-Federalists feared distant government would be less responsive."
+  },
+  {
+    "id": "g2_17",
+    "title": "Supremacy Clause",
+    "prompt": "The Supremacy Clause establishes that",
+    "options": [
+      "Federal law is the supreme law of the land",
+      "State law always overrides federal law",
+      "The president is above the law",
+      "Courts cannot review federal laws"
+    ],
+    "answerIndex": 0,
+    "hint": "Federal law outranks state law when valid.",
+    "explain": "Correct: the Supremacy Clause makes valid federal law supreme."
+  },
+  {
+    "id": "g2_18",
+    "title": "Elastic clause",
+    "prompt": "The “elastic clause” is another name for",
+    "options": [
+      "The Necessary and Proper Clause",
+      "The Commerce Clause",
+      "The Due Process Clause",
+      "The Establishment Clause"
+    ],
+    "answerIndex": 0,
+    "hint": "Implied powers clause.",
+    "explain": "Correct: the Necessary and Proper Clause is often called the elastic clause."
+  },
+  {
+    "id": "g2_19",
+    "title": "Implied powers",
+    "prompt": "Which clause was most often cited as enabling broad implied powers?",
+    "options": [
+      "Necessary and Proper Clause",
+      "Full Faith and Credit Clause",
+      "Ex Post Facto Clause",
+      "Double Jeopardy Clause"
+    ],
+    "answerIndex": 0,
+    "hint": "Implied powers.",
+    "explain": "Correct: the Necessary and Proper Clause supports implied powers."
+  },
+  {
+    "id": "g2_20",
+    "title": "Anti-Federalist concern",
+    "prompt": "Anti-Federalists worried the Supremacy Clause could",
+    "options": [
+      "Allow the national government to overpower states",
+      "Prevent federal laws from being enforced",
+      "Eliminate Congress",
+      "Stop elections"
+    ],
+    "answerIndex": 0,
+    "hint": "Federal over state.",
+    "explain": "Correct: Anti-Federalists feared national power would dominate the states."
+  },
+  {
+    "id": "g2_21",
+    "title": "Standing army",
+    "prompt": "Anti-Federalists commonly feared a standing army because it could",
+    "options": [
+      "Be used to enforce tyranny",
+      "Make states stronger",
+      "End federal taxes",
+      "Prevent foreign invasion"
+    ],
+    "answerIndex": 0,
+    "hint": "Army as tool of oppression.",
+    "explain": "Correct: Anti-Federalists feared a standing army could threaten liberty."
+  },
+  {
+    "id": "g2_22",
+    "title": "Taxation power",
+    "prompt": "Federalists argued national taxation power was necessary to",
+    "options": [
+      "Pay for defense and debt",
+      "End state taxes forever",
+      "Stop Congress from acting",
+      "Make courts supreme"
+    ],
+    "answerIndex": 0,
+    "hint": "National government needs revenue.",
+    "explain": "Correct: Federalists believed the national government needed revenue to function."
+  },
+  {
+    "id": "g2_23",
+    "title": "Structural protections",
+    "prompt": "Federalists argued the separation of powers and elections would",
+    "options": [
+      "Limit abuses by any one branch",
+      "Make the president a king",
+      "Guarantee no conflict",
+      "Remove citizen influence"
+    ],
+    "answerIndex": 0,
+    "hint": "Structural protections.",
+    "explain": "Correct: Federalists argued the Constitution’s structure would limit abuse."
+  },
+  {
+    "id": "g2_24",
+    "title": "Bill of Rights purpose",
+    "prompt": "The main purpose of a Bill of Rights is to",
+    "options": [
+      "Protect individual liberties from government abuse",
+      "Increase executive power",
+      "Give Congress unlimited authority",
+      "Eliminate state courts"
+    ],
+    "answerIndex": 0,
+    "hint": "Written protections.",
+    "explain": "Correct: a Bill of Rights protects civil liberties."
+  },
+  {
+    "id": "g2_25",
+    "title": "Ratification compromise",
+    "prompt": "The Constitution was ratified largely after a promise to",
+    "options": [
+      "Add a Bill of Rights",
+      "Eliminate the presidency",
+      "End federal courts",
+      "Remove elections"
+    ],
+    "answerIndex": 0,
+    "hint": "Ratification compromise.",
+    "explain": "Correct: the promise of a Bill of Rights helped secure ratification."
+  },
+  {
+    "id": "g2_26",
+    "title": "Federalist view of Bill of Rights",
+    "prompt": "Which statement best reflects Federalist reasoning about the Bill of Rights at the time?",
+    "options": [
+      "It might be unnecessary because powers were already limited",
+      "It was required by the Articles of Confederation",
+      "It would replace the Constitution",
+      "It would eliminate federal courts"
+    ],
+    "answerIndex": 0,
+    "hint": "Limited powers argument.",
+    "explain": "Correct: some Federalists argued a Bill of Rights was unnecessary because the federal government had only delegated powers."
+  }
+];
 
   const STORAGE_KEY = 'BTB_GOV_CS5_6_V2';
   const errbox = document.getElementById('errbox'), errtext = document.getElementById('errtext');
@@ -169,11 +508,11 @@
   setInterval(updateStats, 500);
   function setFeedback(kind,title,body){ $('feedback').className=`msg ${kind}`; $('fbTitle').textContent=title; $('fbBody').textContent=body; }
   function clearFeedback(){ $('feedback').className='msg'; $('fbTitle').textContent=''; $('fbBody').textContent=''; }
-  function ensureOrder(i){ const q=QUESTIONS[i], meta=state.qmeta[i]; if(Array.isArray(meta.order)) return; const seed=hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`)^0x222333; meta.order=shuffledIndices(q.options.length, seed); meta.correctShown=meta.order.indexOf(q.answerIndex); }
+  function ensureOrder(i){ const q=QUESTIONS[state.qOrder?.[i] ?? i], meta=state.qmeta[i]; if(Array.isArray(meta.order)) return; const seed=hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`)^0x222333; meta.order=state.auditOptions?.[state.qOrder?.[i]] || shuffledIndices(q.options.length, seed); meta.correctShown=meta.order.indexOf(q.answerIndex); }
   function disableInputs(disabled){ document.querySelectorAll('.optbtn').forEach(b=>b.disabled=disabled); }
 
   function showQuestion(){
-    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    const q=QUESTIONS[state.qOrder?.[state.idx] ?? state.idx], meta=state.qmeta[state.idx];
     clearFeedback(); $('btnNext').disabled=true; $('btnHint').disabled=true; $('qtitle').textContent=q.title; $('qtext').textContent=q.prompt; $('opts').innerHTML='';
     ensureOrder(state.idx);
     const letters=['A','B','C','D'];
@@ -183,7 +522,7 @@
   }
 
   function answer(shownIdx){
-    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    const q=QUESTIONS[state.qOrder?.[state.idx] ?? state.idx], meta=state.qmeta[state.idx];
     if(meta.done) return;
     if(shownIdx===meta.correctShown){
       meta.done=true;
@@ -191,7 +530,7 @@
       disableInputs(true);
       $('btnNext').disabled=false;
     } else {
-      meta.missed=true;
+      meta.missed=true; state.runMisses=(state.runMisses||0)+1;
       setFeedback('warn','Hint 💡', q.hint);
     }
     save(); updateStats();
@@ -203,6 +542,20 @@
     $('nameBox').style.display='none'; $('questionBox').style.display='none'; $('finishBox').style.display='';
     const ended=new Date(), start=new Date(state.startedAtISO), runMS=Date.now()-state.startedAtMS;
     const total=QUESTIONS.length, {perfect}=counts(), acc=Math.round((perfect/total)*100);
+    if(!state.sheetCompletionSent){
+      state.sheetCompletionSent=true;
+      save();
+      const sheetStatus=document.createElement('p');
+      sheetStatus.setAttribute('role','status');
+      sheetStatus.textContent='Sending completion record…';
+      $('finishBox').appendChild(sheetStatus);
+      void BasicsAudit.send(state,{totalQuestions:total,firstPassCorrect:perfect,
+        endedAt:ended.toISOString(),elapsedSeconds:Math.floor(runMS/1000),
+        totalMissesThisRun:state.runMisses ?? total-perfect,totalAttempts:total+(state.runMisses ?? total-perfect),
+        finalMasteryAchieved:perfect===total}).then(result=>{
+        sheetStatus.textContent=result.ok?'Completion record saved.':'Spreadsheet receipt could not be confirmed.';
+      });
+    }
     $('sName').textContent=state.name; $('sDate').textContent=fmtDate(ended); $('sStart').textContent=fmtTime(start); $('sEnd').textContent=fmtTime(ended); $('sRun').textContent=msToHMS(runMS); $('sAcc').textContent=`${acc}%`;
     if(perfect===total){
       $('finishTitle').textContent='Mastery achieved ✅'; $('finishBody').textContent='You finished with 100% accuracy (0 misses). Screenshot the ticket.'; $('ticket').style.display='';
@@ -215,8 +568,22 @@
     }
   }
 
+  function initializeLayout(){
+    const layout=BasicsAudit.start(STORAGE_KEY,QUESTIONS,BasicsAudit.shuffle(QUESTIONS.map((_,i)=>i)),()=>BasicsAudit.shuffle(QUESTIONS.map((_,i)=>i)));
+    state.qOrder=layout.order;
+    state.auditOptions=layout.options;
+    state.sheetCompletionSent=false;
+    state.runMisses=0;
+  }
+
   function restartGame(){ clearSave(); location.reload(); }
-  $('btnStart').addEventListener('click', ()=>{ const name=($('studentName').value||'').trim(); if(name.length<2){ setFeedback('bad','Name required','Enter your name to begin.'); return; } state.name=name; state.startedAtISO=new Date().toISOString(); state.startedAtMS=Date.now(); state.idx=0; state.runSeed=(Math.floor(Math.random()*1e9)^hash32(name+'|'+state.startedAtISO))>>>0; state.qmeta=freshMeta(); for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i); save(); $('nameBox').style.display='none'; $('questionBox').style.display=''; showQuestion(); });
+  $('btnStart').addEventListener('click', ()=>{ const name=($('studentName').value||'').trim(); if(name.length<2){ setFeedback('bad','Name required','Enter your name to begin.'); return; } const sheetEmail=$('sheetEmail').value.trim().toLowerCase(), sheetPeriod=$('sheetPeriod').value;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sheetEmail)||!sheetPeriod){
+      window.alert('Enter your school email and class period to start.');
+      return;
+    }
+    state.email=sheetEmail; state.period=sheetPeriod;
+    state.name=name; state.startedAtISO=new Date().toISOString(); state.startedAtMS=Date.now(); state.idx=0; state.runSeed=(Math.floor(Math.random()*1e9)^hash32(name+'|'+state.startedAtISO))>>>0; state.qmeta=freshMeta(); initializeLayout(); for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i); save(); $('nameBox').style.display='none'; $('questionBox').style.display=''; showQuestion(); });
   $('studentName').addEventListener('keydown', e=>{ if(e.key==='Enter') $('btnStart').click(); });
   $('btnResetAll').addEventListener('click', restartGame); $('btnRestartMid').addEventListener('click', restartGame); $('btnRestartGame').addEventListener('click', restartGame); $('btnReset').addEventListener('click', restartGame);
   $('btnBackHome').addEventListener('click', ()=>location.href='../index.html');

@@ -95,7 +95,7 @@
 
         <div id="nameBox" class="field">
           <label class="muted" for="studentName"><b>Student Name</b></label>
-          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" />
+          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" /><label for="sheetPeriod">Class period</label> <select id="sheetPeriod"><option value="">Choose period</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select> <label for="sheetEmail">School email</label> <input id="sheetEmail" type="email" autocomplete="email" required>
           <div class="actions">
             <button class="btn primary" id="btnStart">Start</button>
             <button class="btn" id="btnResetAll">Reset Game</button>
@@ -187,251 +187,375 @@
     </div>
   </div>
 
+<script src="basics-audit.js"></script>
 <script>
 (() => {
   const QUESTIONS = [
-    {
-      id:'g8r_01',
-      title:'Public Policy Issue',
-      prompt:'A city debates how to reduce traffic and improve safety. This is best described as a',
-      options:['Public policy issue','Court precedent','Private hobby','Campaign slogan'],
-      answerIndex:0,
-      hint:'Think a public problem government may address.',
-      explain:'Correct: a public policy issue is a matter of discussion and debate related to government functions.'
-    },
-    {
-      id:'g8r_02',
-      title:'Public Policy Issue',
-      prompt:'A public policy issue usually begins with',
-      options:['A problem government is trying to address','A Supreme Court appointment','A jury verdict only','A family celebration'],
-      answerIndex:0,
-      hint:'Policy is usually a response to some public problem.',
-      explain:'Correct: public policy issues usually involve a problem government is trying to address.'
-    },
-    {
-      id:'g8r_03',
-      title:'Domestic vs. Foreign Policy',
-      prompt:'A debate over military aid to another country is mainly a',
-      options:['Foreign policy issue','Local zoning issue','School dress code issue','County tax issue only'],
-      answerIndex:0,
-      hint:'This involves affairs outside the United States.',
-      explain:'Correct: issues involving other countries are foreign policy issues.'
-    },
-    {
-      id:'g8r_04',
-      title:'Domestic Policy',
-      prompt:'A debate over road repairs inside a city is mainly a',
-      options:['Domestic public policy issue','Foreign policy issue','Treaty issue','Electoral College issue'],
-      answerIndex:0,
-      hint:'This problem is inside the United States and local.',
-      explain:'Correct: a local problem within the United States is a domestic public policy issue.'
-    },
-
-    {
-      id:'g8r_05',
-      title:'Levels of Government',
-      prompt:'A local government and a state agency work together on water quality. This best shows',
-      options:['Collaboration among levels of government','Judicial review','Impeachment','Direct democracy'],
-      answerIndex:0,
-      hint:'They are working together across levels.',
-      explain:'Correct: collaboration among levels of government happens when different levels work together on a policy issue.'
-    },
-    {
-      id:'g8r_06',
-      title:'Levels of Government',
-      prompt:'State and federal officials disagree on how to handle an education issue. This best shows',
-      options:['Conflict among levels of government','Consensus building','Judicial restraint','Presidential succession'],
-      answerIndex:0,
-      hint:'They are not working together; they are disagreeing.',
-      explain:'Correct: disagreement between state and federal officials is conflict among levels of government.'
-    },
-    {
-      id:'g8r_07',
-      title:'Government Complexity',
-      prompt:'Public policy issues often become complicated because they may involve',
-      options:['Multiple branches and levels of government','Only one citizen','Only one textbook','Only one court case'],
-      answerIndex:0,
-      hint:'Think overlap among many decision-makers.',
-      explain:'Correct: public policy issues can involve multiple branches and levels of government.'
-    },
-
-    {
-      id:'g8r_08',
-      title:'Local Government Input',
-      prompt:'A citizen wants to change a city zoning rule. Who should the citizen contact first?',
-      options:['Local government officials','The U.S. Supreme Court','The Department of State','The Electoral College'],
-      answerIndex:0,
-      hint:'Zoning is usually a local issue.',
-      explain:'Correct: local zoning issues are most directly handled by local government officials.'
-    },
-    {
-      id:'g8r_09',
-      title:'Federal Government Input',
-      prompt:'A citizen wants to influence U.S. foreign policy. Which officials are the most appropriate target?',
-      options:['Federal officials','Only county commissioners','Only school board members','Only city judges'],
-      answerIndex:0,
-      hint:'Foreign policy is handled nationally.',
-      explain:'Correct: foreign policy is mainly handled by the federal government.'
-    },
-    {
-      id:'g8r_10',
-      title:'Branch Identification',
-      prompt:'A group wants to influence a court decision. Which method is most appropriate?',
-      options:['Submit a legal brief','Lobby a city council on zoning','Buy government bonds','Change reserve requirements'],
-      answerIndex:0,
-      hint:'Courts hear legal arguments in a certain form.',
-      explain:'Correct: a legal brief is an appropriate way to present arguments in a court case.'
-    },
-
-    {
-      id:'g8r_11',
-      title:'Lobbying',
-      prompt:'A group meets with lawmakers to persuade them to support a bill. This is called',
-      options:['Lobbying','Judicial review','Ratification','Incorporation'],
-      answerIndex:0,
-      hint:'Direct contact with lawmakers to influence policy.',
-      explain:'Correct: lobbying is the effort to persuade lawmakers or officials to support a policy position.'
-    },
-    {
-      id:'g8r_12',
-      title:'Legislative Input',
-      prompt:'To influence the legislature most directly, a citizen should',
-      options:['Lobby lawmakers','Appeal to the Electoral College','Issue an executive order','File a criminal sentence'],
-      answerIndex:0,
-      hint:'Think direct pressure on legislators.',
-      explain:'Correct: lobbying lawmakers is a direct way to influence the legislature.'
-    },
-    {
-      id:'g8r_13',
-      title:'Committee Testimony',
-      prompt:'A citizen speaks at a legislative committee meeting about a proposed law. This is an example of',
-      options:['Providing testimony','Issuing a veto','Judicial review','Presidential succession'],
-      answerIndex:0,
-      hint:'Formal speaking to lawmakers at a hearing.',
-      explain:'Correct: speaking before a legislative committee is providing testimony.'
-    },
-
-    {
-      id:'g8r_14',
-      title:'Public Meetings',
-      prompt:'A resident offers comments at a town hall meeting before a vote. This is an example of',
-      options:['Citizen input into decision-making','Treaty ratification','Judicial sentencing','Military command'],
-      answerIndex:0,
-      hint:'The citizen is speaking directly into the process.',
-      explain:'Correct: public comments at meetings are a form of citizen input into decision-making.'
-    },
-    {
-      id:'g8r_15',
-      title:'Letters to Officials',
-      prompt:'A voter writes a letter asking a representative to support a bill. This is an example of',
-      options:['Citizen input into public policy','Judicial review','Ratification','Electoral counting'],
-      answerIndex:0,
-      hint:'This is direct communication with an official.',
-      explain:'Correct: writing to officials is a direct form of citizen input into public policy.'
-    },
-    {
-      id:'g8r_16',
-      title:'Protests and Demonstrations',
-      prompt:'A group gathers peacefully to pressure leaders to change a policy. This is a form of',
-      options:['Political participation to influence policy','Presidential appointment','Judicial review','Reserve management'],
-      answerIndex:0,
-      hint:'Think protest and public pressure.',
-      explain:'Correct: public demonstrations are a form of political participation aimed at influencing policy.'
-    },
-
-    {
-      id:'g8r_17',
-      title:'Elections and Policy',
-      prompt:'A group supports candidates who agree with its views. This is a way to influence policy through',
-      options:['Elections','Court briefs','Jury trials','Impeachment'],
-      answerIndex:0,
-      hint:'Choosing leaders can shape future policy.',
-      explain:'Correct: elections influence policy by putting supportive leaders into office.'
-    },
-    {
-      id:'g8r_18',
-      title:'Interest Groups',
-      prompt:'An organization tries to shape a policy without mainly trying to win office. This is most likely an',
-      options:['Interest group','Political party','Court','Cabinet department'],
-      answerIndex:0,
-      hint:'It focuses on policy influence more than elections.',
-      explain:'Correct: interest groups try to influence policy rather than mainly win office.'
-    },
-    {
-      id:'g8r_19',
-      title:'Decision-Maker Match',
-      prompt:'A citizen wants to affect a new agency rule. Which officials are the best target?',
-      options:['Executive branch officials','The Electoral College','Jury members','Only county sheriffs'],
-      answerIndex:0,
-      hint:'Agency rules and regulations come from one branch.',
-      explain:'Correct: executive branch officials and agencies are the right targets for influencing rules and regulations.'
-    },
-
-    {
-      id:'g8r_20',
-      title:'Government Branch Function',
-      prompt:'A budget analysis prepared for Congress is most closely connected to the',
-      options:['Legislative branch','Judicial branch','Military chain of command','Local school district only'],
-      answerIndex:0,
-      hint:'Congress uses budget analysis.',
-      explain:'Correct: budget analysis for Congress is most closely tied to the legislative branch.'
-    },
-    {
-      id:'g8r_21',
-      title:'Executive Branch Policy',
-      prompt:'A policy issue involving embassies and diplomacy is most closely connected to the',
-      options:['Executive branch','Judicial branch','County commission','Local zoning board'],
-      answerIndex:0,
-      hint:'Embassies and foreign relations point to one branch.',
-      explain:'Correct: diplomacy and embassies are mainly part of the executive branch.'
-    },
-    {
-      id:'g8r_22',
-      title:'Judicial Branch Policy',
-      prompt:'A policy issue about sentencing guidelines is most closely connected to the',
-      options:['Judicial branch','Media','Political parties only','Electoral College'],
-      answerIndex:0,
-      hint:'Courts apply sentencing.',
-      explain:'Correct: sentencing issues are most closely tied to the judicial branch.'
-    },
-
-    {
-      id:'g8r_23',
-      title:'Why Input Matters',
-      prompt:'Knowing the correct level and branch of government matters because',
-      options:['Different officials handle different parts of policy-making','All officials do the same job','Only federal officials matter','Courts make all policy alone'],
-      answerIndex:0,
-      hint:'You need to match the issue to the decision-maker.',
-      explain:'Correct: different officials and institutions handle different stages and types of policy-making.'
-    },
-    {
-      id:'g8r_24',
-      title:'Public Debate',
-      prompt:'Public policy issues are often debated because people have',
-      options:['Different views about solutions and consequences','Exactly the same opinion','No interest in outcomes','No connection to government'],
-      answerIndex:0,
-      hint:'People disagree on how to solve public problems.',
-      explain:'Correct: policy issues are debated because people often disagree about the best solutions and their consequences.'
-    },
-    {
-      id:'g8r_25',
-      title:'Best Summary',
-      prompt:'The best summary of CS 18–19 is that public policy',
-      options:['Is addressed by many government entities and shaped by citizen and organizational input','Is decided only by presidents','Belongs only to local governments','Cannot be influenced by citizens'],
-      answerIndex:0,
-      hint:'Think multiple decision-makers plus public input.',
-      explain:'Correct: public policy is addressed by many government entities and influenced by citizens and organizations.'
-    },
-    {
-      id:'g8r_26',
-      title:'Most Effective Action',
-      prompt:'A student wants to change a school district policy. What is the most effective first step?',
-      options:['Contact local school board members','Write to the president','Appeal directly to the Supreme Court','Sell government bonds'],
-      answerIndex:0,
-      hint:'School district issues are handled locally.',
-      explain:'Correct: contacting local school board members is the most appropriate first step for a school district policy issue.'
-    }
-  ];
+  {
+    "id": "g8r_01",
+    "title": "Public Policy Issue",
+    "prompt": "A city debates how to reduce traffic and improve safety. This is best described as a",
+    "options": [
+      "Public policy issue",
+      "Court precedent",
+      "Private hobby",
+      "Campaign slogan"
+    ],
+    "answerIndex": 0,
+    "hint": "Think a public problem government may address.",
+    "explain": "Correct: a public policy issue is a matter of discussion and debate related to government functions."
+  },
+  {
+    "id": "g8r_02",
+    "title": "Public Policy Issue",
+    "prompt": "A public policy issue usually begins with",
+    "options": [
+      "A problem for government to address",
+      "A Supreme Court appointment",
+      "A jury verdict only",
+      "A family celebration"
+    ],
+    "answerIndex": 0,
+    "hint": "Policy is usually a response to some public problem.",
+    "explain": "Correct: public policy issues usually involve a problem government is trying to address."
+  },
+  {
+    "id": "g8r_03",
+    "title": "Domestic vs. Foreign Policy",
+    "prompt": "A debate over military aid to another country is mainly a",
+    "options": [
+      "Foreign policy issue",
+      "Local zoning issue",
+      "School dress code issue",
+      "County tax issue only"
+    ],
+    "answerIndex": 0,
+    "hint": "This involves affairs outside the United States.",
+    "explain": "Correct: issues involving other countries are foreign policy issues."
+  },
+  {
+    "id": "g8r_04",
+    "title": "Domestic Policy",
+    "prompt": "A debate over road repairs inside a city is mainly a",
+    "options": [
+      "Domestic public policy issue",
+      "Foreign policy issue",
+      "Treaty issue",
+      "Electoral College issue"
+    ],
+    "answerIndex": 0,
+    "hint": "This problem is inside the United States and local.",
+    "explain": "Correct: a local problem within the United States is a domestic public policy issue."
+  },
+  {
+    "id": "g8r_05",
+    "title": "Levels of Government",
+    "prompt": "A local government and a state agency work together on water quality. This best shows",
+    "options": [
+      "Intergovernmental cooperation",
+      "Judicial review",
+      "Impeachment",
+      "Direct democracy"
+    ],
+    "answerIndex": 0,
+    "hint": "They are working together across levels.",
+    "explain": "Correct: collaboration among levels of government happens when different levels work together on a policy issue."
+  },
+  {
+    "id": "g8r_06",
+    "title": "Levels of Government",
+    "prompt": "State and federal officials disagree on how to handle an education issue. This best shows",
+    "options": [
+      "Conflict among levels of government",
+      "Consensus building",
+      "Judicial restraint",
+      "Presidential succession"
+    ],
+    "answerIndex": 0,
+    "hint": "They are not working together; they are disagreeing.",
+    "explain": "Correct: disagreement between state and federal officials is conflict among levels of government."
+  },
+  {
+    "id": "g8r_07",
+    "title": "Government Complexity",
+    "prompt": "Public policy issues often become complicated because they may involve",
+    "options": [
+      "Several branches and levels",
+      "Only one citizen",
+      "Only one textbook",
+      "Only one court case"
+    ],
+    "answerIndex": 0,
+    "hint": "Think overlap among many decision-makers.",
+    "explain": "Correct: public policy issues can involve multiple branches and levels of government."
+  },
+  {
+    "id": "g8r_08",
+    "title": "Local Government Input",
+    "prompt": "A citizen wants to change a city zoning rule. Who should the citizen contact first?",
+    "options": [
+      "Local government officials",
+      "The U.S. Supreme Court",
+      "The Department of State",
+      "The Electoral College"
+    ],
+    "answerIndex": 0,
+    "hint": "Zoning is usually a local issue.",
+    "explain": "Correct: local zoning issues are most directly handled by local government officials."
+  },
+  {
+    "id": "g8r_09",
+    "title": "Federal Government Input",
+    "prompt": "A citizen wants to influence U.S. foreign policy. Which officials are the most appropriate target?",
+    "options": [
+      "Federal officials",
+      "Only county commissioners",
+      "Only school board members",
+      "Only city judges"
+    ],
+    "answerIndex": 0,
+    "hint": "Foreign policy is handled nationally.",
+    "explain": "Correct: foreign policy is mainly handled by the federal government."
+  },
+  {
+    "id": "g8r_10",
+    "title": "Branch Identification",
+    "prompt": "A group wants to influence a court decision. Which method is most appropriate?",
+    "options": [
+      "Submit a legal brief",
+      "Lobby a city council on zoning",
+      "Buy government bonds",
+      "Change reserve requirements"
+    ],
+    "answerIndex": 0,
+    "hint": "Courts hear legal arguments in a certain form.",
+    "explain": "Correct: a legal brief is an appropriate way to present arguments in a court case."
+  },
+  {
+    "id": "g8r_11",
+    "title": "Lobbying",
+    "prompt": "A group meets with lawmakers to persuade them to support a bill. This is called",
+    "options": [
+      "Lobbying",
+      "Judicial review",
+      "Ratification",
+      "Incorporation"
+    ],
+    "answerIndex": 0,
+    "hint": "Direct contact with lawmakers to influence policy.",
+    "explain": "Correct: lobbying is the effort to persuade lawmakers or officials to support a policy position."
+  },
+  {
+    "id": "g8r_12",
+    "title": "Legislative Input",
+    "prompt": "To influence the legislature most directly, a citizen should",
+    "options": [
+      "Lobby lawmakers",
+      "Appeal to the Electoral College",
+      "Issue an executive order",
+      "File a criminal sentence"
+    ],
+    "answerIndex": 0,
+    "hint": "Think direct pressure on legislators.",
+    "explain": "Correct: lobbying lawmakers is a direct way to influence the legislature."
+  },
+  {
+    "id": "g8r_13",
+    "title": "Committee Testimony",
+    "prompt": "A citizen speaks at a legislative committee meeting about a proposed law. This is an example of",
+    "options": [
+      "Providing testimony",
+      "Issuing a veto",
+      "Judicial review",
+      "Presidential succession"
+    ],
+    "answerIndex": 0,
+    "hint": "Formal speaking to lawmakers at a hearing.",
+    "explain": "Correct: speaking before a legislative committee is providing testimony."
+  },
+  {
+    "id": "g8r_14",
+    "title": "Public Meetings",
+    "prompt": "A resident offers comments at a town hall meeting before a vote. This is an example of",
+    "options": [
+      "Public input",
+      "Treaty ratification",
+      "Judicial sentencing",
+      "Military command"
+    ],
+    "answerIndex": 0,
+    "hint": "The citizen is speaking directly into the process.",
+    "explain": "Correct: public comments at meetings are a form of citizen input into decision-making."
+  },
+  {
+    "id": "g8r_15",
+    "title": "Letters to Officials",
+    "prompt": "A voter writes a letter asking a representative to support a bill. This is an example of",
+    "options": [
+      "Public input",
+      "Judicial review",
+      "Ratification",
+      "Electoral counting"
+    ],
+    "answerIndex": 0,
+    "hint": "This is direct communication with an official.",
+    "explain": "Correct: writing to officials is a direct form of citizen input into public policy."
+  },
+  {
+    "id": "g8r_16",
+    "title": "Protests and Demonstrations",
+    "prompt": "A group gathers peacefully to pressure leaders to change a policy. This is a form of",
+    "options": [
+      "Political participation",
+      "Presidential appointment",
+      "Judicial review",
+      "Reserve management"
+    ],
+    "answerIndex": 0,
+    "hint": "Think protest and public pressure.",
+    "explain": "Correct: public demonstrations are a form of political participation aimed at influencing policy."
+  },
+  {
+    "id": "g8r_17",
+    "title": "Elections and Policy",
+    "prompt": "A group supports candidates who agree with its views. This is a way to influence policy through",
+    "options": [
+      "Elections",
+      "Court briefs",
+      "Jury trials",
+      "Impeachment"
+    ],
+    "answerIndex": 0,
+    "hint": "Choosing leaders can shape future policy.",
+    "explain": "Correct: elections influence policy by putting supportive leaders into office."
+  },
+  {
+    "id": "g8r_18",
+    "title": "Interest Groups",
+    "prompt": "An organization tries to shape a policy without mainly trying to win office. This is most likely an",
+    "options": [
+      "Interest group",
+      "Political party",
+      "Court",
+      "Cabinet department"
+    ],
+    "answerIndex": 0,
+    "hint": "It focuses on policy influence more than elections.",
+    "explain": "Correct: interest groups try to influence policy rather than mainly win office."
+  },
+  {
+    "id": "g8r_19",
+    "title": "Decision-Maker Match",
+    "prompt": "A citizen wants to affect a new agency rule. Which officials are the best target?",
+    "options": [
+      "Executive branch officials",
+      "The Electoral College",
+      "Jury members",
+      "Only county sheriffs"
+    ],
+    "answerIndex": 0,
+    "hint": "Agency rules and regulations come from one branch.",
+    "explain": "Correct: executive branch officials and agencies are the right targets for influencing rules and regulations."
+  },
+  {
+    "id": "g8r_20",
+    "title": "Government Branch Function",
+    "prompt": "A budget analysis prepared for Congress is most closely connected to the",
+    "options": [
+      "Legislative branch",
+      "Judicial branch",
+      "Military chain of command",
+      "Local school district only"
+    ],
+    "answerIndex": 0,
+    "hint": "Congress uses budget analysis.",
+    "explain": "Correct: budget analysis for Congress is most closely tied to the legislative branch."
+  },
+  {
+    "id": "g8r_21",
+    "title": "Executive Branch Policy",
+    "prompt": "A policy issue involving embassies and diplomacy is most closely connected to the",
+    "options": [
+      "Executive branch",
+      "Judicial branch",
+      "County commission",
+      "Local zoning board"
+    ],
+    "answerIndex": 0,
+    "hint": "Embassies and foreign relations point to one branch.",
+    "explain": "Correct: diplomacy and embassies are mainly part of the executive branch."
+  },
+  {
+    "id": "g8r_22",
+    "title": "Judicial Branch Policy",
+    "prompt": "A policy issue about sentencing guidelines is most closely connected to the",
+    "options": [
+      "Judicial branch",
+      "Media",
+      "Political parties only",
+      "Electoral College"
+    ],
+    "answerIndex": 0,
+    "hint": "Courts apply sentencing.",
+    "explain": "Correct: sentencing issues are most closely tied to the judicial branch."
+  },
+  {
+    "id": "g8r_23",
+    "title": "Why Input Matters",
+    "prompt": "Knowing the correct level and branch of government matters because",
+    "options": [
+      "Officials have distinct policy roles",
+      "All officials do the same job",
+      "Only federal officials matter",
+      "Courts make all policy alone"
+    ],
+    "answerIndex": 0,
+    "hint": "You need to match the issue to the decision-maker.",
+    "explain": "Correct: different officials and institutions handle different stages and types of policy-making."
+  },
+  {
+    "id": "g8r_24",
+    "title": "Public Debate",
+    "prompt": "Public policy issues are often debated because people have",
+    "options": [
+      "Disagreement over solutions and effects",
+      "Exactly the same opinion",
+      "No interest in outcomes",
+      "No connection to government"
+    ],
+    "answerIndex": 0,
+    "hint": "People disagree on how to solve public problems.",
+    "explain": "Correct: policy issues are debated because people often disagree about the best solutions and their consequences."
+  },
+  {
+    "id": "g8r_25",
+    "title": "Best Summary",
+    "prompt": "The best summary of CS 18–19 is that public policy",
+    "options": [
+      "Officials, citizens, and groups shape it",
+      "Is decided only by presidents",
+      "Belongs only to local governments",
+      "Cannot be influenced by citizens"
+    ],
+    "answerIndex": 0,
+    "hint": "Think multiple decision-makers plus public input.",
+    "explain": "Correct: public policy is addressed by many government entities and influenced by citizens and organizations."
+  },
+  {
+    "id": "g8r_26",
+    "title": "Most Effective Action",
+    "prompt": "A student wants to change a school district policy. What is the most effective first step?",
+    "options": [
+      "Contact local school board members",
+      "Write to the president",
+      "Appeal directly to the Supreme Court",
+      "Sell government bonds"
+    ],
+    "answerIndex": 0,
+    "hint": "School district issues are handled locally.",
+    "explain": "Correct: contacting local school board members is the most appropriate first step for a school district policy issue."
+  }
+];
 
   const STORAGE_KEY = 'BTB_GOV_CS18_19_REBUILT_V1';
 
@@ -471,17 +595,17 @@
   function clearFeedback(){ $('feedback').className='msg'; $('fbTitle').textContent=''; $('fbBody').textContent=''; }
 
   function ensureOrder(qIndex){
-    const q=QUESTIONS[qIndex], meta=state.qmeta[qIndex];
+    const q=QUESTIONS[state.qOrder?.[qIndex] ?? qIndex], meta=state.qmeta[qIndex];
     if(Array.isArray(meta.order) && typeof meta.correctShown==='number') return;
     const seed = hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`) ^ 0x555AAA;
-    meta.order = shuffledIndices(q.options.length, seed);
+    meta.order = state.auditOptions?.[state.qOrder?.[qIndex]] || shuffledIndices(q.options.length, seed);
     meta.correctShown = meta.order.indexOf(q.answerIndex);
   }
 
   function disableInputs(disabled){ document.querySelectorAll('.optbtn').forEach(b=>b.disabled=disabled); }
 
   function showQuestion(){
-    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    const q=QUESTIONS[state.qOrder?.[state.idx] ?? state.idx], meta=state.qmeta[state.idx];
     clearFeedback(); $('btnNext').disabled=true; $('btnHint').disabled=true;
     $('qtitle').textContent=q.title; $('qtext').textContent=q.prompt; $('opts').innerHTML='';
     ensureOrder(state.idx);
@@ -507,11 +631,11 @@
     save();
   }
 
-  function markMiss(){ state.qmeta[state.idx].missed=true; }
+  function markMiss(){ state.qmeta[state.idx].missed=true; state.runMisses=(state.runMisses||0)+1; }
   function markDone(){ state.qmeta[state.idx].done=true; }
 
   function answerMCQ(shownIdx){
-    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    const q=QUESTIONS[state.qOrder?.[state.idx] ?? state.idx], meta=state.qmeta[state.idx];
     if(meta.done) return;
     if(shownIdx===meta.correctShown){
       markDone();
@@ -529,7 +653,7 @@
   }
 
   $('btnHint').addEventListener('click', ()=> {
-    const q=QUESTIONS[state.idx];
+    const q=QUESTIONS[state.qOrder?.[state.idx] ?? state.idx];
     setFeedback('warn','Hint 💡', q.hint);
     $('btnHint').disabled=true;
   });
@@ -551,6 +675,20 @@
     const total=QUESTIONS.length;
     const {perfect}=counts();
     const acc=Math.round((perfect/total)*100);
+    if(!state.sheetCompletionSent){
+      state.sheetCompletionSent=true;
+      save();
+      const sheetStatus=document.createElement('p');
+      sheetStatus.setAttribute('role','status');
+      sheetStatus.textContent='Sending completion record…';
+      $('finishBox').appendChild(sheetStatus);
+      void BasicsAudit.send(state,{totalQuestions:total,firstPassCorrect:perfect,
+        endedAt:ended.toISOString(),elapsedSeconds:Math.floor(runMS/1000),
+        totalMissesThisRun:state.runMisses ?? total-perfect,totalAttempts:total+(state.runMisses ?? total-perfect),
+        finalMasteryAchieved:perfect===total}).then(result=>{
+        sheetStatus.textContent=result.ok?'Completion record saved.':'Spreadsheet receipt could not be confirmed.';
+      });
+    }
 
     $('sName').textContent=state.name;
     $('sDate').textContent=fmtDate(ended);
@@ -579,6 +717,14 @@
     }
   }
 
+  function initializeLayout(){
+    const layout=BasicsAudit.start(STORAGE_KEY,QUESTIONS,BasicsAudit.shuffle(QUESTIONS.map((_,i)=>i)),()=>BasicsAudit.shuffle(QUESTIONS.map((_,i)=>i)));
+    state.qOrder=layout.order;
+    state.auditOptions=layout.options;
+    state.sheetCompletionSent=false;
+    state.runMisses=0;
+  }
+
   function restartGame(){ clearSave(); location.reload(); }
   window.restartGame = restartGame;
 
@@ -592,12 +738,18 @@
   $('btnStart').addEventListener('click', ()=>{
     const name=($('studentName').value||'').trim();
     if(name.length<2){ setFeedback('bad','Name required','Enter your name to begin.'); return; }
+    const sheetEmail=$('sheetEmail').value.trim().toLowerCase(), sheetPeriod=$('sheetPeriod').value;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sheetEmail)||!sheetPeriod){
+      window.alert('Enter your school email and class period to start.');
+      return;
+    }
+    state.email=sheetEmail; state.period=sheetPeriod;
     state.name=name;
     state.startedAtISO=new Date().toISOString();
     state.startedAtMS=Date.now();
     state.idx=0;
     state.runSeed=(Math.floor(Math.random()*1e9) ^ hash32(name+'|'+state.startedAtISO))>>>0;
-    state.qmeta=freshMeta();
+    state.qmeta=freshMeta(); initializeLayout();
     for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i);
     save();
     $('nameBox').style.display='none';

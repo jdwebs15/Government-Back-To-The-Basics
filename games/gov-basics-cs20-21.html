@@ -154,7 +154,7 @@
 
         <div id="nameBox" class="field">
           <label class="muted" for="studentName"><b>Student Name</b></label>
-          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" />
+          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" /><label for="sheetPeriod">Class period</label> <select id="sheetPeriod"><option value="">Choose period</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select> <label for="sheetEmail">School email</label> <input id="sheetEmail" type="email" autocomplete="email" required>
           <div class="actions">
             <button class="btn primary" id="btnStart">Start</button>
             <button class="btn" id="btnResetAll">Reset Game</button>
@@ -248,6 +248,7 @@
     </div>
   </div>
 
+<script src="basics-audit.js"></script>
 <script>
 (() => {
   const QUESTIONS = [
@@ -713,7 +714,7 @@
     if(q.type === 'slider') return;
     if(Array.isArray(meta.order) && typeof meta.correctShown==='number') return;
     const seed = hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`) ^ 0x555AAA;
-    meta.order = shuffledIndices(q.options.length, seed);
+    meta.order = state.auditOptions?.[state.runOrder?.[runPos]] || shuffledIndices(q.options.length, seed);
     meta.correctShown = meta.order.indexOf(q.answerIndex);
   }
 
@@ -728,7 +729,7 @@
     if(apply) apply.disabled = disabled || !sliderButtonsUnlocked || !currentSliderSelection;
   }
 
-  function markMiss(){ state.qmeta[state.idx].missed=true; }
+  function markMiss(){ state.qmeta[state.idx].missed=true; state.runMisses=(state.runMisses||0)+1; }
   function markDone(){ state.qmeta[state.idx].done=true; }
 
   let currentSliderSelection = '';
@@ -1083,6 +1084,20 @@
     const total=state.runOrder.length;
     const {perfect}=counts();
     const acc=Math.round((perfect/total)*100);
+    if(!state.sheetCompletionSent){
+      state.sheetCompletionSent=true;
+      save();
+      const sheetStatus=document.createElement('p');
+      sheetStatus.setAttribute('role','status');
+      sheetStatus.textContent='Sending completion record…';
+      $('finishBox').appendChild(sheetStatus);
+      void BasicsAudit.send(state,{totalQuestions:total,firstPassCorrect:perfect,
+        endedAt:ended.toISOString(),elapsedSeconds:Math.floor(runMS/1000),
+        totalMissesThisRun:state.runMisses ?? total-perfect,totalAttempts:total+(state.runMisses ?? total-perfect),
+        finalMasteryAchieved:perfect===total}).then(result=>{
+        sheetStatus.textContent=result.ok?'Completion record saved.':'Spreadsheet receipt could not be confirmed.';
+      });
+    }
 
     $('sName').textContent=state.name;
     $('sDate').textContent=fmtDate(ended);
@@ -1109,6 +1124,14 @@
       $('finishBody').textContent=`Accuracy: ${acc}%. Mastery requires 100%. Click Play Again or Restart Game and run it clean.`;
       $('ticket').style.display='none';
     }
+  }
+
+  function initializeLayout(){
+    const layout=BasicsAudit.start(STORAGE_KEY,QUESTIONS,state.runOrder,()=>buildRunOrder((Math.random()*0x100000000)>>>0));
+    state.runOrder=layout.order;
+    state.auditOptions=layout.options;
+    state.sheetCompletionSent=false;
+    state.runMisses=0;
   }
 
   function restartGame(){
@@ -1138,13 +1161,19 @@
       return;
     }
 
+    const sheetEmail=$('sheetEmail').value.trim().toLowerCase(), sheetPeriod=$('sheetPeriod').value;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sheetEmail)||!sheetPeriod){
+      window.alert('Enter your school email and class period to start.');
+      return;
+    }
+    state.email=sheetEmail; state.period=sheetPeriod;
     state.name=name;
     state.startedAtISO=new Date().toISOString();
     state.startedAtMS=Date.now();
     state.idx=0;
     state.runSeed=(Math.floor(Math.random()*1e9) ^ hash32(name+'|'+state.startedAtISO))>>>0;
     state.runOrder=buildRunOrder(state.runSeed);
-    state.qmeta=freshMeta(state.runOrder.length);
+    state.qmeta=freshMeta(state.runOrder.length); initializeLayout();
 
     for(let i=0;i<state.runOrder.length;i++){
       ensureOrder(i);

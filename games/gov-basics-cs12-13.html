@@ -57,7 +57,7 @@
 
         <div id="nameBox" class="field">
           <label class="muted" for="studentName"><b>Student Name</b></label>
-          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" />
+          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" /><label for="sheetPeriod">Class period</label> <select id="sheetPeriod"><option value="">Choose period</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select> <label for="sheetEmail">School email</label> <input id="sheetEmail" type="email" autocomplete="email" required>
           <div class="actions">
             <button class="btn primary" id="btnStart">Start</button>
             <button class="btn" id="btnResetAll">Reset Game</button>
@@ -113,36 +113,375 @@
     </div>
   </div>
 
+<script src="basics-audit.js"></script>
 <script>
 (() => {
   const QUESTIONS = [
-    {id:'g5_01', title:'Legislative role', prompt:'The primary job of the legislative branch is to', options:['Make laws','Interpret laws','Enforce laws','Command the military'], answerIndex:0, hint:'Congress writes laws.', explain:'Correct: the legislative branch makes laws.'},
-    {id:'g5_02', title:'Congress structure', prompt:'Congress is made up of', options:['The House of Representatives and the Senate','The president and vice president','State legislatures only','The Supreme Court and federal courts'], answerIndex:0, hint:'Bicameral legislature.', explain:'Correct: Congress consists of the House and Senate.'},
-    {id:'g5_03', title:'House basis', prompt:'The House of Representatives is based on', options:['Population','Equal representation for every state','Judicial precedent','Executive orders'], answerIndex:0, hint:'More people = more representatives.', explain:'Correct: House membership is based on population.'},
-    {id:'g5_04', title:'Senate basis', prompt:'The Senate gives each state', options:['Two senators','Senators based on population','One senator total','Ten senators'], answerIndex:0, hint:'Equal state representation.', explain:'Correct: each state has two senators.'},
-    {id:'g5_05', title:'Declare war', prompt:'The power to declare war belongs to', options:['Congress','The president alone','The Supreme Court','State governors'], answerIndex:0, hint:'Article I power.', explain:'Correct: Congress has the power to declare war.'},
-    {id:'g5_06', title:'Confirm appointments', prompt:'The power to confirm presidential appointments belongs to', options:['The Senate','The House only','The Supreme Court','The vice president'], answerIndex:0, hint:'Advice and consent.', explain:'Correct: the Senate confirms presidential appointments.'},
-    {id:'g5_07', title:'Impeachment', prompt:'The power of impeachment is best described as', options:['Bringing charges against an official','Convicting an official','Vetoing a bill','Declaring a law unconstitutional'], answerIndex:0, hint:'House impeaches; Senate tries.', explain:'Correct: impeachment means bringing charges.'},
-    {id:'g5_08', title:'House power', prompt:'The House of Representatives has the power to', options:['Impeach federal officials','Ratify treaties','Declare laws unconstitutional','Appoint justices'], answerIndex:0, hint:'House brings charges.', explain:'Correct: the House impeaches federal officials.'},
-    {id:'g5_09', title:'Senate in impeachment', prompt:'The Senate’s role in impeachment is to', options:['Hold the trial and vote to convict or remove','Write the articles of impeachment','Veto bills','Review constitutionality'], answerIndex:0, hint:'Senate tries the case.', explain:'Correct: the Senate holds impeachment trials.'},
-    {id:'g5_10', title:'Executive role', prompt:'The primary job of the executive branch is to', options:['Enforce laws','Make laws','Interpret laws','Write the Constitution'], answerIndex:0, hint:'Exec carries out laws.', explain:'Correct: the executive branch enforces laws.'},
-    {id:'g5_11', title:'Veto', prompt:'The president’s power to reject a bill is called', options:['Veto','Judicial review','Cloture','Ratification'], answerIndex:0, hint:'Rejecting legislation.', explain:'Correct: the president rejects bills through the veto power.'},
-    {id:'g5_12', title:'Commander in chief', prompt:'The president is the commander in chief of the', options:['Armed forces','Supreme Court','House of Representatives','State legislatures'], answerIndex:0, hint:'Military commander.', explain:'Correct: the president is commander in chief of the armed forces.'},
-    {id:'g5_13', title:'Executive order', prompt:'An executive order is', options:['A directive from the president that manages operations of the federal government','A law passed by Congress','A Supreme Court opinion','A treaty with another country'], answerIndex:0, hint:'Presidential directive.', explain:'Correct: executive orders are presidential directives.'},
-    {id:'g5_14', title:'Treaty approval', prompt:'The president makes treaties, but they must be approved by', options:['The Senate','The House only','The Supreme Court','State courts'], answerIndex:0, hint:'Senate advice and consent.', explain:'Correct: the Senate approves treaties.'},
-    {id:'g5_15', title:'Judicial role', prompt:'The primary job of the judicial branch is to', options:['Interpret laws and the Constitution','Enforce laws','Write laws','Collect taxes'], answerIndex:0, hint:'Courts interpret.', explain:'Correct: the judicial branch interprets laws and the Constitution.'},
-    {id:'g5_16', title:'Highest court', prompt:'The highest court in the United States is the', options:['Supreme Court','Court of Appeals','District Court','State Supreme Court'], answerIndex:0, hint:'Top federal court.', explain:'Correct: the Supreme Court is the highest federal court.'},
-    {id:'g5_17', title:'Judicial review', prompt:'Judicial review means the courts can', options:['Declare laws unconstitutional','Write laws','Command armies','Collect taxes'], answerIndex:0, hint:'Strike unconstitutional laws.', explain:'Correct: judicial review allows courts to declare laws unconstitutional.'},
-    {id:'g5_18', title:'Veto as check', prompt:'A presidential veto is a check by the', options:['Executive branch on the legislative branch','Legislative branch on the executive','Judicial branch on the executive','State governments on Congress'], answerIndex:0, hint:'President checks Congress.', explain:'Correct: a veto is an executive check on the legislative branch.'},
-    {id:'g5_19', title:'Override', prompt:'Congress can override a veto with', options:['A two-thirds vote in both houses','A simple majority vote','A Supreme Court order','A state referendum'], answerIndex:0, hint:'Supermajority override.', explain:'Correct: Congress overrides vetoes with a two-thirds vote in both houses.'},
-    {id:'g5_20', title:'Senate confirmation as check', prompt:'The Senate’s confirmation power is a check by the', options:['Legislative branch on the executive branch','Executive on judicial','Judicial on legislative','States on federal'], answerIndex:0, hint:'Advice and consent checks the president.', explain:'Correct: Senate confirmation checks executive appointments.'},
-    {id:'g5_21', title:'Court check on Congress', prompt:'Declaring a law unconstitutional is a check by the', options:['Judicial branch on the legislative branch','Executive on legislative','Legislative on judicial','States on courts'], answerIndex:0, hint:'Courts check laws.', explain:'Correct: judicial review is a judicial check on Congress.'},
-    {id:'g5_22', title:'Impeachment as check', prompt:'Impeachment is a check by the', options:['Legislative branch on the executive or judicial branch','Executive on legislative','Judicial on executive','States on Congress'], answerIndex:0, hint:'Congress can remove officials.', explain:'Correct: impeachment is a legislative check on executive and judicial officials.'},
-    {id:'g5_23', title:'Appointing judges', prompt:'The president appointing judges is a check by the', options:['Executive branch on the judicial branch','Judicial on executive','Legislative on judicial','States on judiciary'], answerIndex:0, hint:'Appointments shape courts.', explain:'Correct: appointing judges gives the executive branch influence over the judiciary.'},
-    {id:'g5_24', title:'Bill becomes law', prompt:'A bill becomes a law after it is passed by Congress and', options:['Signed by the president or passed over a veto','Approved by the Supreme Court first','Approved by state governors','Passed by the Electoral College'], answerIndex:0, hint:'Signature or override.', explain:'Correct: a bill becomes law by presidential signature or veto override.'},
-    {id:'g5_25', title:'District courts', prompt:'Federal district courts are generally', options:['Trial courts','The final court of appeal','Where treaties are ratified','Where bills are written'], answerIndex:0, hint:'District courts hear trials.', explain:'Correct: district courts are federal trial courts.'},
-    {id:'g5_26', title:'Oversight', prompt:'If Congress investigates an executive agency through hearings, that is', options:['Legislative oversight','Judicial review','An executive order','Ratification'], answerIndex:0, hint:'Monitoring executive action.', explain:'Correct: hearings to investigate agencies are legislative oversight.'}
-  ];
+  {
+    "id": "g5_01",
+    "title": "Legislative role",
+    "prompt": "The primary job of the legislative branch is to",
+    "options": [
+      "Make laws",
+      "Interpret laws",
+      "Enforce laws",
+      "Command the military"
+    ],
+    "answerIndex": 0,
+    "hint": "Congress writes laws.",
+    "explain": "Correct: the legislative branch makes laws."
+  },
+  {
+    "id": "g5_02",
+    "title": "Congress structure",
+    "prompt": "Congress is made up of",
+    "options": [
+      "The House of Representatives and the Senate",
+      "The president and vice president",
+      "State legislatures only",
+      "The Supreme Court and federal courts"
+    ],
+    "answerIndex": 0,
+    "hint": "Bicameral legislature.",
+    "explain": "Correct: Congress consists of the House and Senate."
+  },
+  {
+    "id": "g5_03",
+    "title": "House basis",
+    "prompt": "The House of Representatives is based on",
+    "options": [
+      "Population",
+      "Equal representation for every state",
+      "Judicial precedent",
+      "Executive orders"
+    ],
+    "answerIndex": 0,
+    "hint": "More people = more representatives.",
+    "explain": "Correct: House membership is based on population."
+  },
+  {
+    "id": "g5_04",
+    "title": "Senate basis",
+    "prompt": "The Senate gives each state",
+    "options": [
+      "Two senators",
+      "Senators based on population",
+      "One senator total",
+      "Ten senators"
+    ],
+    "answerIndex": 0,
+    "hint": "Equal state representation.",
+    "explain": "Correct: each state has two senators."
+  },
+  {
+    "id": "g5_05",
+    "title": "Declare war",
+    "prompt": "The power to declare war belongs to",
+    "options": [
+      "Congress",
+      "The president alone",
+      "The Supreme Court",
+      "State governors"
+    ],
+    "answerIndex": 0,
+    "hint": "Article I power.",
+    "explain": "Correct: Congress has the power to declare war."
+  },
+  {
+    "id": "g5_06",
+    "title": "Confirm appointments",
+    "prompt": "The power to confirm presidential appointments belongs to",
+    "options": [
+      "The Senate",
+      "The House only",
+      "The Supreme Court",
+      "The vice president"
+    ],
+    "answerIndex": 0,
+    "hint": "Advice and consent.",
+    "explain": "Correct: the Senate confirms presidential appointments."
+  },
+  {
+    "id": "g5_07",
+    "title": "Impeachment",
+    "prompt": "The power of impeachment is best described as",
+    "options": [
+      "Bringing charges against an official",
+      "Convicting an official",
+      "Vetoing a bill",
+      "Declaring a law unconstitutional"
+    ],
+    "answerIndex": 0,
+    "hint": "House impeaches; Senate tries.",
+    "explain": "Correct: impeachment means bringing charges."
+  },
+  {
+    "id": "g5_08",
+    "title": "House power",
+    "prompt": "The House of Representatives has the power to",
+    "options": [
+      "Impeach federal officials",
+      "Ratify treaties",
+      "Declare laws unconstitutional",
+      "Appoint justices"
+    ],
+    "answerIndex": 0,
+    "hint": "House brings charges.",
+    "explain": "Correct: the House impeaches federal officials."
+  },
+  {
+    "id": "g5_09",
+    "title": "Senate in impeachment",
+    "prompt": "The Senate’s role in impeachment is to",
+    "options": [
+      "Hold the trial and vote to convict or remove",
+      "Write the articles of impeachment",
+      "Veto bills",
+      "Review constitutionality"
+    ],
+    "answerIndex": 0,
+    "hint": "Senate tries the case.",
+    "explain": "Correct: the Senate holds impeachment trials."
+  },
+  {
+    "id": "g5_10",
+    "title": "Executive role",
+    "prompt": "The primary job of the executive branch is to",
+    "options": [
+      "Enforce laws",
+      "Make laws",
+      "Interpret laws",
+      "Write the Constitution"
+    ],
+    "answerIndex": 0,
+    "hint": "Exec carries out laws.",
+    "explain": "Correct: the executive branch enforces laws."
+  },
+  {
+    "id": "g5_11",
+    "title": "Veto",
+    "prompt": "The president’s power to reject a bill is called",
+    "options": [
+      "Veto",
+      "Judicial review",
+      "Cloture",
+      "Ratification"
+    ],
+    "answerIndex": 0,
+    "hint": "Rejecting legislation.",
+    "explain": "Correct: the president rejects bills through the veto power."
+  },
+  {
+    "id": "g5_12",
+    "title": "Commander in chief",
+    "prompt": "The president is the commander in chief of the",
+    "options": [
+      "Armed forces",
+      "Supreme Court",
+      "House of Representatives",
+      "State legislatures"
+    ],
+    "answerIndex": 0,
+    "hint": "Military commander.",
+    "explain": "Correct: the president is commander in chief of the armed forces."
+  },
+  {
+    "id": "g5_13",
+    "title": "Executive order",
+    "prompt": "An executive order is",
+    "options": [
+      "Presidential directive to federal agencies",
+      "A law passed by Congress",
+      "A Supreme Court opinion",
+      "A treaty with another country"
+    ],
+    "answerIndex": 0,
+    "hint": "Presidential directive.",
+    "explain": "Correct: executive orders are presidential directives."
+  },
+  {
+    "id": "g5_14",
+    "title": "Treaty approval",
+    "prompt": "The president makes treaties, but they must be approved by",
+    "options": [
+      "The Senate",
+      "The House only",
+      "The Supreme Court",
+      "State courts"
+    ],
+    "answerIndex": 0,
+    "hint": "Senate advice and consent.",
+    "explain": "Correct: the Senate approves treaties."
+  },
+  {
+    "id": "g5_15",
+    "title": "Judicial role",
+    "prompt": "The primary job of the judicial branch is to",
+    "options": [
+      "Interpret laws",
+      "Enforce laws",
+      "Write laws",
+      "Collect taxes"
+    ],
+    "answerIndex": 0,
+    "hint": "Courts interpret.",
+    "explain": "Correct: the judicial branch interprets laws and the Constitution."
+  },
+  {
+    "id": "g5_16",
+    "title": "Highest court",
+    "prompt": "The highest court in the United States is the",
+    "options": [
+      "Supreme Court",
+      "Court of Appeals",
+      "District Court",
+      "State Supreme Court"
+    ],
+    "answerIndex": 0,
+    "hint": "Top federal court.",
+    "explain": "Correct: the Supreme Court is the highest federal court."
+  },
+  {
+    "id": "g5_17",
+    "title": "Judicial review",
+    "prompt": "Judicial review means the courts can",
+    "options": [
+      "Invalidate unconstitutional laws",
+      "Write laws",
+      "Command armies",
+      "Collect taxes"
+    ],
+    "answerIndex": 0,
+    "hint": "Strike unconstitutional laws.",
+    "explain": "Correct: judicial review allows courts to declare laws unconstitutional."
+  },
+  {
+    "id": "g5_18",
+    "title": "Veto as check",
+    "prompt": "A presidential veto is a check by the",
+    "options": [
+      "Executive branch on the legislative branch",
+      "Legislative branch on the executive",
+      "Judicial branch on the executive",
+      "State governments on Congress"
+    ],
+    "answerIndex": 0,
+    "hint": "President checks Congress.",
+    "explain": "Correct: a veto is an executive check on the legislative branch."
+  },
+  {
+    "id": "g5_19",
+    "title": "Override",
+    "prompt": "Congress can override a veto with",
+    "options": [
+      "A two-thirds vote in both houses",
+      "A simple majority vote",
+      "A Supreme Court order",
+      "A state referendum"
+    ],
+    "answerIndex": 0,
+    "hint": "Supermajority override.",
+    "explain": "Correct: Congress overrides vetoes with a two-thirds vote in both houses."
+  },
+  {
+    "id": "g5_20",
+    "title": "Senate confirmation as check",
+    "prompt": "The Senate’s confirmation power is a check by the",
+    "options": [
+      "Congress checks the president",
+      "Executive on judicial",
+      "Judicial on legislative",
+      "States on federal"
+    ],
+    "answerIndex": 0,
+    "hint": "Advice and consent checks the president.",
+    "explain": "Correct: Senate confirmation checks executive appointments."
+  },
+  {
+    "id": "g5_21",
+    "title": "Court check on Congress",
+    "prompt": "Declaring a law unconstitutional is a check by the",
+    "options": [
+      "Courts check Congress",
+      "Executive on legislative",
+      "Legislative on judicial",
+      "States on courts"
+    ],
+    "answerIndex": 0,
+    "hint": "Courts check laws.",
+    "explain": "Correct: judicial review is a judicial check on Congress."
+  },
+  {
+    "id": "g5_22",
+    "title": "Impeachment as check",
+    "prompt": "Impeachment is a check by the",
+    "options": [
+      "Congress checks either other branch",
+      "Executive on legislative",
+      "Judicial on executive",
+      "States on Congress"
+    ],
+    "answerIndex": 0,
+    "hint": "Congress can remove officials.",
+    "explain": "Correct: impeachment is a legislative check on executive and judicial officials."
+  },
+  {
+    "id": "g5_23",
+    "title": "Appointing judges",
+    "prompt": "The president appointing judges is a check by the",
+    "options": [
+      "The president checks the courts",
+      "Judicial on executive",
+      "Legislative on judicial",
+      "States on judiciary"
+    ],
+    "answerIndex": 0,
+    "hint": "Appointments shape courts.",
+    "explain": "Correct: appointing judges gives the executive branch influence over the judiciary."
+  },
+  {
+    "id": "g5_24",
+    "title": "Bill becomes law",
+    "prompt": "A bill becomes a law after it is passed by Congress and",
+    "options": [
+      "Signed by the president or passed over a veto",
+      "Approved by the Supreme Court first",
+      "Approved by state governors",
+      "Passed by the Electoral College"
+    ],
+    "answerIndex": 0,
+    "hint": "Signature or override.",
+    "explain": "Correct: a bill becomes law by presidential signature or veto override."
+  },
+  {
+    "id": "g5_25",
+    "title": "District courts",
+    "prompt": "Federal district courts are generally",
+    "options": [
+      "Trial courts",
+      "The final court of appeal",
+      "Where treaties are ratified",
+      "Where bills are written"
+    ],
+    "answerIndex": 0,
+    "hint": "District courts hear trials.",
+    "explain": "Correct: district courts are federal trial courts."
+  },
+  {
+    "id": "g5_26",
+    "title": "Oversight",
+    "prompt": "If Congress investigates an executive agency through hearings, that is",
+    "options": [
+      "Legislative oversight",
+      "Judicial review",
+      "An executive order",
+      "Ratification"
+    ],
+    "answerIndex": 0,
+    "hint": "Monitoring executive action.",
+    "explain": "Correct: hearings to investigate agencies are legislative oversight."
+  }
+];
 
   const STORAGE_KEY='BTB_GOV_CS12_13_V2';
   const errbox=document.getElementById('errbox'), errtext=document.getElementById('errtext');
@@ -169,11 +508,11 @@
   setInterval(updateStats,500);
   function setFeedback(kind,title,body){ $('feedback').className=`msg ${kind}`; $('fbTitle').textContent=title; $('fbBody').textContent=body; }
   function clearFeedback(){ $('feedback').className='msg'; $('fbTitle').textContent=''; $('fbBody').textContent=''; }
-  function ensureOrder(i){ const q=QUESTIONS[i], meta=state.qmeta[i]; if(Array.isArray(meta.order)) return; const seed=hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`)^0x555AAA; meta.order=shuffledIndices(q.options.length, seed); meta.correctShown=meta.order.indexOf(q.answerIndex); }
+  function ensureOrder(i){ const q=QUESTIONS[state.qOrder?.[i] ?? i], meta=state.qmeta[i]; if(Array.isArray(meta.order)) return; const seed=hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`)^0x555AAA; meta.order=state.auditOptions?.[state.qOrder?.[i]] || shuffledIndices(q.options.length, seed); meta.correctShown=meta.order.indexOf(q.answerIndex); }
   function disableInputs(disabled){ document.querySelectorAll('.optbtn').forEach(b=>b.disabled=disabled); }
 
   function showQuestion(){
-    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    const q=QUESTIONS[state.qOrder?.[state.idx] ?? state.idx], meta=state.qmeta[state.idx];
     clearFeedback(); $('btnNext').disabled=true; $('btnHint').disabled=true; $('qtitle').textContent=q.title; $('qtext').textContent=q.prompt; $('opts').innerHTML='';
     ensureOrder(state.idx);
     const letters=['A','B','C','D'];
@@ -183,10 +522,10 @@
   }
 
   function answer(shownIdx){
-    const q=QUESTIONS[state.idx], meta=state.qmeta[state.idx];
+    const q=QUESTIONS[state.qOrder?.[state.idx] ?? state.idx], meta=state.qmeta[state.idx];
     if(meta.done) return;
     if(shownIdx===meta.correctShown){ meta.done=true; setFeedback('good','Correct ✅', q.explain); disableInputs(true); $('btnNext').disabled=false; }
-    else { meta.missed=true; setFeedback('warn','Hint 💡', q.hint); }
+    else { meta.missed=true; state.runMisses=(state.runMisses||0)+1; setFeedback('warn','Hint 💡', q.hint); }
     save(); updateStats();
   }
 
@@ -196,6 +535,20 @@
     $('nameBox').style.display='none'; $('questionBox').style.display='none'; $('finishBox').style.display='';
     const ended=new Date(), start=new Date(state.startedAtISO), runMS=Date.now()-state.startedAtMS;
     const total=QUESTIONS.length, {perfect}=counts(), acc=Math.round((perfect/total)*100);
+    if(!state.sheetCompletionSent){
+      state.sheetCompletionSent=true;
+      save();
+      const sheetStatus=document.createElement('p');
+      sheetStatus.setAttribute('role','status');
+      sheetStatus.textContent='Sending completion record…';
+      $('finishBox').appendChild(sheetStatus);
+      void BasicsAudit.send(state,{totalQuestions:total,firstPassCorrect:perfect,
+        endedAt:ended.toISOString(),elapsedSeconds:Math.floor(runMS/1000),
+        totalMissesThisRun:state.runMisses ?? total-perfect,totalAttempts:total+(state.runMisses ?? total-perfect),
+        finalMasteryAchieved:perfect===total}).then(result=>{
+        sheetStatus.textContent=result.ok?'Completion record saved.':'Spreadsheet receipt could not be confirmed.';
+      });
+    }
     $('sName').textContent=state.name; $('sDate').textContent=fmtDate(ended); $('sStart').textContent=fmtTime(start); $('sEnd').textContent=fmtTime(ended); $('sRun').textContent=msToHMS(runMS); $('sAcc').textContent=`${acc}%`;
     if(perfect===total){
       $('finishTitle').textContent='Mastery achieved ✅'; $('finishBody').textContent='You finished with 100% accuracy (0 misses). Screenshot the ticket.'; $('ticket').style.display='';
@@ -208,8 +561,22 @@
     }
   }
 
+  function initializeLayout(){
+    const layout=BasicsAudit.start(STORAGE_KEY,QUESTIONS,BasicsAudit.shuffle(QUESTIONS.map((_,i)=>i)),()=>BasicsAudit.shuffle(QUESTIONS.map((_,i)=>i)));
+    state.qOrder=layout.order;
+    state.auditOptions=layout.options;
+    state.sheetCompletionSent=false;
+    state.runMisses=0;
+  }
+
   function restartGame(){ clearSave(); location.reload(); }
-  $('btnStart').addEventListener('click', ()=>{ const name=($('studentName').value||'').trim(); if(name.length<2){ setFeedback('warn','Name required','Enter your name to begin.'); return; } state.name=name; state.startedAtISO=new Date().toISOString(); state.startedAtMS=Date.now(); state.idx=0; state.runSeed=(Math.floor(Math.random()*1e9)^hash32(name+'|'+state.startedAtISO))>>>0; state.qmeta=freshMeta(); for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i); save(); $('nameBox').style.display='none'; $('questionBox').style.display=''; showQuestion(); });
+  $('btnStart').addEventListener('click', ()=>{ const name=($('studentName').value||'').trim(); if(name.length<2){ setFeedback('warn','Name required','Enter your name to begin.'); return; } const sheetEmail=$('sheetEmail').value.trim().toLowerCase(), sheetPeriod=$('sheetPeriod').value;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sheetEmail)||!sheetPeriod){
+      window.alert('Enter your school email and class period to start.');
+      return;
+    }
+    state.email=sheetEmail; state.period=sheetPeriod;
+    state.name=name; state.startedAtISO=new Date().toISOString(); state.startedAtMS=Date.now(); state.idx=0; state.runSeed=(Math.floor(Math.random()*1e9)^hash32(name+'|'+state.startedAtISO))>>>0; state.qmeta=freshMeta(); initializeLayout(); for(let i=0;i<QUESTIONS.length;i++) ensureOrder(i); save(); $('nameBox').style.display='none'; $('questionBox').style.display=''; showQuestion(); });
   $('studentName').addEventListener('keydown', e=>{ if(e.key==='Enter') $('btnStart').click(); });
   $('btnResetAll').addEventListener('click', restartGame); $('btnRestartMid').addEventListener('click', restartGame); $('btnRestartGame').addEventListener('click', restartGame); $('btnReset').addEventListener('click', restartGame);
   $('btnBackHome').addEventListener('click', ()=>location.href='../index.html');

@@ -95,7 +95,7 @@
 
         <div id="nameBox" class="field">
           <label class="muted" for="studentName"><b>Student Name</b></label>
-          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" />
+          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" /><label for="sheetPeriod">Class period</label> <select id="sheetPeriod"><option value="">Choose period</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select> <label for="sheetEmail">School email</label> <input id="sheetEmail" type="email" autocomplete="email" required>
           <div class="actions">
             <button class="btn primary" id="btnStart">Start</button>
             <button class="btn" id="btnResetAll">Reset Game</button>
@@ -187,378 +187,501 @@
     </div>
   </div>
 
+<script src="basics-audit.js"></script>
 <script>
 (() => {
   const QUESTION_BANK = [
-    {
-      id:'g4r_01',
-      title:'Reconstruction Change',
-      prompt:'A formerly enslaved person is legally freed after the Civil War. Which constitutional change made this possible?',
-      options:['13th Amendment','14th Amendment','15th Amendment','19th Amendment'],
-      answerIndex:0,
-      hint:'This amendment ended slavery itself.',
-      explain:'Correct: the 13th Amendment abolished slavery.'
-    },
-    {
-      id:'g4r_02',
-      title:'Reconstruction Change',
-      prompt:'Which problem was the first Reconstruction Amendment designed to solve?',
-      options:['The existence of slavery','Lack of women’s suffrage','Poll taxes in elections','Presidential succession confusion'],
-      answerIndex:0,
-      hint:'Think the most basic post-Civil War injustice.',
-      explain:'Correct: the 13th Amendment was designed to abolish slavery.'
-    },
-    {
-      id:'g4r_03',
-      title:'Postwar Rights',
-      prompt:'A person born in the United States is recognized as a citizen. Which amendment is most directly connected to that protection?',
-      options:['14th Amendment','13th Amendment','22nd Amendment','24th Amendment'],
-      answerIndex:0,
-      hint:'This amendment defines national citizenship.',
-      explain:'Correct: the 14th Amendment defined and extended citizenship to people born or naturalized in the United States.'
-    },
-    {
-      id:'g4r_04',
-      title:'Equal Treatment Under Law',
-      prompt:'A state denies a person equal treatment under the law. Which amendment is most relevant?',
-      options:['14th Amendment','13th Amendment','22nd Amendment','24th Amendment'],
-      answerIndex:0,
-      hint:'Equal protection is the key phrase.',
-      explain:'Correct: the 14th Amendment includes the equal protection clause.'
-    },
-    {
-      id:'g4r_05',
-      title:'Fair Government Procedures',
-      prompt:'The government must follow fair procedures before taking away rights. This constitutional principle is called',
-      options:['Due process','Judicial review','Checks and balances','Popular sovereignty'],
-      answerIndex:0,
-      hint:'Fair procedures is the clue.',
-      explain:'Correct: due process means the government must follow fair procedures before depriving a person of life, liberty, or property.'
-    },
-    {
-      id:'g4r_06',
-      title:'Equal Treatment Under Law',
-      prompt:'A law must be applied equally to all people. This idea is called',
-      options:['Equal protection','Judicial restraint','Federalism','Ratification'],
-      answerIndex:0,
-      hint:'Think equal treatment under the law.',
-      explain:'Correct: equal protection requires the government to apply the law equally.'
-    },
-    {
-      id:'g4r_07',
-      title:'Postwar Rights',
-      prompt:'Southern states passed Black Codes to restrict the freedom of formerly enslaved people after the Civil War. Which amendment most directly responded by defining citizenship and requiring equal protection and due process?',
-      options:['14th Amendment','13th Amendment','15th Amendment','24th Amendment'],
-      answerIndex:0,
-      hint:'This amendment did more than end slavery; it defined citizenship and rights.',
-      explain:'Correct: the 14th Amendment responded to abuses such as Black Codes by defining citizenship and requiring due process and equal protection.'
-    },
-    {
-      id:'g4r_08',
-      title:'Postwar Rights',
-      prompt:'Which problem most directly led Congress to support the 14th Amendment?',
-      options:[
-        'Southern states restricting African Americans through Black Codes',
-        'Women being denied voting rights',
-        'Confusion over D.C. electoral votes',
-        'Presidents serving too many terms'
-      ],
-      answerIndex:0,
-      hint:'Think restrictions placed on freedmen after the Civil War.',
-      explain:'Correct: Black Codes showed that ending slavery alone was not enough, helping lead to the 14th Amendment.'
-    },
-    {
-      id:'g4r_09',
-      title:'Voting Rights Protection',
-      prompt:'A state tries to deny a citizen the right to vote because of race. Which amendment is being violated?',
-      options:['15th Amendment','19th Amendment','24th Amendment','26th Amendment'],
-      answerIndex:0,
-      hint:'This amendment bars racial discrimination in voting.',
-      explain:'Correct: the 15th Amendment prohibits denying the vote based on race, color, or previous condition of servitude.'
-    },
-    {
-      id:'g4r_10',
-      title:'Voting Rights Protection',
-      prompt:'Which problem was the post-Civil War voting amendment designed to address?',
-      options:['Racial discrimination in voting','Economic barriers to voting','Women being denied the vote','Confusion in Electoral College ballots'],
-      answerIndex:0,
-      hint:'Think race and voting after the Civil War.',
-      explain:'Correct: the 15th Amendment was designed to stop racial discrimination in voting.'
-    },
-    {
-      id:'g4r_11',
-      title:'Continuing Inequality',
-      prompt:'Even after the Reconstruction Amendments were passed, African Americans still faced segregation and discrimination through',
-      options:['Jim Crow laws','The 26th Amendment','The Electoral College','The 22nd Amendment'],
-      answerIndex:0,
-      hint:'These state and local laws enforced racial separation.',
-      explain:'Correct: Jim Crow laws enforced segregation and showed that constitutional amendments did not create immediate equality.'
-    },
-    {
-      id:'g4r_12',
-      title:'Continuing Inequality',
-      prompt:'Which statement best explains why the Reconstruction Amendments did not create immediate equality?',
-      options:[
-        'States continued using discriminatory laws and practices',
-        'The amendments only applied to federal judges',
-        'The amendments ended voting permanently',
-        'Congress repealed the amendments right away'
-      ],
-      answerIndex:0,
-      hint:'Think about what states did after Reconstruction.',
-      explain:'Correct: despite the new constitutional protections, states continued to use discriminatory laws and practices such as Jim Crow.'
-    },
-
-    {
-      id:'g4r_13',
-      title:'Expanded Suffrage',
-      prompt:'A woman is denied the right to vote because of her sex. Which amendment is most relevant?',
-      options:['19th Amendment','15th Amendment','24th Amendment','23rd Amendment'],
-      answerIndex:0,
-      hint:'This amendment deals with women’s suffrage.',
-      explain:'Correct: the 19th Amendment prohibited denying the vote on the basis of sex.'
-    },
-    {
-      id:'g4r_14',
-      title:'Expanded Suffrage',
-      prompt:'Which amendment expanded voting rights to women nationwide?',
-      options:['19th Amendment','17th Amendment','22nd Amendment','25th Amendment'],
-      answerIndex:0,
-      hint:'This is the women’s suffrage amendment.',
-      explain:'Correct: the 19th Amendment expanded voting rights to women.'
-    },
-    {
-      id:'g4r_15',
-      title:'Voting Barriers',
-      prompt:'A citizen must pay money to vote in a federal election. Which amendment is being violated?',
-      options:['24th Amendment','26th Amendment','14th Amendment','22nd Amendment'],
-      answerIndex:0,
-      hint:'Think financial barrier to voting.',
-      explain:'Correct: the 24th Amendment prohibited poll taxes in federal elections.'
-    },
-    {
-      id:'g4r_16',
-      title:'Voting Barriers',
-      prompt:'Poll taxes were often used in the South during the Jim Crow era to suppress the votes of African Americans and poor citizens. Which amendment was added in response to that barrier?',
-      options:['24th Amendment','15th Amendment','19th Amendment','26th Amendment'],
-      answerIndex:0,
-      hint:'This amendment targeted a money requirement for voting.',
-      explain:'Correct: the 24th Amendment prohibited poll taxes in federal elections.'
-    },
-    {
-      id:'g4r_17',
-      title:'Expanded Suffrage',
-      prompt:'A 19-year-old citizen is denied the right to vote. Which amendment is most relevant?',
-      options:['26th Amendment','19th Amendment','15th Amendment','23rd Amendment'],
-      answerIndex:0,
-      hint:'This amendment lowered the voting age.',
-      explain:'Correct: the 26th Amendment lowered the voting age to 18.'
-    },
-    {
-      id:'g4r_18',
-      title:'Expanded Suffrage',
-      prompt:'Which historical issue most directly helped lead to the amendment lowering the voting age to 18?',
-      options:[
-        'The Vietnam War draft',
-        'The election of 1800',
-        'Franklin Roosevelt’s four terms',
-        'Jim Crow segregation laws'
-      ],
-      answerIndex:0,
-      hint:'Think “old enough to fight, old enough to vote.”',
-      explain:'Correct: the Vietnam War draft helped drive support for the 26th Amendment lowering the voting age to 18.'
-    },
-    {
-      id:'g4r_19',
-      title:'Expanded Suffrage',
-      prompt:'Why was the 26th Amendment added to the Constitution?',
-      options:[
-        'Because many argued that people old enough to be drafted should be allowed to vote',
-        'Because Washington, D.C. needed electoral votes',
-        'Because presidents were serving too many terms',
-        'Because states were using Black Codes'
-      ],
-      answerIndex:0,
-      hint:'This amendment is tied to youth voting during wartime.',
-      explain:'Correct: the 26th Amendment reflected the argument that 18-year-olds old enough to be drafted should also be allowed to vote.'
-    },
-    {
-      id:'g4r_20',
-      title:'Voting Rights Comparison',
-      prompt:'Which pair of amendments both expanded voting rights to disenfranchised groups?',
-      options:['15th and 19th','13th and 22nd','17th and 25th','12th and 23rd'],
-      answerIndex:0,
-      hint:'Think race and sex-based voting protections.',
-      explain:'Correct: the 15th and 19th Amendments both expanded voting rights.'
-    },
-    {
-      id:'g4r_21',
-      title:'Voting Rights Comparison',
-      prompt:'Which list includes only amendments that expanded voting rights?',
-      options:[
-        '15th, 19th, 24th, and 26th',
-        '12th, 17th, 22nd, and 25th',
-        '13th, 14th, 22nd, and 23rd',
-        '14th, 17th, 23rd, and 25th'
-      ],
-      answerIndex:0,
-      hint:'Look for amendments about race, sex, poll taxes, and age.',
-      explain:'Correct: the 15th, 19th, 24th, and 26th Amendments all expanded or protected voting rights.'
-    },
-
-    {
-      id:'g4r_22',
-      title:'Electoral College Change',
-      prompt:'The election of 1800 showed a major weakness in the original Electoral College system when Thomas Jefferson and Aaron Burr ended in a tie. Which amendment was added in response?',
-      options:['12th Amendment','17th Amendment','22nd Amendment','23rd Amendment'],
-      answerIndex:0,
-      hint:'This amendment required separate electoral votes for president and vice president.',
-      explain:'Correct: the 12th Amendment was added after the election of 1800 to prevent ties like the Jefferson-Burr deadlock.'
-    },
-    {
-      id:'g4r_23',
-      title:'Electoral College Change',
-      prompt:'Which event most directly led to the requirement that electors cast separate ballots for president and vice president?',
-      options:[
-        'The tie between Jefferson and Burr in the election of 1800',
-        'The assassination of President Kennedy',
-        'Franklin Roosevelt serving four terms',
-        'The Vietnam War draft'
-      ],
-      answerIndex:0,
-      hint:'Think early republic election crisis.',
-      explain:'Correct: the tie between Jefferson and Burr exposed a flaw in the original Electoral College system and led to the 12th Amendment.'
-    },
-    {
-      id:'g4r_24',
-      title:'Presidential Elections',
-      prompt:'Residents of Washington, D.C. take part in choosing the president because of which amendment?',
-      options:['23rd Amendment','17th Amendment','24th Amendment','25th Amendment'],
-      answerIndex:0,
-      hint:'This amendment gave D.C. electors.',
-      explain:'Correct: the 23rd Amendment granted Washington, D.C. electoral votes.'
-    },
-    {
-      id:'g4r_25',
-      title:'Presidential Elections',
-      prompt:'Which factor most directly led to the amendment giving Washington, D.C. electoral votes?',
-      options:[
-        'Its growing population',
-        'The Vietnam War draft',
-        'A tie in the Electoral College',
-        'The rise of Black Codes'
-      ],
-      answerIndex:0,
-      hint:'Think representation concerns for people living in the capital.',
-      explain:'Correct: the 23rd Amendment gave Washington, D.C. electoral votes in response to its growing population.'
-    },
-    {
-      id:'g4r_26',
-      title:'Presidential Elections',
-      prompt:'The Electoral College is the system used to elect the',
-      options:['President and vice president','Members of the Supreme Court','U.S. senators','Cabinet secretaries'],
-      answerIndex:0,
-      hint:'Think the top two executive offices.',
-      explain:'Correct: the Electoral College is used to elect the president and vice president.'
-    },
-    {
-      id:'g4r_27',
-      title:'Presidential Elections',
-      prompt:'A state’s number of electors is based mainly on its',
-      options:['Senators plus representatives.','Land area','State income','Number of court districts'],
-      answerIndex:0,
-      hint:'Representation in Congress',
-      explain:'Correct: a state’s electoral votes are based mainly on its representation in Congress.'
-    },
-    {
-      id:'g4r_28',
-      title:'Presidential Limits',
-      prompt:'A president cannot run for a third elected term because of which amendment?',
-      options:['22nd Amendment','25th Amendment','19th Amendment','14th Amendment'],
-      answerIndex:0,
-      hint:'This amendment set presidential term limits.',
-      explain:'Correct: the 22nd Amendment limits presidents to two elected terms.'
-    },
-    {
-      id:'g4r_29',
-      title:'Presidential Limits',
-      prompt:'Which historical example most directly led to the adoption of presidential term limits?',
-      options:[
-        'Franklin Roosevelt serving four terms',
-        'Jefferson and Burr tying in 1800',
-        'The Vietnam War draft',
-        'Black Codes in the South'
-      ],
-      answerIndex:0,
-      hint:'Think longest presidency in U.S. history.',
-      explain:'Correct: Franklin D. Roosevelt’s four elections helped lead to the 22nd Amendment establishing presidential term limits.'
-    },
-    {
-      id:'g4r_30',
-      title:'Presidential Limits',
-      prompt:'Why was the 22nd Amendment added to the Constitution?',
-      options:[
-        'To prevent presidents from serving unlimited terms',
-        'To give D.C. electoral votes',
-        'To lower the voting age',
-        'To prohibit poll taxes'
-      ],
-      answerIndex:0,
-      hint:'It was a response to one president serving far longer than the earlier tradition.',
-      explain:'Correct: the 22nd Amendment limited presidents to two elected terms after concern caused by Franklin Roosevelt’s four terms.'
-    },
-    {
-      id:'g4r_31',
-      title:'Presidential Succession',
-      prompt:'A president becomes unable to perform official duties. Which amendment explains what happens next?',
-      options:['25th Amendment','23rd Amendment','17th Amendment','15th Amendment'],
-      answerIndex:0,
-      hint:'Succession and disability are the clues.',
-      explain:'Correct: the 25th Amendment clarified presidential succession and disability procedures.'
-    },
-    {
-      id:'g4r_32',
-      title:'Presidential Succession',
-      prompt:'Concern over presidential succession and disability increased after the assassination of John F. Kennedy. Which amendment addressed these issues?',
-      options:['25th Amendment','23rd Amendment','22nd Amendment','19th Amendment'],
-      answerIndex:0,
-      hint:'This amendment explains succession, disability, and vice-presidential replacement.',
-      explain:'Correct: the 25th Amendment clarified presidential succession, disability, and how to fill a vice-presidential vacancy.'
-    },
-    {
-      id:'g4r_33',
-      title:'Presidential Succession',
-      prompt:'Which situation most directly showed the need for a clearer constitutional method for handling presidential disability and vice-presidential vacancy?',
-      options:[
-        'Kennedy’s assassination and uncertainty about succession',
-        'The election tie of 1800',
-        'Franklin Roosevelt serving four terms',
-        'The poll tax in southern elections'
-      ],
-      answerIndex:0,
-      hint:'Think 1960s crisis, not early republic elections.',
-      explain:'Correct: Kennedy’s assassination highlighted the need for clearer succession and disability procedures, leading to the 25th Amendment.'
-    },
-
-    {
-      id:'g4r_34',
-      title:'Reconstruction Comparison',
-      prompt:'The 13th, 14th, and 15th Amendments were all passed mainly to',
-      options:['Extend rights and protections after the Civil War','Expand presidential term limits','Create the Electoral College','Lower the voting age'],
-      answerIndex:0,
-      hint:'These are the Reconstruction Amendments.',
-      explain:'Correct: the Reconstruction Amendments were meant to extend rights and protections after the Civil War.'
-    },
-    {
-      id:'g4r_35',
-      title:'Amendment Methods',
-      prompt:'Which amendment was most directly aimed at protecting African Americans from racial discrimination in voting?',
-      options:['15th Amendment','19th Amendment','24th Amendment','26th Amendment'],
-      answerIndex:0,
-      hint:'Think voting rights specifically tied to race after the Civil War.',
-      explain:'Correct: the 15th Amendment prohibited denying voting rights on the basis of race, color, or previous condition of servitude.'
-    }
-  ];
+  {
+    "id": "g4r_01",
+    "title": "Reconstruction Change",
+    "prompt": "A formerly enslaved person is legally freed after the Civil War. Which constitutional change made this possible?",
+    "options": [
+      "13th Amendment",
+      "14th Amendment",
+      "15th Amendment",
+      "19th Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment ended slavery itself.",
+    "explain": "Correct: the 13th Amendment abolished slavery."
+  },
+  {
+    "id": "g4r_02",
+    "title": "Reconstruction Change",
+    "prompt": "Which problem was the first Reconstruction Amendment designed to solve?",
+    "options": [
+      "The existence of slavery",
+      "Lack of women’s suffrage",
+      "Poll taxes in elections",
+      "Presidential succession confusion"
+    ],
+    "answerIndex": 0,
+    "hint": "Think the most basic post-Civil War injustice.",
+    "explain": "Correct: the 13th Amendment was designed to abolish slavery."
+  },
+  {
+    "id": "g4r_03",
+    "title": "Postwar Rights",
+    "prompt": "A person born in the United States is recognized as a citizen. Which amendment is most directly connected to that protection?",
+    "options": [
+      "14th Amendment",
+      "13th Amendment",
+      "22nd Amendment",
+      "24th Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment defines national citizenship.",
+    "explain": "Correct: the 14th Amendment defined and extended citizenship to people born or naturalized in the United States."
+  },
+  {
+    "id": "g4r_04",
+    "title": "Equal Treatment Under Law",
+    "prompt": "A state denies a person equal treatment under the law. Which amendment is most relevant?",
+    "options": [
+      "14th Amendment",
+      "13th Amendment",
+      "22nd Amendment",
+      "24th Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "Equal protection is the key phrase.",
+    "explain": "Correct: the 14th Amendment includes the equal protection clause."
+  },
+  {
+    "id": "g4r_05",
+    "title": "Fair Government Procedures",
+    "prompt": "The government must follow fair procedures before taking away rights. This constitutional principle is called",
+    "options": [
+      "Due process",
+      "Judicial review",
+      "Checks and balances",
+      "Popular sovereignty"
+    ],
+    "answerIndex": 0,
+    "hint": "Fair procedures is the clue.",
+    "explain": "Correct: due process means the government must follow fair procedures before depriving a person of life, liberty, or property."
+  },
+  {
+    "id": "g4r_06",
+    "title": "Equal Treatment Under Law",
+    "prompt": "A law must be applied equally to all people. This idea is called",
+    "options": [
+      "Equal protection",
+      "Judicial restraint",
+      "Federalism",
+      "Ratification"
+    ],
+    "answerIndex": 0,
+    "hint": "Think equal treatment under the law.",
+    "explain": "Correct: equal protection requires the government to apply the law equally."
+  },
+  {
+    "id": "g4r_07",
+    "title": "Postwar Rights",
+    "prompt": "Southern states passed Black Codes to restrict the freedom of formerly enslaved people after the Civil War. Which amendment most directly responded by defining citizenship and requiring equal protection and due process?",
+    "options": [
+      "14th Amendment",
+      "13th Amendment",
+      "15th Amendment",
+      "24th Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment did more than end slavery; it defined citizenship and rights.",
+    "explain": "Correct: the 14th Amendment responded to abuses such as Black Codes by defining citizenship and requiring due process and equal protection."
+  },
+  {
+    "id": "g4r_08",
+    "title": "Postwar Rights",
+    "prompt": "Which problem most directly led Congress to support the 14th Amendment?",
+    "options": [
+      "Southern Black Codes",
+      "Women being denied voting rights",
+      "Confusion over D.C. electoral votes",
+      "Presidents serving too many terms"
+    ],
+    "answerIndex": 0,
+    "hint": "Think restrictions placed on freedmen after the Civil War.",
+    "explain": "Correct: Black Codes showed that ending slavery alone was not enough, helping lead to the 14th Amendment."
+  },
+  {
+    "id": "g4r_09",
+    "title": "Voting Rights Protection",
+    "prompt": "A state tries to deny a citizen the right to vote because of race. Which amendment is being violated?",
+    "options": [
+      "15th Amendment",
+      "19th Amendment",
+      "24th Amendment",
+      "26th Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment bars racial discrimination in voting.",
+    "explain": "Correct: the 15th Amendment prohibits denying the vote based on race, color, or previous condition of servitude."
+  },
+  {
+    "id": "g4r_10",
+    "title": "Voting Rights Protection",
+    "prompt": "Which problem was the post-Civil War voting amendment designed to address?",
+    "options": [
+      "Racial discrimination in voting",
+      "Economic barriers to voting",
+      "Women being denied the vote",
+      "Confusion in Electoral College ballots"
+    ],
+    "answerIndex": 0,
+    "hint": "Think race and voting after the Civil War.",
+    "explain": "Correct: the 15th Amendment was designed to stop racial discrimination in voting."
+  },
+  {
+    "id": "g4r_11",
+    "title": "Continuing Inequality",
+    "prompt": "Even after the Reconstruction Amendments were passed, African Americans still faced segregation and discrimination through",
+    "options": [
+      "Jim Crow laws",
+      "The 26th Amendment",
+      "The Electoral College",
+      "The 22nd Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "These state and local laws enforced racial separation.",
+    "explain": "Correct: Jim Crow laws enforced segregation and showed that constitutional amendments did not create immediate equality."
+  },
+  {
+    "id": "g4r_12",
+    "title": "Continuing Inequality",
+    "prompt": "Which statement best explains why the Reconstruction Amendments did not create immediate equality?",
+    "options": [
+      "States continued using discriminatory laws and practices",
+      "The amendments only applied to federal judges",
+      "The amendments ended voting permanently",
+      "Congress repealed the amendments right away"
+    ],
+    "answerIndex": 0,
+    "hint": "Think about what states did after Reconstruction.",
+    "explain": "Correct: despite the new constitutional protections, states continued to use discriminatory laws and practices such as Jim Crow."
+  },
+  {
+    "id": "g4r_13",
+    "title": "Expanded Suffrage",
+    "prompt": "A woman is denied the right to vote because of her sex. Which amendment is most relevant?",
+    "options": [
+      "19th Amendment",
+      "15th Amendment",
+      "24th Amendment",
+      "23rd Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment deals with women’s suffrage.",
+    "explain": "Correct: the 19th Amendment prohibited denying the vote on the basis of sex."
+  },
+  {
+    "id": "g4r_14",
+    "title": "Expanded Suffrage",
+    "prompt": "Which amendment expanded voting rights to women nationwide?",
+    "options": [
+      "19th Amendment",
+      "17th Amendment",
+      "22nd Amendment",
+      "25th Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This is the women’s suffrage amendment.",
+    "explain": "Correct: the 19th Amendment expanded voting rights to women."
+  },
+  {
+    "id": "g4r_15",
+    "title": "Voting Barriers",
+    "prompt": "A citizen must pay money to vote in a federal election. Which amendment is being violated?",
+    "options": [
+      "24th Amendment",
+      "26th Amendment",
+      "14th Amendment",
+      "22nd Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "Think financial barrier to voting.",
+    "explain": "Correct: the 24th Amendment prohibited poll taxes in federal elections."
+  },
+  {
+    "id": "g4r_16",
+    "title": "Voting Barriers",
+    "prompt": "Poll taxes were often used in the South during the Jim Crow era to suppress the votes of African Americans and poor citizens. Which amendment was added in response to that barrier?",
+    "options": [
+      "24th Amendment",
+      "15th Amendment",
+      "19th Amendment",
+      "26th Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment targeted a money requirement for voting.",
+    "explain": "Correct: the 24th Amendment prohibited poll taxes in federal elections."
+  },
+  {
+    "id": "g4r_17",
+    "title": "Expanded Suffrage",
+    "prompt": "A 19-year-old citizen is denied the right to vote. Which amendment is most relevant?",
+    "options": [
+      "26th Amendment",
+      "19th Amendment",
+      "15th Amendment",
+      "23rd Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment lowered the voting age.",
+    "explain": "Correct: the 26th Amendment lowered the voting age to 18."
+  },
+  {
+    "id": "g4r_18",
+    "title": "Expanded Suffrage",
+    "prompt": "Which historical issue most directly helped lead to the amendment lowering the voting age to 18?",
+    "options": [
+      "The Vietnam War draft",
+      "The election of 1800",
+      "Franklin Roosevelt’s four terms",
+      "Jim Crow segregation laws"
+    ],
+    "answerIndex": 0,
+    "hint": "Think “old enough to fight, old enough to vote.”",
+    "explain": "Correct: the Vietnam War draft helped drive support for the 26th Amendment lowering the voting age to 18."
+  },
+  {
+    "id": "g4r_19",
+    "title": "Expanded Suffrage",
+    "prompt": "Why was the 26th Amendment added to the Constitution?",
+    "options": [
+      "People eligible for the draft should also vote",
+      "Because Washington, D.C. needed electoral votes",
+      "Because presidents were serving too many terms",
+      "Because states were using Black Codes"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment is tied to youth voting during wartime.",
+    "explain": "Correct: the 26th Amendment reflected the argument that 18-year-olds old enough to be drafted should also be allowed to vote."
+  },
+  {
+    "id": "g4r_20",
+    "title": "Voting Rights Comparison",
+    "prompt": "Which pair of amendments both expanded voting rights to disenfranchised groups?",
+    "options": [
+      "15th and 19th",
+      "13th and 22nd",
+      "17th and 25th",
+      "12th and 23rd"
+    ],
+    "answerIndex": 0,
+    "hint": "Think race and sex-based voting protections.",
+    "explain": "Correct: the 15th and 19th Amendments both expanded voting rights."
+  },
+  {
+    "id": "g4r_21",
+    "title": "Voting Rights Comparison",
+    "prompt": "Which list includes only amendments that expanded voting rights?",
+    "options": [
+      "15th, 19th, 24th, and 26th",
+      "12th, 17th, 22nd, and 25th",
+      "13th, 14th, 22nd, and 23rd",
+      "14th, 17th, 23rd, and 25th"
+    ],
+    "answerIndex": 0,
+    "hint": "Look for amendments about race, sex, poll taxes, and age.",
+    "explain": "Correct: the 15th, 19th, 24th, and 26th Amendments all expanded or protected voting rights."
+  },
+  {
+    "id": "g4r_22",
+    "title": "Electoral College Change",
+    "prompt": "The election of 1800 showed a major weakness in the original Electoral College system when Thomas Jefferson and Aaron Burr ended in a tie. Which amendment was added in response?",
+    "options": [
+      "12th Amendment",
+      "17th Amendment",
+      "22nd Amendment",
+      "23rd Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment required separate electoral votes for president and vice president.",
+    "explain": "Correct: the 12th Amendment was added after the election of 1800 to prevent ties like the Jefferson-Burr deadlock."
+  },
+  {
+    "id": "g4r_23",
+    "title": "Electoral College Change",
+    "prompt": "Which event most directly led to the requirement that electors cast separate ballots for president and vice president?",
+    "options": [
+      "The Jefferson–Burr tie in 1800",
+      "The assassination of President Kennedy",
+      "Franklin Roosevelt serving four terms",
+      "The Vietnam War draft"
+    ],
+    "answerIndex": 0,
+    "hint": "Think early republic election crisis.",
+    "explain": "Correct: the tie between Jefferson and Burr exposed a flaw in the original Electoral College system and led to the 12th Amendment."
+  },
+  {
+    "id": "g4r_24",
+    "title": "Presidential Elections",
+    "prompt": "Residents of Washington, D.C. take part in choosing the president because of which amendment?",
+    "options": [
+      "23rd Amendment",
+      "17th Amendment",
+      "24th Amendment",
+      "25th Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment gave D.C. electors.",
+    "explain": "Correct: the 23rd Amendment granted Washington, D.C. electoral votes."
+  },
+  {
+    "id": "g4r_25",
+    "title": "Presidential Elections",
+    "prompt": "Which factor most directly led to the amendment giving Washington, D.C. electoral votes?",
+    "options": [
+      "Its growing population",
+      "The Vietnam War draft",
+      "A tie in the Electoral College",
+      "The rise of Black Codes"
+    ],
+    "answerIndex": 0,
+    "hint": "Think representation concerns for people living in the capital.",
+    "explain": "Correct: the 23rd Amendment gave Washington, D.C. electoral votes in response to its growing population."
+  },
+  {
+    "id": "g4r_26",
+    "title": "Presidential Elections",
+    "prompt": "The Electoral College is the system used to elect the",
+    "options": [
+      "President and vice president",
+      "Members of the Supreme Court",
+      "U.S. senators",
+      "Cabinet secretaries"
+    ],
+    "answerIndex": 0,
+    "hint": "Think the top two executive offices.",
+    "explain": "Correct: the Electoral College is used to elect the president and vice president."
+  },
+  {
+    "id": "g4r_27",
+    "title": "Presidential Elections",
+    "prompt": "A state’s number of electors is based mainly on its",
+    "options": [
+      "Senators plus representatives.",
+      "Land area",
+      "State income",
+      "Number of court districts"
+    ],
+    "answerIndex": 0,
+    "hint": "Representation in Congress",
+    "explain": "Correct: a state’s electoral votes are based mainly on its representation in Congress."
+  },
+  {
+    "id": "g4r_28",
+    "title": "Presidential Limits",
+    "prompt": "A president cannot run for a third elected term because of which amendment?",
+    "options": [
+      "22nd Amendment",
+      "25th Amendment",
+      "19th Amendment",
+      "14th Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment set presidential term limits.",
+    "explain": "Correct: the 22nd Amendment limits presidents to two elected terms."
+  },
+  {
+    "id": "g4r_29",
+    "title": "Presidential Limits",
+    "prompt": "Which historical example most directly led to the adoption of presidential term limits?",
+    "options": [
+      "Franklin Roosevelt serving four terms",
+      "Jefferson and Burr tying in 1800",
+      "The Vietnam War draft",
+      "Black Codes in the South"
+    ],
+    "answerIndex": 0,
+    "hint": "Think longest presidency in U.S. history.",
+    "explain": "Correct: Franklin D. Roosevelt’s four elections helped lead to the 22nd Amendment establishing presidential term limits."
+  },
+  {
+    "id": "g4r_30",
+    "title": "Presidential Limits",
+    "prompt": "Why was the 22nd Amendment added to the Constitution?",
+    "options": [
+      "To limit elected presidential terms",
+      "To give D.C. electoral votes",
+      "To lower the voting age",
+      "To prohibit poll taxes"
+    ],
+    "answerIndex": 0,
+    "hint": "It was a response to one president serving far longer than the earlier tradition.",
+    "explain": "Correct: the 22nd Amendment limited presidents to two elected terms after concern caused by Franklin Roosevelt’s four terms."
+  },
+  {
+    "id": "g4r_31",
+    "title": "Presidential Succession",
+    "prompt": "A president becomes unable to perform official duties. Which amendment explains what happens next?",
+    "options": [
+      "25th Amendment",
+      "23rd Amendment",
+      "17th Amendment",
+      "15th Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "Succession and disability are the clues.",
+    "explain": "Correct: the 25th Amendment clarified presidential succession and disability procedures."
+  },
+  {
+    "id": "g4r_32",
+    "title": "Presidential Succession",
+    "prompt": "Concern over presidential succession and disability increased after the assassination of John F. Kennedy. Which amendment addressed these issues?",
+    "options": [
+      "25th Amendment",
+      "23rd Amendment",
+      "22nd Amendment",
+      "19th Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment explains succession, disability, and vice-presidential replacement.",
+    "explain": "Correct: the 25th Amendment clarified presidential succession, disability, and how to fill a vice-presidential vacancy."
+  },
+  {
+    "id": "g4r_33",
+    "title": "Presidential Succession",
+    "prompt": "Which situation most directly showed the need for a clearer constitutional method for handling presidential disability and vice-presidential vacancy?",
+    "options": [
+      "Kennedy’s assassination raised succession concerns",
+      "The election tie of 1800",
+      "Franklin Roosevelt serving four terms",
+      "The poll tax in southern elections"
+    ],
+    "answerIndex": 0,
+    "hint": "Think 1960s crisis, not early republic elections.",
+    "explain": "Correct: Kennedy’s assassination highlighted the need for clearer succession and disability procedures, leading to the 25th Amendment."
+  },
+  {
+    "id": "g4r_34",
+    "title": "Reconstruction Comparison",
+    "prompt": "The 13th, 14th, and 15th Amendments were all passed mainly to",
+    "options": [
+      "Extend postwar civil rights",
+      "Expand presidential term limits",
+      "Create the Electoral College",
+      "Lower the voting age"
+    ],
+    "answerIndex": 0,
+    "hint": "These are the Reconstruction Amendments.",
+    "explain": "Correct: the Reconstruction Amendments were meant to extend rights and protections after the Civil War."
+  },
+  {
+    "id": "g4r_35",
+    "title": "Amendment Methods",
+    "prompt": "Which amendment was most directly aimed at protecting African Americans from racial discrimination in voting?",
+    "options": [
+      "15th Amendment",
+      "19th Amendment",
+      "24th Amendment",
+      "26th Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "Think voting rights specifically tied to race after the Civil War.",
+    "explain": "Correct: the 15th Amendment prohibited denying voting rights on the basis of race, color, or previous condition of servitude."
+  }
+];
 
   const STORAGE_KEY = 'BTB_GOV_CS9_11_REBUILT_V3';
 
@@ -665,7 +788,7 @@
     const q=getQuestion(displayIndex), meta=getMeta(displayIndex);
     if(Array.isArray(meta.order) && typeof meta.correctShown==='number') return;
     const seed = hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`) ^ 0x912345;
-    meta.order = shuffledIndices(q.options.length, seed);
+    meta.order = state.auditOptions?.[state.qOrder?.[displayIndex]] || shuffledIndices(q.options.length, seed);
     meta.correctShown = meta.order.indexOf(q.answerIndex);
   }
 
@@ -704,7 +827,7 @@
     save();
   }
 
-  function markMiss(){ state.qmeta[state.idx].missed=true; }
+  function markMiss(){ state.qmeta[state.idx].missed=true; state.runMisses=(state.runMisses||0)+1; }
   function markDone(){ state.qmeta[state.idx].done=true; }
 
   function answerMCQ(shownIdx){
@@ -751,6 +874,20 @@
     const total=QUESTION_BANK.length;
     const {perfect}=counts();
     const acc=Math.round((perfect/total)*100);
+    if(!state.sheetCompletionSent){
+      state.sheetCompletionSent=true;
+      save();
+      const sheetStatus=document.createElement('p');
+      sheetStatus.setAttribute('role','status');
+      sheetStatus.textContent='Sending completion record…';
+      $('finishBox').appendChild(sheetStatus);
+      void BasicsAudit.send(state,{totalQuestions:total,firstPassCorrect:perfect,
+        endedAt:ended.toISOString(),elapsedSeconds:Math.floor(runMS/1000),
+        totalMissesThisRun:state.runMisses ?? total-perfect,totalAttempts:total+(state.runMisses ?? total-perfect),
+        finalMasteryAchieved:perfect===total}).then(result=>{
+        sheetStatus.textContent=result.ok?'Completion record saved.':'Spreadsheet receipt could not be confirmed.';
+      });
+    }
 
     $('sName').textContent=state.name;
     $('sDate').textContent=fmtDate(ended);
@@ -777,6 +914,14 @@
       $('finishBody').textContent=`Accuracy: ${acc}%. Mastery requires 100%. Click Play Again or Restart Game and run it clean.`;
       $('ticket').style.display='none';
     }
+  }
+
+  function initializeLayout(){
+    const layout=BasicsAudit.start(STORAGE_KEY,QUESTION_BANK,state.qOrder,()=>BasicsAudit.shuffle(QUESTION_BANK.map((_,i)=>i)));
+    state.qOrder=layout.order;
+    state.auditOptions=layout.options;
+    state.sheetCompletionSent=false;
+    state.runMisses=0;
   }
 
   function restartGame(){
@@ -806,13 +951,19 @@
       return;
     }
 
+    const sheetEmail=$('sheetEmail').value.trim().toLowerCase(), sheetPeriod=$('sheetPeriod').value;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sheetEmail)||!sheetPeriod){
+      window.alert('Enter your school email and class period to start.');
+      return;
+    }
+    state.email=sheetEmail; state.period=sheetPeriod;
     state.name=name;
     state.startedAtISO=new Date().toISOString();
     state.startedAtMS=Date.now();
     state.idx=0;
     state.runSeed=(Math.floor(Math.random()*1e9) ^ hash32(name+'|'+state.startedAtISO))>>>0;
     state.qOrder=shuffledIndices(QUESTION_BANK.length, state.runSeed ^ 0xABC987);
-    state.qmeta=QUESTION_BANK.map(() => ({done:false, missed:false, order:null, correctShown:null}));
+    state.qmeta=QUESTION_BANK.map(() => ({done:false, missed:false, order:null, correctShown:null})); initializeLayout();
 
     for(let i=0;i<QUESTION_BANK.length;i++) ensureOrder(i);
 

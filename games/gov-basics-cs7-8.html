@@ -94,7 +94,7 @@
 
         <div id="nameBox" class="field">
           <label class="muted" for="studentName"><b>Student Name</b></label>
-          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" />
+          <input id="studentName" type="text" placeholder="e.g., Jordan Smith" autocomplete="name" /><label for="sheetPeriod">Class period</label> <select id="sheetPeriod"><option value="">Choose period</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select> <label for="sheetEmail">School email</label> <input id="sheetEmail" type="email" autocomplete="email" required>
           <div class="actions">
             <button class="btn primary" id="btnStart">Start</button>
             <button class="btn" id="btnResetAll">Reset Game</button>
@@ -162,332 +162,473 @@
     </div>
   </div>
 
+<script src="basics-audit.js"></script>
 <script>
 (() => {
   const QUESTION_BANK = [
-    {
-      id:'g3r_01',
-      title:'First Amendment',
-      prompt:'A student is punished for criticizing school policy online. Which right is MOST relevant?',
-      options:['Freedom of speech','Protection from searches','Right to counsel','Due process'],
-      answerIndex:0,
-      hint:'Criticizing government or policy points to one of the five freedoms.',
-      explain:'Correct: freedom of speech protects expression and criticism.'
-    },
-    {
-      id:'g3r_02',
-      title:'First Amendment',
-      prompt:'The government tries to stop a newspaper from publishing a story. Which freedom is being challenged?',
-      options:['Freedom of the press','Freedom of assembly','Protection from self-incrimination','Right to a speedy trial'],
-      answerIndex:0,
-      hint:'Think newspapers and reporting.',
-      explain:'Correct: freedom of the press limits government censorship of news reporting.'
-    },
-    {
-      id:'g3r_03',
-      title:'First Amendment',
-      prompt:'Citizens gather peacefully outside the statehouse to protest a law. Which right are they using?',
-      options:['Freedom of assembly','Judicial review','Due process','Protection from cruel punishment'],
-      answerIndex:0,
-      hint:'Peaceful gathering is one of the five freedoms.',
-      explain:'Correct: freedom of assembly protects peaceful public gatherings.'
-    },
-    {
-      id:'g3r_04',
-      title:'First Amendment',
-      prompt:'A citizen writes to Congress asking it to change a law. Which right is this?',
-      options:['Right to petition','Freedom of religion','Right to bear arms','Equal protection'],
-      answerIndex:0,
-      hint:'This right means asking government to address grievances.',
-      explain:'Correct: the right to petition allows citizens to ask government for change.'
-    },
-
-    {
-      id:'g3r_05',
-      title:'Fourth Amendment',
-      prompt:'Police search a home without a warrant or clear evidence. What right is MOST relevant?',
-      options:['Protection from unreasonable searches','Freedom of speech','Right to counsel','Equal protection'],
-      answerIndex:0,
-      hint:'Searches and seizures point to one amendment.',
-      explain:'Correct: the Fourth Amendment protects against unreasonable searches and seizures.'
-    },
-    {
-      id:'g3r_06',
-      title:'Fourth Amendment',
-      prompt:'A judge approves a search after seeing strong evidence. This approval is based on',
-      options:['Probable cause','Judicial activism','Popular sovereignty','Double jeopardy'],
-      answerIndex:0,
-      hint:'A warrant generally needs factual grounds.',
-      explain:'Correct: probable cause means there are reasonable grounds supported by facts.'
-    },
-    {
-      id:'g3r_07',
-      title:'Fourth Amendment',
-      prompt:'Which situation BEST shows a likely violation of the Fourth Amendment?',
-      options:['Police search property without cause or warrant','A jury hears evidence in court','Congress passes a bill','A citizen votes in an election'],
-      answerIndex:0,
-      hint:'Look for an unreasonable search.',
-      explain:'Correct: searching without cause or a warrant is the clearest Fourth Amendment problem.'
-    },
-    {
-      id:'g3r_08',
-      title:'Fourth Amendment',
-      prompt:'Before searching private property, police generally must have',
-      options:['A warrant based on probable cause','Approval from Congress','A campaign promise','A public opinion poll'],
-      answerIndex:0,
-      hint:'Think judge + evidence.',
-      explain:'Correct: a warrant is generally based on probable cause.'
-    },
-
-    {
-      id:'g3r_09',
-      title:'Fifth Amendment',
-      prompt:'A person is forced to testify against themselves in court. Which right is violated?',
-      options:['Protection against self-incrimination','Freedom of assembly','Right to a speedy trial','Protection from searches'],
-      answerIndex:0,
-      hint:'“Remain silent” is the clue.',
-      explain:'Correct: the Fifth Amendment protects against self-incrimination.'
-    },
-    {
-      id:'g3r_10',
-      title:'Fifth Amendment',
-      prompt:'A suspect refuses to answer police questions to avoid confessing. This is protected by the',
-      options:['Fifth Amendment','First Amendment','Eighth Amendment','Tenth Amendment'],
-      answerIndex:0,
-      hint:'Think the amendment tied to self-incrimination.',
-      explain:'Correct: the Fifth Amendment protects the right not to incriminate oneself.'
-    },
-    {
-      id:'g3r_11',
-      title:'Due Process',
-      prompt:'Which situation BEST shows due process?',
-      options:['A fair hearing before punishment','Immediate punishment without trial','A newspaper deciding guilt','Citizens voting on a budget'],
-      answerIndex:0,
-      hint:'Due process is about fair procedures.',
-      explain:'Correct: due process requires fair procedures before the government takes life, liberty, or property.'
-    },
-    {
-      id:'g3r_12',
-      title:'Due Process',
-      prompt:'The government must follow fair procedures before taking away rights. This principle is called',
-      options:['Due process','Judicial review','Federalism','Popular sovereignty'],
-      answerIndex:0,
-      hint:'Fair procedures is the anchor phrase.',
-      explain:'Correct: due process means the government must act fairly and lawfully.'
-    },
-
-    {
-      id:'g3r_13',
-      title:'Sixth Amendment',
-      prompt:'A defendant cannot afford a lawyer and is given one by the court. Which amendment applies?',
-      options:['Sixth Amendment','Fourth Amendment','First Amendment','Ninth Amendment'],
-      answerIndex:0,
-      hint:'Think trial rights and counsel.',
-      explain:'Correct: the Sixth Amendment includes the right to counsel.'
-    },
-    {
-      id:'g3r_14',
-      title:'Sixth Amendment',
-      prompt:'A person is guaranteed a speedy public trial. This right comes from the',
-      options:['Sixth Amendment','Fifth Amendment','Second Amendment','Tenth Amendment'],
-      answerIndex:0,
-      hint:'This amendment covers criminal trial rights.',
-      explain:'Correct: the Sixth Amendment guarantees a speedy and public trial.'
-    },
-    {
-      id:'g3r_15',
-      title:'Sixth Amendment',
-      prompt:'Which situation BEST reflects the Sixth Amendment?',
-      options:['A fair and public criminal trial','Protection from cruel punishment','A protest at city hall','A ban on unreasonable searches'],
-      answerIndex:0,
-      hint:'Focus on criminal court procedures.',
-      explain:'Correct: the Sixth Amendment protects the rights of the accused during criminal prosecutions.'
-    },
-
-    {
-      id:'g3r_16',
-      title:'Eighth Amendment',
-      prompt:'A punishment is extremely harsh compared with the crime committed. Which amendment is MOST relevant?',
-      options:['Eighth Amendment','First Amendment','Fourth Amendment','Fifth Amendment'],
-      answerIndex:0,
-      hint:'This amendment limits punishments.',
-      explain:'Correct: the Eighth Amendment prohibits cruel and unusual punishment.'
-    },
-    {
-      id:'g3r_17',
-      title:'Eighth Amendment',
-      prompt:'Which situation BEST shows a likely violation of the Eighth Amendment?',
-      options:['Excessive punishment for a minor crime','A public trial','A peaceful protest','A lawful search with a warrant'],
-      answerIndex:0,
-      hint:'Look for punishment out of proportion to the offense.',
-      explain:'Correct: excessive punishment is the clearest Eighth Amendment issue.'
-    },
-    {
-      id:'g3r_18',
-      title:'Eighth Amendment',
-      prompt:'The Eighth Amendment mainly protects against',
-      options:['Cruel and unusual punishment','Unreasonable searches','Self-incrimination','Restrictions on religion'],
-      answerIndex:0,
-      hint:'Think punishment, not search or speech.',
-      explain:'Correct: the Eighth Amendment protects against cruel and unusual punishment.'
-    },
-
-    {
-      id:'g3r_19',
-      title:'Judicial Review',
-      prompt:'The Supreme Court declares a law unconstitutional. What happens next?',
-      options:['The law is no longer valid','Congress must enforce it','The president automatically rewrites it','States ignore the decision'],
-      answerIndex:0,
-      hint:'If it is unconstitutional, government cannot keep using it as valid law.',
-      explain:'Correct: when a law is struck down as unconstitutional, it is no longer valid.'
-    },
-    {
-      id:'g3r_20',
-      title:'Judicial Review',
-      prompt:'Judicial review allows courts to',
-      options:['Declare laws unconstitutional','Write laws','Enforce laws','Conduct elections'],
-      answerIndex:0,
-      hint:'This is the court’s power to judge constitutionality.',
-      explain:'Correct: judicial review is the power to declare laws or actions unconstitutional.'
-    },
-    {
-      id:'g3r_21',
-      title:'Judicial Review',
-      prompt:'Which situation BEST shows judicial review?',
-      options:['A court overturns a law for violating the Constitution','Congress passes a law','The president vetoes a bill','A governor gives a speech'],
-      answerIndex:0,
-      hint:'Look for courts deciding constitutionality.',
-      explain:'Correct: a court overturning a law as unconstitutional is judicial review.'
-    },
-
-    {
-      id:'g3r_22',
-      title:'Incorporation',
-      prompt:'A state government limits freedom of speech. Which principle allows federal rights to apply to the state?',
-      options:['Incorporation','Popular sovereignty','Checks and balances','Federalism'],
-      answerIndex:0,
-      hint:'Think Bill of Rights applied to the states.',
-      explain:'Correct: incorporation applies many Bill of Rights protections to the states.'
-    },
-    {
-      id:'g3r_23',
-      title:'Bill of Rights',
-      prompt:'Before incorporation, the Bill of Rights mainly limited the',
-      options:['Federal government','State governments only','Local school boards only','Media only'],
-      answerIndex:0,
-      hint:'Originally, these protections were aimed at one level of government.',
-      explain:'Correct: the Bill of Rights originally mainly limited the federal government.'
-    },
-    {
-      id:'g3r_24',
-      title:'14th Amendment',
-      prompt:'The Bill of Rights is applied to the states mainly through the 14th Amendment’s',
-      options:['Due process clause','Commerce clause','Elastic clause','Supremacy clause'],
-      answerIndex:0,
-      hint:'This clause is closely tied to fair procedures and incorporation.',
-      explain:'Correct: incorporation is tied primarily to the due process clause of the 14th Amendment.'
-    },
-
-    {
-      id:'g3r_25',
-      title:'Constitutional Change',
-      prompt:'The formal process for changing the Constitution is called an',
-      options:['Amendment','Executive order','Court opinion','Cabinet rule'],
-      answerIndex:0,
-      hint:'A formal written addition or change.',
-      explain:'Correct: an amendment is the formal way to change the Constitution.'
-    },
-    {
-      id:'g3r_26',
-      title:'Constitutional Change',
-      prompt:'A Supreme Court decision can change government practice by',
-      options:['Interpreting the Constitution in a new way','Ratifying amendments','Electing senators','Approving treaties'],
-      answerIndex:0,
-      hint:'Courts change meaning through interpretation.',
-      explain:'Correct: Supreme Court decisions can change constitutional meaning through interpretation and precedent.'
-    },
-
-    {
-      id:'g3r_27',
-      title:'Tenth Amendment',
-      prompt:'A state creates its own education policies without federal direction. Which amendment supports this power?',
-      options:['Tenth Amendment','First Amendment','Fifth Amendment','Eighth Amendment'],
-      answerIndex:0,
-      hint:'Powers not given to the federal government are reserved elsewhere.',
-      explain:'Correct: the Tenth Amendment reserves powers to the states or the people.'
-    },
-    {
-      id:'g3r_28',
-      title:'Tenth Amendment',
-      prompt:'Which situation BEST reflects the Tenth Amendment?',
-      options:[
-        'States control local law enforcement policies',
-        'Congress declares a law unconstitutional',
-        'The president vetoes a bill',
-        'The Supreme Court hears a case'
-      ],
-      answerIndex:0,
-      hint:'Think powers kept at the state level.',
-      explain:'Correct: the Tenth Amendment reserves powers not given to the federal government to the states.'
-    },
-
-    {
-      id:'g3r_29',
-      title:'Constitutional Change — Legislation',
-      prompt:'The Civil Rights Act of 1964 expanded protections against discrimination. This is an example of constitutional change through',
-      options:['Legislation','Amendment','Judicial review','Executive order'],
-      answerIndex:0,
-      hint:'Congress passing laws = ?',
-      explain:'Correct: legislation changes how rights are applied by creating laws that enforce constitutional principles.'
-    },
-    {
-      id:'g3r_30',
-      title:'Constitutional Change — Legislation',
-      prompt:'The Voting Rights Act of 1965 is an example of constitutional change through',
-      options:['Legislation','Informal practice','Judicial review','Treaty approval'],
-      answerIndex:0,
-      hint:'Think congressional law protecting voting rights.',
-      explain:'Correct: the Voting Rights Act shows how legislation can expand and protect constitutional rights in practice.'
-    },
-
-    {
-      id:'g3r_31',
-      title:'Constitutional Change — Informal Practice',
-      prompt:'Congress holds hearings to question executive branch officials about how laws are being carried out. This is an example of',
-      options:['Legislative oversight','Judicial review','Federalism','Popular sovereignty'],
-      answerIndex:0,
-      hint:'This is a check used by Congress to monitor the executive branch.',
-      explain:'Correct: legislative oversight is an informal but important way Congress checks the executive branch.'
-    },
-    {
-      id:'g3r_32',
-      title:'Constitutional Change — Informal Practice',
-      prompt:'Which situation BEST shows an informal way the Constitution changes over time?',
-      options:[
-        'Congress uses oversight hearings to influence executive action',
-        'States ratify a new amendment',
-        'A court rules a law unconstitutional',
-        'Citizens vote for members of Congress'
-      ],
-      answerIndex:0,
-      hint:'Informal changes happen without rewriting the Constitution.',
-      explain:'Correct: oversight is an informal practice that changes how government works without a formal amendment.'
-    },
-    {
-      id:'g3r_33',
-      title:'Constitutional Change — Methods',
-      prompt:'Which choice lists two methods that can change how the Constitution works without formally rewriting its text?',
-      options:[
-        'Supreme Court decisions and informal practices',
-        'Amendments and ratification',
-        'Vetoes and campaign speeches',
-        'Elections and public opinion polls'
-      ],
-      answerIndex:0,
-      hint:'Look for methods that affect meaning or operation without altering the written document itself.',
-      explain:'Correct: court decisions and informal practices can change constitutional meaning and government operation without changing the Constitution’s text.'
-    }
-  ];
+  {
+    "id": "g3r_01",
+    "title": "First Amendment",
+    "prompt": "A student is punished for criticizing school policy online. Which right is MOST relevant?",
+    "options": [
+      "Freedom of speech",
+      "Protection from searches",
+      "Right to counsel",
+      "Due process"
+    ],
+    "answerIndex": 0,
+    "hint": "Criticizing government or policy points to one of the five freedoms.",
+    "explain": "Correct: freedom of speech protects expression and criticism."
+  },
+  {
+    "id": "g3r_02",
+    "title": "First Amendment",
+    "prompt": "The government tries to stop a newspaper from publishing a story. Which freedom is being challenged?",
+    "options": [
+      "Freedom of the press",
+      "Freedom of assembly",
+      "Protection from self-incrimination",
+      "Right to a speedy trial"
+    ],
+    "answerIndex": 0,
+    "hint": "Think newspapers and reporting.",
+    "explain": "Correct: freedom of the press limits government censorship of news reporting."
+  },
+  {
+    "id": "g3r_03",
+    "title": "First Amendment",
+    "prompt": "Citizens gather peacefully outside the statehouse to protest a law. Which right are they using?",
+    "options": [
+      "Freedom of assembly",
+      "Judicial review",
+      "Due process",
+      "Protection from cruel punishment"
+    ],
+    "answerIndex": 0,
+    "hint": "Peaceful gathering is one of the five freedoms.",
+    "explain": "Correct: freedom of assembly protects peaceful public gatherings."
+  },
+  {
+    "id": "g3r_04",
+    "title": "First Amendment",
+    "prompt": "A citizen writes to Congress asking it to change a law. Which right is this?",
+    "options": [
+      "Right to petition",
+      "Freedom of religion",
+      "Right to bear arms",
+      "Equal protection"
+    ],
+    "answerIndex": 0,
+    "hint": "This right means asking government to address grievances.",
+    "explain": "Correct: the right to petition allows citizens to ask government for change."
+  },
+  {
+    "id": "g3r_05",
+    "title": "Fourth Amendment",
+    "prompt": "Police search a home without a warrant or clear evidence. What right is MOST relevant?",
+    "options": [
+      "Freedom from unreasonable searches",
+      "Freedom of speech",
+      "Right to counsel",
+      "Equal protection"
+    ],
+    "answerIndex": 0,
+    "hint": "Searches and seizures point to one amendment.",
+    "explain": "Correct: the Fourth Amendment protects against unreasonable searches and seizures."
+  },
+  {
+    "id": "g3r_06",
+    "title": "Fourth Amendment",
+    "prompt": "A judge approves a search after seeing strong evidence. This approval is based on",
+    "options": [
+      "Probable cause",
+      "Judicial activism",
+      "Popular sovereignty",
+      "Double jeopardy"
+    ],
+    "answerIndex": 0,
+    "hint": "A warrant generally needs factual grounds.",
+    "explain": "Correct: probable cause means there are reasonable grounds supported by facts."
+  },
+  {
+    "id": "g3r_07",
+    "title": "Fourth Amendment",
+    "prompt": "Which situation BEST shows a likely violation of the Fourth Amendment?",
+    "options": [
+      "Police search without cause or warrant",
+      "A jury hears evidence in court",
+      "Congress passes a bill",
+      "A citizen votes in an election"
+    ],
+    "answerIndex": 0,
+    "hint": "Look for an unreasonable search.",
+    "explain": "Correct: searching without cause or a warrant is the clearest Fourth Amendment problem."
+  },
+  {
+    "id": "g3r_08",
+    "title": "Fourth Amendment",
+    "prompt": "Before searching private property, police generally must have",
+    "options": [
+      "A warrant based on probable cause",
+      "Approval from Congress",
+      "A campaign promise",
+      "A public opinion poll"
+    ],
+    "answerIndex": 0,
+    "hint": "Think judge + evidence.",
+    "explain": "Correct: a warrant is generally based on probable cause."
+  },
+  {
+    "id": "g3r_09",
+    "title": "Fifth Amendment",
+    "prompt": "A person is forced to testify against themselves in court. Which right is violated?",
+    "options": [
+      "Freedom from compelled self-incrimination",
+      "Freedom of assembly",
+      "Right to a speedy trial",
+      "Protection from searches"
+    ],
+    "answerIndex": 0,
+    "hint": "“Remain silent” is the clue.",
+    "explain": "Correct: the Fifth Amendment protects against self-incrimination."
+  },
+  {
+    "id": "g3r_10",
+    "title": "Fifth Amendment",
+    "prompt": "A suspect refuses to answer police questions to avoid confessing. This is protected by the",
+    "options": [
+      "Fifth Amendment",
+      "First Amendment",
+      "Eighth Amendment",
+      "Tenth Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "Think the amendment tied to self-incrimination.",
+    "explain": "Correct: the Fifth Amendment protects the right not to incriminate oneself."
+  },
+  {
+    "id": "g3r_11",
+    "title": "Due Process",
+    "prompt": "Which situation BEST shows due process?",
+    "options": [
+      "A fair hearing before punishment",
+      "Immediate punishment without trial",
+      "A newspaper deciding guilt",
+      "Citizens voting on a budget"
+    ],
+    "answerIndex": 0,
+    "hint": "Due process is about fair procedures.",
+    "explain": "Correct: due process requires fair procedures before the government takes life, liberty, or property."
+  },
+  {
+    "id": "g3r_12",
+    "title": "Due Process",
+    "prompt": "The government must follow fair procedures before taking away rights. This principle is called",
+    "options": [
+      "Due process",
+      "Judicial review",
+      "Federalism",
+      "Popular sovereignty"
+    ],
+    "answerIndex": 0,
+    "hint": "Fair procedures is the anchor phrase.",
+    "explain": "Correct: due process means the government must act fairly and lawfully."
+  },
+  {
+    "id": "g3r_13",
+    "title": "Sixth Amendment",
+    "prompt": "A defendant cannot afford a lawyer and is given one by the court. Which amendment applies?",
+    "options": [
+      "Sixth Amendment",
+      "Fourth Amendment",
+      "First Amendment",
+      "Ninth Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "Think trial rights and counsel.",
+    "explain": "Correct: the Sixth Amendment includes the right to counsel."
+  },
+  {
+    "id": "g3r_14",
+    "title": "Sixth Amendment",
+    "prompt": "A person is guaranteed a speedy public trial. This right comes from the",
+    "options": [
+      "Sixth Amendment",
+      "Fifth Amendment",
+      "Second Amendment",
+      "Tenth Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment covers criminal trial rights.",
+    "explain": "Correct: the Sixth Amendment guarantees a speedy and public trial."
+  },
+  {
+    "id": "g3r_15",
+    "title": "Sixth Amendment",
+    "prompt": "Which situation BEST reflects the Sixth Amendment?",
+    "options": [
+      "A fair and public criminal trial",
+      "Protection from cruel punishment",
+      "A protest at city hall",
+      "A ban on unreasonable searches"
+    ],
+    "answerIndex": 0,
+    "hint": "Focus on criminal court procedures.",
+    "explain": "Correct: the Sixth Amendment protects the rights of the accused during criminal prosecutions."
+  },
+  {
+    "id": "g3r_16",
+    "title": "Eighth Amendment",
+    "prompt": "A punishment is extremely harsh compared with the crime committed. Which amendment is MOST relevant?",
+    "options": [
+      "Eighth Amendment",
+      "First Amendment",
+      "Fourth Amendment",
+      "Fifth Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "This amendment limits punishments.",
+    "explain": "Correct: the Eighth Amendment prohibits cruel and unusual punishment."
+  },
+  {
+    "id": "g3r_17",
+    "title": "Eighth Amendment",
+    "prompt": "Which situation BEST shows a likely violation of the Eighth Amendment?",
+    "options": [
+      "Excessive punishment for a minor crime",
+      "A public trial",
+      "A peaceful protest",
+      "A lawful search with a warrant"
+    ],
+    "answerIndex": 0,
+    "hint": "Look for punishment out of proportion to the offense.",
+    "explain": "Correct: excessive punishment is the clearest Eighth Amendment issue."
+  },
+  {
+    "id": "g3r_18",
+    "title": "Eighth Amendment",
+    "prompt": "The Eighth Amendment mainly protects against",
+    "options": [
+      "Cruel and unusual punishment",
+      "Unreasonable searches",
+      "Self-incrimination",
+      "Restrictions on religion"
+    ],
+    "answerIndex": 0,
+    "hint": "Think punishment, not search or speech.",
+    "explain": "Correct: the Eighth Amendment protects against cruel and unusual punishment."
+  },
+  {
+    "id": "g3r_19",
+    "title": "Judicial Review",
+    "prompt": "The Supreme Court declares a law unconstitutional. What happens next?",
+    "options": [
+      "The law is no longer valid",
+      "Congress must enforce it",
+      "The president automatically rewrites it",
+      "States ignore the decision"
+    ],
+    "answerIndex": 0,
+    "hint": "If it is unconstitutional, government cannot keep using it as valid law.",
+    "explain": "Correct: when a law is struck down as unconstitutional, it is no longer valid."
+  },
+  {
+    "id": "g3r_20",
+    "title": "Judicial Review",
+    "prompt": "Judicial review allows courts to",
+    "options": [
+      "Declare laws unconstitutional",
+      "Write laws",
+      "Enforce laws",
+      "Conduct elections"
+    ],
+    "answerIndex": 0,
+    "hint": "This is the court’s power to judge constitutionality.",
+    "explain": "Correct: judicial review is the power to declare laws or actions unconstitutional."
+  },
+  {
+    "id": "g3r_21",
+    "title": "Judicial Review",
+    "prompt": "Which situation BEST shows judicial review?",
+    "options": [
+      "A court strikes down an unconstitutional law",
+      "Congress passes a law",
+      "The president vetoes a bill",
+      "A governor gives a speech"
+    ],
+    "answerIndex": 0,
+    "hint": "Look for courts deciding constitutionality.",
+    "explain": "Correct: a court overturning a law as unconstitutional is judicial review."
+  },
+  {
+    "id": "g3r_22",
+    "title": "Incorporation",
+    "prompt": "A state government limits freedom of speech. Which principle allows federal rights to apply to the state?",
+    "options": [
+      "Incorporation",
+      "Popular sovereignty",
+      "Checks and balances",
+      "Federalism"
+    ],
+    "answerIndex": 0,
+    "hint": "Think Bill of Rights applied to the states.",
+    "explain": "Correct: incorporation applies many Bill of Rights protections to the states."
+  },
+  {
+    "id": "g3r_23",
+    "title": "Bill of Rights",
+    "prompt": "Before incorporation, the Bill of Rights mainly limited the",
+    "options": [
+      "Federal government",
+      "State governments only",
+      "Local school boards only",
+      "Media only"
+    ],
+    "answerIndex": 0,
+    "hint": "Originally, these protections were aimed at one level of government.",
+    "explain": "Correct: the Bill of Rights originally mainly limited the federal government."
+  },
+  {
+    "id": "g3r_24",
+    "title": "14th Amendment",
+    "prompt": "The Bill of Rights is applied to the states mainly through the 14th Amendment’s",
+    "options": [
+      "Due process clause",
+      "Commerce clause",
+      "Elastic clause",
+      "Supremacy clause"
+    ],
+    "answerIndex": 0,
+    "hint": "This clause is closely tied to fair procedures and incorporation.",
+    "explain": "Correct: incorporation is tied primarily to the due process clause of the 14th Amendment."
+  },
+  {
+    "id": "g3r_25",
+    "title": "Constitutional Change",
+    "prompt": "The formal process for changing the Constitution is called an",
+    "options": [
+      "Amendment",
+      "Executive order",
+      "Court opinion",
+      "Cabinet rule"
+    ],
+    "answerIndex": 0,
+    "hint": "A formal written addition or change.",
+    "explain": "Correct: an amendment is the formal way to change the Constitution."
+  },
+  {
+    "id": "g3r_26",
+    "title": "Constitutional Change",
+    "prompt": "A Supreme Court decision can change government practice by",
+    "options": [
+      "New constitutional interpretation",
+      "Ratifying amendments",
+      "Electing senators",
+      "Approving treaties"
+    ],
+    "answerIndex": 0,
+    "hint": "Courts change meaning through interpretation.",
+    "explain": "Correct: Supreme Court decisions can change constitutional meaning through interpretation and precedent."
+  },
+  {
+    "id": "g3r_27",
+    "title": "Tenth Amendment",
+    "prompt": "A state creates its own education policies without federal direction. Which amendment supports this power?",
+    "options": [
+      "Tenth Amendment",
+      "First Amendment",
+      "Fifth Amendment",
+      "Eighth Amendment"
+    ],
+    "answerIndex": 0,
+    "hint": "Powers not given to the federal government are reserved elsewhere.",
+    "explain": "Correct: the Tenth Amendment reserves powers to the states or the people."
+  },
+  {
+    "id": "g3r_28",
+    "title": "Tenth Amendment",
+    "prompt": "Which situation BEST reflects the Tenth Amendment?",
+    "options": [
+      "States control local law enforcement policies",
+      "Congress declares a law unconstitutional",
+      "The president vetoes a bill",
+      "The Supreme Court hears a case"
+    ],
+    "answerIndex": 0,
+    "hint": "Think powers kept at the state level.",
+    "explain": "Correct: the Tenth Amendment reserves powers not given to the federal government to the states."
+  },
+  {
+    "id": "g3r_29",
+    "title": "Constitutional Change — Legislation",
+    "prompt": "The Civil Rights Act of 1964 expanded protections against discrimination. This is an example of constitutional change through",
+    "options": [
+      "Legislation",
+      "Amendment",
+      "Judicial review",
+      "Executive order"
+    ],
+    "answerIndex": 0,
+    "hint": "Congress passing laws = ?",
+    "explain": "Correct: legislation changes how rights are applied by creating laws that enforce constitutional principles."
+  },
+  {
+    "id": "g3r_30",
+    "title": "Constitutional Change — Legislation",
+    "prompt": "The Voting Rights Act of 1965 is an example of constitutional change through",
+    "options": [
+      "Legislation",
+      "Informal practice",
+      "Judicial review",
+      "Treaty approval"
+    ],
+    "answerIndex": 0,
+    "hint": "Think congressional law protecting voting rights.",
+    "explain": "Correct: the Voting Rights Act shows how legislation can expand and protect constitutional rights in practice."
+  },
+  {
+    "id": "g3r_31",
+    "title": "Constitutional Change — Informal Practice",
+    "prompt": "Congress holds hearings to question executive branch officials about how laws are being carried out. This is an example of",
+    "options": [
+      "Legislative oversight",
+      "Judicial review",
+      "Federalism",
+      "Popular sovereignty"
+    ],
+    "answerIndex": 0,
+    "hint": "This is a check used by Congress to monitor the executive branch.",
+    "explain": "Correct: legislative oversight is an informal but important way Congress checks the executive branch."
+  },
+  {
+    "id": "g3r_32",
+    "title": "Constitutional Change — Informal Practice",
+    "prompt": "Which situation BEST shows an informal way the Constitution changes over time?",
+    "options": [
+      "Congress scrutinizes agencies in hearings",
+      "States ratify a new amendment",
+      "A court rules a law unconstitutional",
+      "Citizens vote for members of Congress"
+    ],
+    "answerIndex": 0,
+    "hint": "Informal changes happen without rewriting the Constitution.",
+    "explain": "Correct: oversight is an informal practice that changes how government works without a formal amendment."
+  },
+  {
+    "id": "g3r_33",
+    "title": "Constitutional Change — Methods",
+    "prompt": "Which choice lists two methods that can change how the Constitution works without formally rewriting its text?",
+    "options": [
+      "Supreme Court decisions and informal practices",
+      "Amendments and ratification",
+      "Vetoes and campaign speeches",
+      "Elections and public opinion polls"
+    ],
+    "answerIndex": 0,
+    "hint": "Look for methods that affect meaning or operation without altering the written document itself.",
+    "explain": "Correct: court decisions and informal practices can change constitutional meaning and government operation without changing the Constitution’s text."
+  }
+];
 
   const STORAGE_KEY = 'BTB_GOV_CS7_8_REBUILT_V2';
 
@@ -587,7 +728,7 @@
     const q=getQuestion(displayIndex), meta=getMeta(displayIndex);
     if(Array.isArray(meta.order)) return;
     const seed=hash32(`${q.id}|${state.runSeed}|${state.startedAtISO}`)^0x777888;
-    meta.order=shuffledIndices(q.options.length, seed);
+    meta.order=state.auditOptions?.[state.qOrder?.[displayIndex]] || shuffledIndices(q.options.length, seed);
     meta.correctShown=meta.order.indexOf(q.answerIndex);
   }
 
@@ -636,7 +777,7 @@
       disableInputs(true);
       $('btnNext').disabled=false;
     } else {
-      meta.missed=true;
+      meta.missed=true; state.runMisses=(state.runMisses||0)+1;
       setFeedback('warn','Hint 💡', q.hint);
     }
 
@@ -658,6 +799,20 @@
 
     const ended=new Date(), start=new Date(state.startedAtISO), runMS=Date.now()-state.startedAtMS;
     const total=QUESTION_BANK.length, {perfect}=counts(), acc=Math.round((perfect/total)*100);
+    if(!state.sheetCompletionSent){
+      state.sheetCompletionSent=true;
+      save();
+      const sheetStatus=document.createElement('p');
+      sheetStatus.setAttribute('role','status');
+      sheetStatus.textContent='Sending completion record…';
+      $('finishBox').appendChild(sheetStatus);
+      void BasicsAudit.send(state,{totalQuestions:total,firstPassCorrect:perfect,
+        endedAt:ended.toISOString(),elapsedSeconds:Math.floor(runMS/1000),
+        totalMissesThisRun:state.runMisses ?? total-perfect,totalAttempts:total+(state.runMisses ?? total-perfect),
+        finalMasteryAchieved:perfect===total}).then(result=>{
+        sheetStatus.textContent=result.ok?'Completion record saved.':'Spreadsheet receipt could not be confirmed.';
+      });
+    }
 
     $('sName').textContent=state.name;
     $('sDate').textContent=fmtDate(ended);
@@ -686,6 +841,14 @@
     }
   }
 
+  function initializeLayout(){
+    const layout=BasicsAudit.start(STORAGE_KEY,QUESTION_BANK,state.qOrder,()=>BasicsAudit.shuffle(QUESTION_BANK.map((_,i)=>i)));
+    state.qOrder=layout.order;
+    state.auditOptions=layout.options;
+    state.sheetCompletionSent=false;
+    state.runMisses=0;
+  }
+
   function restartGame(){
     clearSave();
     location.reload();
@@ -697,13 +860,19 @@
       setFeedback('bad','Name required','Enter your name to begin.');
       return;
     }
+    const sheetEmail=$('sheetEmail').value.trim().toLowerCase(), sheetPeriod=$('sheetPeriod').value;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sheetEmail)||!sheetPeriod){
+      window.alert('Enter your school email and class period to start.');
+      return;
+    }
+    state.email=sheetEmail; state.period=sheetPeriod;
     state.name=name;
     state.startedAtISO=new Date().toISOString();
     state.startedAtMS=Date.now();
     state.idx=0;
     state.runSeed=(Math.floor(Math.random()*1e9)^hash32(name+'|'+state.startedAtISO))>>>0;
     state.qOrder=shuffledIndices(QUESTION_BANK.length, state.runSeed ^ 0xABC123);
-    state.qmeta=QUESTION_BANK.map(()=>({done:false,missed:false,order:null,correctShown:null}));
+    state.qmeta=QUESTION_BANK.map(()=>({done:false,missed:false,order:null,correctShown:null})); initializeLayout();
     for(let i=0;i<QUESTION_BANK.length;i++) ensureOrder(i);
     save();
     $('nameBox').style.display='none';
