@@ -126,7 +126,6 @@
 
           <div class="actions">
             <button class="btn" id="btnHint" disabled>Hint</button>
-            <button class="btn primary" id="btnNext" disabled>Next</button>
             <button class="btn" id="btnRestartMid">Restart Game</button>
           </div>
         </div>
@@ -813,7 +812,7 @@
   function showQuestion(){
     const q=getQuestion(state.idx), meta=getMeta(state.idx);
     clearFeedback();
-    $('btnNext').disabled=true;
+    
     $('btnHint').disabled=true;
     $('qtitle').textContent=q.title;
     $('qtext').textContent=q.prompt;
@@ -831,8 +830,8 @@
 
     if(meta.done){
       disableInputs(true);
-      $('btnNext').disabled=false;
-      setFeedback(meta.missed?'warn':'good','Already completed', meta.missed?'This item was completed with a miss.':'This item was completed with no miss.');
+      scheduleAdvance();
+      setFeedback('good','Correct ✅', q.explain);
     } else {
       disableInputs(false);
     }
@@ -852,13 +851,13 @@
       markDone();
       setFeedback('good','Correct ✅', q.explain);
       disableInputs(true);
-      $('btnNext').disabled=false;
+      scheduleAdvance();
       $('btnHint').disabled=true;
     } else {
       markMiss();
       setFeedback('warn','Hint 💡', q.hint);
       $('btnHint').disabled=true;
-      $('btnNext').disabled=true;
+      
     }
     save();
     updateStats();
@@ -870,12 +869,18 @@
     $('btnHint').disabled=true;
   });
 
-  $('btnNext').addEventListener('click', ()=>{
-    if(!getMeta(state.idx).done) return;
-    state.idx++;
-    if(state.idx >= QUESTION_BANK.length) return showFinish();
-    showQuestion();
-  });
+  let advanceTimer;
+  function scheduleAdvance(){
+    clearTimeout(advanceTimer);
+    advanceTimer=setTimeout(()=>{
+      advanceTimer=undefined;
+      if(!getMeta(state.idx).done) return;
+      state.idx++;
+      if(state.idx >= QUESTION_BANK.length) return showFinish();
+      showQuestion();
+    },4000);
+  }
+
 
   function showFinish(){
     $('nameBox').style.display='none';
@@ -938,7 +943,7 @@
     state.runMisses=0;
   }
 
-  function restartGame(){
+  function restartGame(){ clearTimeout(advanceTimer);
     clearSave();
     location.reload();
   }

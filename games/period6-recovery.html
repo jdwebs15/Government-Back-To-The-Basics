@@ -1175,7 +1175,8 @@
 
     if(meta.done){
       markCorrectView();
-      setFeedback(meta.missed ? 'warn' : 'good', meta.missed ? 'Already completed with a miss' : 'Already completed with no miss', meta.missed ? 'This item counts as a miss for this run.' : 'This item stayed clean on first try.');
+      setFeedback('good','Correct ✅', item.explain);
+      scheduleAdvance();
     }
     updateStats();
     save();
@@ -1227,6 +1228,17 @@
     return aa.every((v,i)=>v===bb[i]);
   }
 
+  let advanceTimer;
+  function scheduleAdvance(){
+    clearTimeout(advanceTimer);
+    advanceTimer=setTimeout(()=>{
+      advanceTimer=undefined;
+      state.idx++;
+      if(state.idx >= QUESTION_BANK.length) finishRun();
+      else renderQuestion();
+    },4000);
+  }
+
   function checkAnswer(selectedShown){
     const item=q(state.idx), meta=qState(state.idx);
     if(meta.done) return;
@@ -1257,11 +1269,7 @@
       });
       save();
       updateStats();
-      setTimeout(() => {
-        state.idx++;
-        if(state.idx >= QUESTION_BANK.length) finishRun();
-        else renderQuestion();
-      }, 5000);
+      scheduleAdvance();
     } else {
       meta.missed = true;
       meta.attempts += 1;
@@ -1419,7 +1427,7 @@
     state.runMisses=0;
   }
 
-  function restartGame(){
+  function restartGame(){ clearTimeout(advanceTimer);
     clearSave();
     location.reload();
   }
