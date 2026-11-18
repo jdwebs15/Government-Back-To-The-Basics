@@ -267,309 +267,503 @@
 <script>
 (() => {
   const QUESTIONS = [
-    {
-      id:'g9e_01', domain:'fiscal', type:'mcq',
-      title:'Fiscal Policy',
-      prompt:'Congress cuts taxes to help the economy grow faster. This is an example of',
-      options:['Fiscal policy','Judicial review','Federalism','Monetary policy'],
-      answerIndex:0,
-      hint:'Taxing and spending decisions by government fit one category.',
-      explain:'Correct: fiscal policy is government decision-making about taxes and spending.'
-    },
-    {
-      id:'g9e_02', domain:'fiscal', type:'mcq',
-      title:'Fiscal Policy',
-      prompt:'The federal government increases spending during a recession. What is the main goal?',
-      options:['Encourage economic growth','Slow economic growth','Reduce money in banks','Raise reserve requirements'],
-      answerIndex:0,
-      hint:'More spending in a weak economy is meant to boost activity.',
-      explain:'Correct: increased government spending is meant to encourage economic growth.'
-    },
-    {
-      id:'g9e_03', domain:'fiscal', type:'mcq',
-      title:'Expansionary Fiscal Policy',
-      prompt:'Which action is most likely meant to speed up a slow economy?',
-      options:['Lower taxes','Raise taxes','Cut spending sharply','Sell bonds'],
-      answerIndex:0,
-      hint:'Consumers and businesses spend more when they keep more income.',
-      explain:'Correct: lowering taxes is an expansionary fiscal policy tool.'
-    },
-    {
-      id:'g9e_04', domain:'fiscal', type:'mcq',
-      title:'Expansionary Fiscal Policy',
-      prompt:'A recession causes job losses. Which federal action best matches expansionary fiscal policy?',
-      options:['Increase spending on public projects','Raise interest rates','Increase bank reserve requirements','Sell government bonds'],
-      answerIndex:0,
-      hint:'Think roads, bridges, and government spending.',
-      explain:'Correct: increased government spending on projects is expansionary fiscal policy.'
-    },
-    {
-      id:'sl_f_01', domain:'fiscal', type:'slider',
-      title:'Fiscal Slider Scenario',
-      prompt:'A recession causes layoffs and weak consumer spending. Adjust every fiscal tool in the correct direction, watch the economy box respond, then choose the correct policy.',
-      answer:'Expansionary',
-      hint:'To stimulate growth, every fiscal tool should point toward more demand, not less.',
-      explain:'Correct: expansionary fiscal policy uses increased spending and lower taxes to encourage growth.'
-    },
-    {
-      id:'g9e_05', domain:'fiscal', type:'mcq',
-      title:'Contractionary Fiscal Policy',
-      prompt:'The economy is growing too fast and inflation is rising. Which fiscal action would most likely slow growth?',
-      options:['Raise taxes','Buy bonds','Lower interest rates','Reduce reserve requirements'],
-      answerIndex:0,
-      hint:'Taking more money out of the economy can slow spending.',
-      explain:'Correct: raising taxes is a contractionary fiscal policy tool.'
-    },
-    {
-      id:'g9e_06', domain:'fiscal', type:'mcq',
-      title:'Contractionary Fiscal Policy',
-      prompt:'Which government action is most likely intended to slow economic growth?',
-      options:['Decrease government spending','Increase government spending','Cut taxes','Buy bonds'],
-      answerIndex:0,
-      hint:'Less government spending means less demand in the economy.',
-      explain:'Correct: decreasing government spending is used to slow growth.'
-    },
-    {
-      id:'g9e_07', domain:'fiscal', type:'mcq',
-      title:'Fiscal Policy Comparison',
-      prompt:'How are increased spending and reduced taxes similar?',
-      options:['Both can encourage economic growth','Both slow inflation immediately','Both reduce the money supply','Both raise interest rates'],
-      answerIndex:0,
-      hint:'They are the two broad expansionary fiscal policy choices.',
-      explain:'Correct: both increased spending and reduced taxes can encourage economic growth.'
-    },
-    {
-      id:'sl_f_02', domain:'fiscal', type:'slider',
-      title:'Fiscal Slider Scenario',
-      prompt:'Inflation is rising because demand is too strong. Adjust every fiscal tool in the correct direction, watch the economy box respond, then choose the correct policy.',
-      answer:'Contractionary',
-      hint:'To cool an overheated economy, every fiscal tool should reduce demand.',
-      explain:'Correct: contractionary fiscal policy uses lower spending and higher taxes to slow growth.'
-    },
-
-    {
-      id:'g9e_08', domain:'regulation', type:'mcq',
-      title:'Regulation',
-      prompt:'A law bans unfair business practices to protect consumers. This is an example of regulation creating',
-      options:['Economic benefits','Only economic harm','Only higher interest rates','Less government involvement'],
-      answerIndex:0,
-      hint:'Consumer protection is a benefit.',
-      explain:'Correct: regulation can produce economic benefits such as consumer protections.'
-    },
-    {
-      id:'g9e_09', domain:'regulation', type:'mcq',
-      title:'Regulation',
-      prompt:'A new federal rule increases company costs but makes products safer. This best shows that regulation',
-      options:['Can bring both costs and benefits','Always increases growth','Has no effect on business','Only helps corporate profits'],
-      answerIndex:0,
-      hint:'One side pays more, but consumers may gain protection.',
-      explain:'Correct: regulation may carry costs while also creating benefits.'
-    },
-    {
-      id:'g9e_10', domain:'regulation', type:'mcq',
-      title:'Regulation Cost',
-      prompt:'One possible economic cost of government regulation is',
-      options:['Reduced corporate profits','More consumer protection','Prevention of unfair practices','Safer products'],
-      answerIndex:0,
-      hint:'Look for the business-side drawback.',
-      explain:'Correct: a possible cost of regulation is reduced corporate profits.'
-    },
-    {
-      id:'g9e_11', domain:'regulation', type:'mcq',
-      title:'Regulation Benefit',
-      prompt:'One possible economic benefit of government regulation is',
-      options:['Protection for consumers','Automatic lower taxes','Unlimited business freedom','Fewer safety rules'],
-      answerIndex:0,
-      hint:'Think of why government might regulate in the first place.',
-      explain:'Correct: regulation can protect consumers and prohibit unfair business practices.'
-    },
-
-    {
-      id:'g9e_12', domain:'monetary', type:'mcq',
-      title:'Monetary Policy',
-      prompt:'The Federal Reserve changes the nation’s money supply. This is called',
-      options:['Monetary policy','Fiscal policy','Judicial review','Separation of powers'],
-      answerIndex:0,
-      hint:'This is the Fed, not Congress deciding taxes and spending.',
-      explain:'Correct: monetary policy involves the Federal Reserve regulating the money supply.'
-    },
-    {
-      id:'g9e_13', domain:'monetary', type:'mcq',
-      title:'Federal Reserve',
-      prompt:'Which institution mainly uses monetary tools such as reserve requirements and bond purchases?',
-      options:['Federal Reserve System','Supreme Court','House of Representatives','State legislature'],
-      answerIndex:0,
-      hint:'The central bank system.',
-      explain:'Correct: the Federal Reserve System uses monetary tools.'
-    },
-    {
-      id:'sl_m_01', domain:'monetary', type:'slider',
-      title:'Monetary Slider Scenario',
-      prompt:'A recession begins and borrowing is weak. Adjust every Fed tool in the correct direction, watch the money supply box respond, then choose the correct policy.',
-      answer:'Expansionary',
-      hint:'Expansionary monetary policy means every tool should point toward easier credit and more money in the economy.',
-      explain:'Correct: expansionary monetary policy can include buying securities, lowering reserve requirements, and lowering the discount rate.'
-    },
-    {
-      id:'g9e_14', domain:'monetary', type:'mcq',
-      title:'Reserve Requirements',
-      prompt:'The Federal Reserve lowers reserve requirements for banks. What is the most likely goal?',
-      options:['Encourage economic growth','Slow economic growth','Raise taxes','Reduce consumer protections'],
-      answerIndex:0,
-      hint:'Banks can lend more when they must hold less.',
-      explain:'Correct: lower reserve requirements can encourage growth by allowing more lending.'
-    },
-    {
-      id:'g9e_15', domain:'monetary', type:'mcq',
-      title:'Reserve Requirements',
-      prompt:'If banks must keep more money on reserve, they usually can',
-      options:['Make fewer loans','Make more loans','Lower taxes','Buy more products directly'],
-      answerIndex:0,
-      hint:'More reserves means less money available to lend.',
-      explain:'Correct: higher reserve requirements reduce lending.'
-    },
-    {
-      id:'g9e_16', domain:'monetary', type:'mcq',
-      title:'Reserve Requirements',
-      prompt:'To slow economic growth, the Federal Reserve is most likely to',
-      options:['Increase reserve requirements','Decrease reserve requirements','Buy bonds','Cut taxes'],
-      answerIndex:0,
-      hint:'Less lending slows spending and growth.',
-      explain:'Correct: increasing reserve requirements is a contractionary monetary tool.'
-    },
-    {
-      id:'sl_m_02', domain:'monetary', type:'slider',
-      title:'Monetary Slider Scenario',
-      prompt:'Prices are rising too quickly and the Fed wants to reduce lending. Adjust every Fed tool in the correct direction, watch the money supply box respond, then choose the correct policy.',
-      answer:'Contractionary',
-      hint:'Contractionary monetary policy means every tool should point toward tighter credit and less money in the economy.',
-      explain:'Correct: contractionary monetary policy can include selling securities, raising reserve requirements, and raising the discount rate.'
-    },
-
-    {
-      id:'g9e_17', domain:'monetary', type:'mcq',
-      title:'Bond Purchases',
-      prompt:'The Federal Reserve buys bonds during an economic slowdown. Why?',
-      options:['To put more money into the economy','To take money out of the economy','To raise taxes','To reduce government spending'],
-      answerIndex:0,
-      hint:'Buying bonds adds money to banks and the economy.',
-      explain:'Correct: buying bonds increases the money supply and can encourage growth.'
-    },
-    {
-      id:'g9e_18', domain:'monetary', type:'mcq',
-      title:'Bond Sales',
-      prompt:'What is the most likely effect when the Federal Reserve sells bonds?',
-      options:['Money is pulled out of the economy','Banks can lend more money','Taxes go down','Government spending rises automatically'],
-      answerIndex:0,
-      hint:'Selling bonds removes money from circulation.',
-      explain:'Correct: selling bonds takes money out of the economy and slows growth.'
-    },
-    {
-      id:'g9e_19', domain:'monetary', type:'mcq',
-      title:'Bond Tools',
-      prompt:'Which Federal Reserve action is most likely meant to encourage economic growth?',
-      options:['Buy bonds','Sell bonds','Raise taxes','Cut federal spending'],
-      answerIndex:0,
-      hint:'This action adds money to the economy.',
-      explain:'Correct: buying bonds is an expansionary monetary policy tool.'
-    },
-    {
-      id:'sl_m_03', domain:'monetary', type:'slider',
-      title:'Monetary Slider Scenario',
-      prompt:'Banks are holding back loans and businesses cannot get enough credit. Adjust every Fed tool in the correct direction, watch the money supply box respond, then choose the correct policy.',
-      answer:'Expansionary',
-      hint:'Think easier credit across all of the Fed’s tools, not just one.',
-      explain:'Correct: the Fed would use expansionary tools to encourage lending and growth.'
-    },
-    {
-      id:'g9e_20', domain:'monetary', type:'mcq',
-      title:'Interest Rates',
-      prompt:'The Federal Reserve takes action that lowers interest rates. What is the likely result?',
-      options:['Borrowing becomes easier and growth may increase','Borrowing becomes harder and growth may slow','Taxes increase','Reserve requirements always rise'],
-      answerIndex:0,
-      hint:'Lower rates usually encourage borrowing and spending.',
-      explain:'Correct: lower interest rates can encourage borrowing and economic growth.'
-    },
-    {
-      id:'g9e_21', domain:'monetary', type:'mcq',
-      title:'Interest Rates',
-      prompt:'To slow an overheated economy, the Federal Reserve is most likely to',
-      options:['Raise interest rates','Lower interest rates','Buy bonds','Lower reserve requirements'],
-      answerIndex:0,
-      hint:'More expensive borrowing reduces spending.',
-      explain:'Correct: raising interest rates is used to slow economic growth.'
-    },
-    {
-      id:'g9e_22', domain:'monetary', type:'mcq',
-      title:'Interest Rates',
-      prompt:'Higher interest rates usually make consumers and businesses',
-      options:['Borrow less','Borrow more','Spend government funds','Pay lower taxes'],
-      answerIndex:0,
-      hint:'Loans cost more when rates go up.',
-      explain:'Correct: higher interest rates usually reduce borrowing.'
-    },
-    {
-      id:'sl_m_04', domain:'monetary', type:'slider',
-      title:'Monetary Slider Scenario',
-      prompt:'Inflation remains high and the Fed wants borrowing and spending to slow. Adjust every Fed tool in the correct direction, watch the money supply box respond, then choose the correct policy.',
-      answer:'Contractionary',
-      hint:'Think tighter money across all tools, not just one.',
-      explain:'Correct: the Fed would use contractionary tools to reduce borrowing and demand.'
-    },
-
-    {
-      id:'g9e_23', domain:'mixed', type:'mcq',
-      title:'Fiscal vs Monetary',
-      prompt:'Congress changes tax rates to affect the economy. This is different from the Federal Reserve because Congress is using',
-      options:['Fiscal policy','Monetary policy','Judicial policy','Foreign policy'],
-      answerIndex:0,
-      hint:'Taxes and spending belong to one side, money supply belongs to the other.',
-      explain:'Correct: Congress uses fiscal policy, while the Federal Reserve uses monetary policy.'
-    },
-    {
-      id:'g9e_24', domain:'mixed', type:'mcq',
-      title:'Fiscal vs Monetary',
-      prompt:'Which action is an example of monetary policy rather than fiscal policy?',
-      options:['The Federal Reserve buys bonds','Congress cuts income taxes','Congress increases highway spending','A federal agency adds a safety rule'],
-      answerIndex:0,
-      hint:'Look for an action taken by the Fed.',
-      explain:'Correct: buying bonds is a monetary policy action used by the Federal Reserve.'
-    },
-    {
-      id:'g9e_25', domain:'mixed', type:'mcq',
-      title:'Slow Growth Toolkit',
-      prompt:'Which pair of actions would most likely slow economic growth?',
-      options:['Raise taxes and sell bonds','Cut taxes and buy bonds','Increase spending and lower rates','Buy bonds and lower reserve requirements'],
-      answerIndex:0,
-      hint:'One fiscal and one monetary tool can both reduce spending.',
-      explain:'Correct: raising taxes and selling bonds are both contractionary tools.'
-    },
-    {
-      id:'sl_f_03', domain:'fiscal', type:'slider',
-      title:'Fiscal Slider Scenario',
-      prompt:'Consumer demand surges and inflation is climbing. Adjust every fiscal tool in the correct direction, watch the economy box respond, then choose the correct policy.',
-      answer:'Contractionary',
-      hint:'To reduce demand, both fiscal tools must point the same way.',
-      explain:'Correct: contractionary fiscal policy slows demand through lower spending and higher taxes.'
-    },
-    {
-      id:'g9e_26', domain:'mixed', type:'mcq',
-      title:'Encourage Growth Toolkit',
-      prompt:'Which pair of actions would most likely encourage economic growth?',
-      options:['Increase spending and lower interest rates','Raise taxes and sell bonds','Cut spending and raise reserve requirements','Sell bonds and raise interest rates'],
-      answerIndex:0,
-      hint:'One fiscal and one monetary tool can both stimulate growth.',
-      explain:'Correct: increasing spending and lowering interest rates are both expansionary tools.'
-    },
-    {
-      id:'sl_f_04', domain:'fiscal', type:'slider',
-      title:'Fiscal Slider Scenario',
-      prompt:'Businesses cut hiring and consumers reduce spending. Adjust every fiscal tool in the correct direction, watch the economy box respond, then choose the correct policy.',
-      answer:'Expansionary',
-      hint:'Think stimulation through both higher spending and lower taxes.',
-      explain:'Correct: expansionary fiscal policy encourages growth through higher spending and lower taxes.'
-    }
-  ];
+  {
+    "id": "g9e_01",
+    "domain": "fiscal",
+    "type": "mcq",
+    "title": "Fiscal Policy",
+    "prompt": "Congress cuts taxes to help the economy grow faster. This is an example of",
+    "options": [
+      "Fiscal policy",
+      "Judicial review",
+      "Federalism",
+      "Monetary policy"
+    ],
+    "answerIndex": 0,
+    "hint": "Taxing and spending decisions by government fit one category.",
+    "explain": "Correct: fiscal policy is government decision-making about taxes and spending."
+  },
+  {
+    "id": "g9e_02",
+    "domain": "fiscal",
+    "type": "mcq",
+    "title": "Fiscal Policy",
+    "prompt": "The federal government increases spending during a recession. What is the main goal?",
+    "options": [
+      "Encourage economic growth",
+      "Slow economic growth",
+      "Reduce money in banks",
+      "Raise reserve requirements"
+    ],
+    "answerIndex": 0,
+    "hint": "More spending in a weak economy is meant to boost activity.",
+    "explain": "Correct: increased government spending is meant to encourage economic growth."
+  },
+  {
+    "id": "g9e_03",
+    "domain": "fiscal",
+    "type": "mcq",
+    "title": "Expansionary Fiscal Policy",
+    "prompt": "Which action is most likely meant to speed up a slow economy?",
+    "options": [
+      "Lower taxes",
+      "Raise taxes",
+      "Cut spending sharply",
+      "Sell bonds"
+    ],
+    "answerIndex": 0,
+    "hint": "Consumers and businesses spend more when they keep more income.",
+    "explain": "Correct: lowering taxes is an expansionary fiscal policy tool."
+  },
+  {
+    "id": "g9e_04",
+    "domain": "fiscal",
+    "type": "mcq",
+    "title": "Expansionary Fiscal Policy",
+    "prompt": "A recession causes job losses. Which federal action best matches expansionary fiscal policy?",
+    "options": [
+      "Increase spending on public projects",
+      "Raise interest rates",
+      "Increase bank reserve requirements",
+      "Sell government bonds"
+    ],
+    "answerIndex": 0,
+    "hint": "Think roads, bridges, and government spending.",
+    "explain": "Correct: increased government spending on projects is expansionary fiscal policy."
+  },
+  {
+    "id": "sl_f_01",
+    "domain": "fiscal",
+    "type": "slider",
+    "title": "Fiscal Slider Scenario",
+    "prompt": "A recession causes layoffs and weak consumer spending. Adjust every fiscal tool in the correct direction, watch the economy box respond, then choose the correct policy.",
+    "answer": "Expansionary",
+    "hint": "To stimulate growth, every fiscal tool should point toward more demand, not less.",
+    "explain": "Correct: expansionary fiscal policy uses increased spending and lower taxes to encourage growth."
+  },
+  {
+    "id": "g9e_05",
+    "domain": "fiscal",
+    "type": "mcq",
+    "title": "Contractionary Fiscal Policy",
+    "prompt": "The economy is growing too fast and inflation is rising. Which fiscal action would most likely slow growth?",
+    "options": [
+      "Raise taxes",
+      "Buy bonds",
+      "Lower interest rates",
+      "Reduce reserve requirements"
+    ],
+    "answerIndex": 0,
+    "hint": "Taking more money out of the economy can slow spending.",
+    "explain": "Correct: raising taxes is a contractionary fiscal policy tool."
+  },
+  {
+    "id": "g9e_06",
+    "domain": "fiscal",
+    "type": "mcq",
+    "title": "Contractionary Fiscal Policy",
+    "prompt": "Which government action is most likely intended to slow economic growth?",
+    "options": [
+      "Decrease government spending",
+      "Increase government spending",
+      "Cut taxes",
+      "Buy bonds"
+    ],
+    "answerIndex": 0,
+    "hint": "Less government spending means less demand in the economy.",
+    "explain": "Correct: decreasing government spending is used to slow growth."
+  },
+  {
+    "id": "g9e_07",
+    "domain": "fiscal",
+    "type": "mcq",
+    "title": "Fiscal Policy Comparison",
+    "prompt": "How are increased spending and reduced taxes similar?",
+    "options": [
+      "Both can raise aggregate demand",
+      "Both raise the federal government’s tax receipts",
+      "Both are ordered by the Federal Reserve",
+      "Both directly increase interest rates on bank loans"
+    ],
+    "answerIndex": 0,
+    "hint": "They are the two broad expansionary fiscal policy choices.",
+    "explain": "Correct: both increased spending and reduced taxes can encourage economic growth."
+  },
+  {
+    "id": "sl_f_02",
+    "domain": "fiscal",
+    "type": "slider",
+    "title": "Fiscal Slider Scenario",
+    "prompt": "Inflation is rising because demand is too strong. Adjust every fiscal tool in the correct direction, watch the economy box respond, then choose the correct policy.",
+    "answer": "Contractionary",
+    "hint": "To cool an overheated economy, every fiscal tool should reduce demand.",
+    "explain": "Correct: contractionary fiscal policy uses lower spending and higher taxes to slow growth."
+  },
+  {
+    "id": "g9e_08",
+    "domain": "regulation",
+    "type": "mcq",
+    "title": "Regulation",
+    "prompt": "A law bans unfair business practices to protect consumers. This is an example of regulation creating",
+    "options": [
+      "Consumer benefits",
+      "A federal revenue increase",
+      "A monetary policy adjustment",
+      "A subsidy to lower production costs"
+    ],
+    "answerIndex": 0,
+    "hint": "Consumer protection is a benefit.",
+    "explain": "Correct: regulation can produce economic benefits such as consumer protections."
+  },
+  {
+    "id": "g9e_09",
+    "domain": "regulation",
+    "type": "mcq",
+    "title": "Regulation",
+    "prompt": "A new federal rule increases company costs but makes products safer. This best shows that regulation",
+    "options": [
+      "Has costs as well as benefits",
+      "Benefits consumers without affecting firms’ expenses",
+      "Reduces production costs through mandatory standards",
+      "Shifts spending from consumers to the federal Treasury"
+    ],
+    "answerIndex": 0,
+    "hint": "One side pays more, but consumers may gain protection.",
+    "explain": "Correct: regulation may carry costs while also creating benefits."
+  },
+  {
+    "id": "g9e_10",
+    "domain": "regulation",
+    "type": "mcq",
+    "title": "Regulation Cost",
+    "prompt": "One possible economic cost of government regulation is",
+    "options": [
+      "Reduced corporate profits",
+      "More consumer protection",
+      "Prevention of unfair practices",
+      "Safer products"
+    ],
+    "answerIndex": 0,
+    "hint": "Look for the business-side drawback.",
+    "explain": "Correct: a possible cost of regulation is reduced corporate profits."
+  },
+  {
+    "id": "g9e_11",
+    "domain": "regulation",
+    "type": "mcq",
+    "title": "Regulation Benefit",
+    "prompt": "One possible economic benefit of government regulation is",
+    "options": [
+      "Protection for consumers",
+      "Automatic lower taxes",
+      "Unlimited business freedom",
+      "Fewer safety rules"
+    ],
+    "answerIndex": 0,
+    "hint": "Think of why government might regulate in the first place.",
+    "explain": "Correct: regulation can protect consumers and prohibit unfair business practices."
+  },
+  {
+    "id": "g9e_12",
+    "domain": "monetary",
+    "type": "mcq",
+    "title": "Monetary Policy",
+    "prompt": "The Federal Reserve changes the nation’s money supply. This is called",
+    "options": [
+      "Monetary policy",
+      "Fiscal policy",
+      "Judicial review",
+      "Separation of powers"
+    ],
+    "answerIndex": 0,
+    "hint": "This is the Fed, not Congress deciding taxes and spending.",
+    "explain": "Correct: monetary policy involves the Federal Reserve regulating the money supply."
+  },
+  {
+    "id": "g9e_13",
+    "domain": "monetary",
+    "type": "mcq",
+    "title": "Federal Reserve",
+    "prompt": "Which institution mainly uses monetary tools such as reserve requirements and bond purchases?",
+    "options": [
+      "Federal Reserve System",
+      "Supreme Court",
+      "House of Representatives",
+      "State legislature"
+    ],
+    "answerIndex": 0,
+    "hint": "The central bank system.",
+    "explain": "Correct: the Federal Reserve System uses monetary tools."
+  },
+  {
+    "id": "sl_m_01",
+    "domain": "monetary",
+    "type": "slider",
+    "title": "Monetary Slider Scenario",
+    "prompt": "A recession begins and borrowing is weak. Adjust every Fed tool in the correct direction, watch the money supply box respond, then choose the correct policy.",
+    "answer": "Expansionary",
+    "hint": "Expansionary monetary policy means every tool should point toward easier credit and more money in the economy.",
+    "explain": "Correct: expansionary monetary policy can include buying securities, lowering reserve requirements, and lowering the discount rate."
+  },
+  {
+    "id": "g9e_14",
+    "domain": "monetary",
+    "type": "mcq",
+    "title": "Reserve Requirements",
+    "prompt": "The Federal Reserve lowers reserve requirements for banks. What is the most likely goal?",
+    "options": [
+      "Encourage economic growth",
+      "Slow economic growth",
+      "Raise taxes",
+      "Reduce consumer protections"
+    ],
+    "answerIndex": 0,
+    "hint": "Banks can lend more when they must hold less.",
+    "explain": "Correct: lower reserve requirements can encourage growth by allowing more lending."
+  },
+  {
+    "id": "g9e_15",
+    "domain": "monetary",
+    "type": "mcq",
+    "title": "Reserve Requirements",
+    "prompt": "If banks must keep more money on reserve, they usually can",
+    "options": [
+      "Make fewer loans",
+      "Make more loans",
+      "Lower taxes",
+      "Buy more products directly"
+    ],
+    "answerIndex": 0,
+    "hint": "More reserves means less money available to lend.",
+    "explain": "Correct: higher reserve requirements reduce lending."
+  },
+  {
+    "id": "g9e_16",
+    "domain": "monetary",
+    "type": "mcq",
+    "title": "Reserve Requirements",
+    "prompt": "To slow economic growth, the Federal Reserve is most likely to",
+    "options": [
+      "Increase reserve requirements",
+      "Decrease reserve requirements",
+      "Buy bonds",
+      "Cut taxes"
+    ],
+    "answerIndex": 0,
+    "hint": "Less lending slows spending and growth.",
+    "explain": "Correct: increasing reserve requirements is a contractionary monetary tool."
+  },
+  {
+    "id": "sl_m_02",
+    "domain": "monetary",
+    "type": "slider",
+    "title": "Monetary Slider Scenario",
+    "prompt": "Prices are rising too quickly and the Fed wants to reduce lending. Adjust every Fed tool in the correct direction, watch the money supply box respond, then choose the correct policy.",
+    "answer": "Contractionary",
+    "hint": "Contractionary monetary policy means every tool should point toward tighter credit and less money in the economy.",
+    "explain": "Correct: contractionary monetary policy can include selling securities, raising reserve requirements, and raising the discount rate."
+  },
+  {
+    "id": "g9e_17",
+    "domain": "monetary",
+    "type": "mcq",
+    "title": "Bond Purchases",
+    "prompt": "The Federal Reserve buys bonds during an economic slowdown. Why?",
+    "options": [
+      "To put more money into the economy",
+      "To take money out of the economy",
+      "To raise taxes",
+      "To reduce government spending"
+    ],
+    "answerIndex": 0,
+    "hint": "Buying bonds adds money to banks and the economy.",
+    "explain": "Correct: buying bonds increases the money supply and can encourage growth."
+  },
+  {
+    "id": "g9e_18",
+    "domain": "monetary",
+    "type": "mcq",
+    "title": "Bond Sales",
+    "prompt": "What is the most likely effect when the Federal Reserve sells bonds?",
+    "options": [
+      "Money is pulled out of the economy",
+      "Banks can lend more money",
+      "Taxes go down",
+      "Government spending rises automatically"
+    ],
+    "answerIndex": 0,
+    "hint": "Selling bonds removes money from circulation.",
+    "explain": "Correct: selling bonds takes money out of the economy and slows growth."
+  },
+  {
+    "id": "g9e_19",
+    "domain": "monetary",
+    "type": "mcq",
+    "title": "Bond Tools",
+    "prompt": "Which Federal Reserve action is most likely meant to encourage economic growth?",
+    "options": [
+      "Buy bonds",
+      "Sell bonds",
+      "Raise taxes",
+      "Cut federal spending"
+    ],
+    "answerIndex": 0,
+    "hint": "This action adds money to the economy.",
+    "explain": "Correct: buying bonds is an expansionary monetary policy tool."
+  },
+  {
+    "id": "sl_m_03",
+    "domain": "monetary",
+    "type": "slider",
+    "title": "Monetary Slider Scenario",
+    "prompt": "Banks are holding back loans and businesses cannot get enough credit. Adjust every Fed tool in the correct direction, watch the money supply box respond, then choose the correct policy.",
+    "answer": "Expansionary",
+    "hint": "Think easier credit across all of the Fed’s tools, not just one.",
+    "explain": "Correct: the Fed would use expansionary tools to encourage lending and growth."
+  },
+  {
+    "id": "g9e_20",
+    "domain": "monetary",
+    "type": "mcq",
+    "title": "Interest Rates",
+    "prompt": "The Federal Reserve takes action that lowers interest rates. What is the likely result?",
+    "options": [
+      "Credit becomes cheaper and spending may rise",
+      "Credit becomes more costly and borrowing falls",
+      "Bank loans cost less, but investment normally contracts",
+      "Savings earn more interest and consumer spending rises"
+    ],
+    "answerIndex": 0,
+    "hint": "Lower rates usually encourage borrowing and spending.",
+    "explain": "Correct: lower interest rates can encourage borrowing and economic growth."
+  },
+  {
+    "id": "g9e_21",
+    "domain": "monetary",
+    "type": "mcq",
+    "title": "Interest Rates",
+    "prompt": "To slow an overheated economy, the Federal Reserve is most likely to",
+    "options": [
+      "Raise interest rates",
+      "Lower interest rates",
+      "Buy bonds",
+      "Lower reserve requirements"
+    ],
+    "answerIndex": 0,
+    "hint": "More expensive borrowing reduces spending.",
+    "explain": "Correct: raising interest rates is used to slow economic growth."
+  },
+  {
+    "id": "g9e_22",
+    "domain": "monetary",
+    "type": "mcq",
+    "title": "Interest Rates",
+    "prompt": "Higher interest rates usually make consumers and businesses",
+    "options": [
+      "Borrow less",
+      "Borrow more",
+      "Spend government funds",
+      "Pay lower taxes"
+    ],
+    "answerIndex": 0,
+    "hint": "Loans cost more when rates go up.",
+    "explain": "Correct: higher interest rates usually reduce borrowing."
+  },
+  {
+    "id": "sl_m_04",
+    "domain": "monetary",
+    "type": "slider",
+    "title": "Monetary Slider Scenario",
+    "prompt": "Inflation remains high and the Fed wants borrowing and spending to slow. Adjust every Fed tool in the correct direction, watch the money supply box respond, then choose the correct policy.",
+    "answer": "Contractionary",
+    "hint": "Think tighter money across all tools, not just one.",
+    "explain": "Correct: the Fed would use contractionary tools to reduce borrowing and demand."
+  },
+  {
+    "id": "g9e_23",
+    "domain": "mixed",
+    "type": "mcq",
+    "title": "Fiscal vs Monetary",
+    "prompt": "Congress changes tax rates to affect the economy. This is different from the Federal Reserve because Congress is using",
+    "options": [
+      "Fiscal policy",
+      "Monetary policy",
+      "Judicial policy",
+      "Foreign policy"
+    ],
+    "answerIndex": 0,
+    "hint": "Taxes and spending belong to one side, money supply belongs to the other.",
+    "explain": "Correct: Congress uses fiscal policy, while the Federal Reserve uses monetary policy."
+  },
+  {
+    "id": "g9e_24",
+    "domain": "mixed",
+    "type": "mcq",
+    "title": "Fiscal vs Monetary",
+    "prompt": "Which action is an example of monetary policy rather than fiscal policy?",
+    "options": [
+      "The Federal Reserve buys bonds",
+      "Congress cuts income taxes",
+      "Congress increases highway spending",
+      "A federal agency adds a safety rule"
+    ],
+    "answerIndex": 0,
+    "hint": "Look for an action taken by the Fed.",
+    "explain": "Correct: buying bonds is a monetary policy action used by the Federal Reserve."
+  },
+  {
+    "id": "g9e_25",
+    "domain": "mixed",
+    "type": "mcq",
+    "title": "Slow Growth Toolkit",
+    "prompt": "Which pair of actions would most likely slow economic growth?",
+    "options": [
+      "Raise taxes and sell bonds",
+      "Cut taxes and buy bonds",
+      "Increase spending and lower rates",
+      "Buy bonds and lower reserve requirements"
+    ],
+    "answerIndex": 0,
+    "hint": "One fiscal and one monetary tool can both reduce spending.",
+    "explain": "Correct: raising taxes and selling bonds are both contractionary tools."
+  },
+  {
+    "id": "sl_f_03",
+    "domain": "fiscal",
+    "type": "slider",
+    "title": "Fiscal Slider Scenario",
+    "prompt": "Consumer demand surges and inflation is climbing. Adjust every fiscal tool in the correct direction, watch the economy box respond, then choose the correct policy.",
+    "answer": "Contractionary",
+    "hint": "To reduce demand, both fiscal tools must point the same way.",
+    "explain": "Correct: contractionary fiscal policy slows demand through lower spending and higher taxes."
+  },
+  {
+    "id": "g9e_26",
+    "domain": "mixed",
+    "type": "mcq",
+    "title": "Encourage Growth Toolkit",
+    "prompt": "Which pair of actions would most likely encourage economic growth?",
+    "options": [
+      "Increase spending and lower interest rates",
+      "Raise taxes and sell bonds",
+      "Cut spending and raise reserve requirements",
+      "Sell bonds and raise interest rates"
+    ],
+    "answerIndex": 0,
+    "hint": "One fiscal and one monetary tool can both stimulate growth.",
+    "explain": "Correct: increasing spending and lowering interest rates are both expansionary tools."
+  },
+  {
+    "id": "sl_f_04",
+    "domain": "fiscal",
+    "type": "slider",
+    "title": "Fiscal Slider Scenario",
+    "prompt": "Businesses cut hiring and consumers reduce spending. Adjust every fiscal tool in the correct direction, watch the economy box respond, then choose the correct policy.",
+    "answer": "Expansionary",
+    "hint": "Think stimulation through both higher spending and lower taxes.",
+    "explain": "Correct: expansionary fiscal policy encourages growth through higher spending and lower taxes."
+  }
+];
 
   const STORAGE_KEY = 'BTB_GOV_CS20_21_ECON_SLIDERS_V3';
 
